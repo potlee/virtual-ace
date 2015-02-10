@@ -55,6 +55,10 @@
     /* yes, it's intentional that Mozilla, Webkit, Opera and IE all will get different backgrounds ... why not? :) */
 }
 
+.playingCards .card.back > .suit:after {
+	content: none !important; /* Brian: fix so symbols aren't displayed when 'back' */
+}
+
 /* suit colours
 ********************************************************************/
 
