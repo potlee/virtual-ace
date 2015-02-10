@@ -487,6 +487,7 @@
 }
 .playingCards ul.hand li {
     bottom: 0;
+	position: static; /* Brian css hack to make cards  spread out */
 }
 
 
