@@ -31,6 +31,25 @@
             
             $( "li" ).not('.ui-sortable-handle').draggable({ handle: "div" });
             
+			
+			
+			$("div.card").mousedown(function(event) {
+			switch (event.which) {
+				case 1:
+					//alert('Left Mouse button pressed.');
+					break;
+				case 2:
+					//alert('Middle Mouse button pressed.');
+					$(this).toggleClass("back");
+					break;
+				case 3:
+					//alert('Right Mouse button pressed.');
+				break;
+			default:
+				alert('You have a strange Mouse!');
+			}
+			});
+			
         });
     </script>
     <style>
