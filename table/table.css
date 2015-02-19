@@ -1,0 +1,82 @@
+body {
+	color: white;
+}
+
+
+html { 
+	background: url('table.jpg') no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+
+div.clear {
+	clear: both;
+	height: 0;
+	line-height: 0;
+	font-size: 1px;
+	visibility: hidden;
+}
+
+
+
+/*hand area takes up entire bottom of screen*/
+/*if there is time:
+	find a better way to do this, change it to
+	adjust to a smaller screen*/
+.handarea {
+	position: absolute;
+	height: 20%;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+border-style:solid;
+border-color:#FFFFFF;
+border-width:8px;
+padding: 10px;
+}
+
+/*the display for the other players
+need to work on better layout/relative positioning,
+make the hand into their own pile*/
+.others {
+	position: absolute;
+	width: 20%;
+	right: 0px;
+	top: 0px;
+	bottom: 0px
+}
+
+/*currently all player boxes are using .player2*/
+.player2 {
+	position: relative;
+	width: 98%;
+	right: 0px;
+	border-style: solid;
+	height: 18.5%;
+}
+
+/*may implement these*/
+.player3 {
+	position: relative;
+	width: 100%;
+	right: 0px;
+	border-style: solid;
+	height: 18%;
+}
+.player4 {
+	position: relative;
+	width: 100%;
+	right: 0px;
+	border-style: solid;
+	height: 18%;
+}
+.player1 {
+	position: relative;
+	width: 100%;
+	right: 0px;
+	border-style: solid;
+	height: 18%;
+}

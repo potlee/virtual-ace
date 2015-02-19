@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>CSS Playing Cards</title>
-    <link rel="stylesheet" type="text/css" href="table.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="cards.css" media="screen" />
     <!--[if lt IE 9]>
         <link rel="stylesheet" type="text/css" href="cards-ie.css" media="screen" />
@@ -16,12 +15,86 @@
     <script src="http://js.leapmotion.com/leap-0.6.4.js"></script>
     <script src="jquery.ui.touch-punch.js"></script>
     <script src="jquery.simulate.js"></script>
+    
+    <script src="leap.js"></script>
+    <script>
+
+        
+        $(function() {
+            $( ".hand" ).sortable({
+                revert: true
+            });
+            
+            /*
+            $( ".dealable li" ).draggable({
+                connectToSortable: ".hand",
+                helper: "original",
+                revert: false
+            });
+            */
+            
+            
+            $( "ul, li" ).disableSelection();
+            
+            
+            $( "li" ).not('.ui-sortable-handle').draggable({ 
+				handle: "div",
+				connectToSortable: ".hand",
+                helper: "original",
+                revert: false
+            });
+
+
+
+			$("div.card").mousedown(function(event) {
+				switch (event.which) {
+					case 2:
+						//alert('Left Mouse button pressed.');
+						break;
+					case 1:
+						//alert('Middle Mouse button pressed.');
+						
+						break;
+					case 3:
+						//alert('Right Mouse button pressed.');
+						$(this).toggleClass("back");
+						event.preventDefault();
+						break;
+						default:
+						alert('You have a strange Mouse!');
+				}
+			});
+			
+			
+        });
+    </script>
+    <style>
+        body {
+            color: white;
+        }
+        html { 
+            background: url('table.jpg') no-repeat center center fixed; 
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+
+        div.clear {
+            clear: both;
+            height: 0;
+            line-height: 0;
+            font-size: 1px;
+            visibility: hidden;
+        }
+    </style>
 </head>
 <body oncontextmenu="return false;">
 <div class="playingCards fourColours">
     <ul class="table">
         Dealable deck:
-        <ul class="deck" id="one">
+        <ul class="deck dealable">
             <li>
                 <div class="card rank-2 diams back"><span class="rank">2</span><span class="suit">&diams;</span></div>
             </li>
@@ -62,48 +135,7 @@
                 <div class="card rank-a diams back"><span class="rank">A</span><span class="suit">&diams;</span></div>
             </li>
         </ul>
-
-        <ul class="deck two">
-            <li>
-                <div class="card rank-2 diams back"><span class="rank">2</span><span class="suit">&diams;</span></div>
-            </li>
-            <li>
-                <div class="card rank-3 diams back"><span class="rank">3</span><span class="suit">&diams;</span></div>
-            </li>
-            <li>
-                <div class="card rank-4 diams back"><span class="rank">4</span><span class="suit">&diams;</span></div>
-            </li>
-            <li>
-                <div class="card rank-5 diams back"><span class="rank">5</span><span class="suit">&diams;</span></div>
-            </li>
-            <li>
-                <div class="card rank-6 diams back"><span class="rank">6</span><span class="suit">&diams;</span></div>
-            </li>
-            <li>
-                <div class="card rank-7 diams back"><span class="rank">7</span><span class="suit">&diams;</span></div>
-            </li>
-            <li>
-                <div class="card rank-8 diams back"><span class="rank">8</span><span class="suit">&diams;</span></div>
-            </li>
-            <li>
-                <div class="card rank-9 diams back"><span class="rank">9</span><span class="suit">&diams;</span></div>
-            </li>
-            <li>
-                <div class="card rank-10 diams back"><span class="rank">10</span><span class="suit">&diams;</span></div>
-            </li>
-            <li>
-                <div class="card rank-j diams back"><span class="rank">J</span><span class="suit">&diams;</span></div>
-            </li>
-            <li>
-                <div class="card rank-q diams back"><span class="rank">Q</span><span class="suit">&diams;</span></div>
-            </li>
-            <li>
-                <div class="card rank-k diams back"><span class="rank">K</span><span class="suit">&diams;</span></div>
-            </li>
-            <li>
-                <div class="card rank-a diams back"><span class="rank">A</span><span class="suit">&diams;</span></div>
-            </li>
-        </ul>
+        
         <li>
             <div class="card rank-2 diams"><span class="rank">2</span><span class="suit">&diams;</span></div>
         </li>
@@ -143,96 +175,40 @@
         <li>
             <div class="card rank-a diams"><span class="rank">A</span><span class="suit">&diams;</span></div>
         </li>
-
     </ul>
     <div class="clear"></div>
-	
-	<div class="others">
-		<div class="player2">
-		<font size="5"> Player2 cards: 3 </font>
-		<hr>
-			<ul class="hand">
-				<li>
-					<div class="card rank-7 diams"><span class="rank">7</span><span class="suit">&diams;</span></div>
-				</li>
-			</ul>
-			<div class="clear"></div>
-	
-		</div>
-	
-		<div class="player2">
-		<font size="5"> Player3 cards: 4 </font>
-		<hr>
-			<ul class="hand">
-				<li>
-					<div class="card rank-7 diams"><span class="rank">7</span><span class="suit">&diams;</span></div>
-				</li>
-			</ul>
-			<div class="clear"></div>
-	
-		</div>
-		
-		<div class="player2">
-		<font size="5"> Player4 cards: 2 </font>
-		<hr>
-			<ul class="hand">
-				<li>
-					<div class="card rank-7 diams"><span class="rank">7</span><span class="suit">&diams;</span></div>
-				</li>
-			</ul>
-			<div class="clear"></div>
-	
-		</div>
-		
-		<div class="player2">
-		<font size="5"> Player1 cards: 9 </font>
-		<hr>
-			<ul class="hand">
-				<li>
-					<div class="card rank-7 diams"><span class="rank">7</span><span class="suit">&diams;</span></div>
-				</li>
-			</ul>
-			<div class="clear"></div>
-	
-		</div>
-	
-	</div>
-	
-    <br><br>
-    <div class="handarea">
-		<font size="5">Player hand:</font>
-		<ul class="hand">
-			<li>
-				<div class="card rank-7 diams"><span class="rank">7</span><span class="suit">&diams;</span></div>
-			</li>
-			<li>
-				<div class="card rank-8 hearts"><span class="rank">8</span><span class="suit">&hearts;</span></div>
-			</li>
-			<li>
-				<div class="card rank-9 spades"><span class="rank">9</span><span class="suit">&spades;</span></div>
-			</li>
-			<li>
-				<div class="card rank-10 clubs"><span class="rank">10</span><span class="suit">&clubs;</span></div>
-			</li>
-			<li>
-				<div class="card rank-j diams"><span class="rank">J</span><span class="suit">&diams;</span></div>
-			</li>
-			<li>
-				<div class="card rank-5 clubs"><span class="rank">5</span><span class="suit">&clubs;</span></div>
-			</li>
-			<li>
-				<div class="card rank-6 diams"><span class="rank">6</span><span class="suit">&diams;</span></div>
-			</li>
-			<li>
-				<div class="card rank-q hearts"><span class="rank">Q</span><span class="suit">&hearts;</span></div>
-			</li>
-			<li>
-				<div class="card rank-k spades"><span class="rank">K</span><span class="suit">&spades;</span></div>
-			</li>
-		</ul>
-		<div class="clear"></div>
-	</div>
-	
+    <br><hr><br>
+    Player hand:<br>
+    <ul class="hand">
+        <li>
+            <div class="card rank-7 diams"><span class="rank">7</span><span class="suit">&diams;</span></div>
+        </li>
+        <li>
+            <div class="card rank-8 hearts"><span class="rank">8</span><span class="suit">&hearts;</span></div>
+        </li>
+        <li>
+            <div class="card rank-9 spades"><span class="rank">9</span><span class="suit">&spades;</span></div>
+        </li>
+        <li>
+            <div class="card rank-10 clubs"><span class="rank">10</span><span class="suit">&clubs;</span></div>
+        </li>
+        <li>
+            <div class="card rank-j diams"><span class="rank">J</span><span class="suit">&diams;</span></div>
+        </li>
+        <li>
+            <div class="card rank-5 clubs"><span class="rank">5</span><span class="suit">&clubs;</span></div>
+        </li>
+        <li>
+            <div class="card rank-6 diams"><span class="rank">6</span><span class="suit">&diams;</span></div>
+        </li>
+        <li>
+            <div class="card rank-q hearts"><span class="rank">Q</span><span class="suit">&hearts;</span></div>
+        </li>
+        <li>
+            <div class="card rank-k spades"><span class="rank">K</span><span class="suit">&spades;</span></div>
+        </li>
+    </ul>
+    <div class="clear"></div>
 </div>
 
 </body>
