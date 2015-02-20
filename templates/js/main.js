@@ -8,12 +8,12 @@ User = {
   onlineUsers: function() {
     return [
       {
-        name: 'user 1',
-        favoriteGames: ['game 1', 'game 2', 'GAME', 'game 3', 'game 3']
+        name: 'Kristen',
+        favoriteGames: ['solitair', 'rummy 500', 'poker', 'blackjack']
       },
       {
-        name: 'user 2',
-        favoriteGames: ['game 1', 'game 2']
+        name: 'Kristen G',
+        favoriteGames: ['solitair', 'blackjack']
       }
     ];
   },
@@ -85,10 +85,21 @@ User = {
 
 	function refreshLobby (){
 		var $section = $(".users-online");
+
 		$section.html('');
+		var game = '	';
 		for (var i = 0; i < User.onlineUsers().length; i++)
 		{
-			$section.append("<li><input type='checkbox'>" + User.onlineUsers()[i].name + "</li>");     
+			for (var j = 0; j < User.onlineUsers()[i].favoriteGames.length; j++)
+			{
+				game = game.concat(' ' + User.onlineUsers()[i].favoriteGames[j]);
+				if ((j+1) < User.onlineUsers()[i].favoriteGames.length)
+				{
+					game = game.concat(',');
+				}
+			}
+			$section.append("<li><input type='checkbox'>" + User.onlineUsers()[i].name + ": " + game + "</li>");  
+			game = '';   
 		}
 		
 	}
