@@ -54,6 +54,7 @@
             		console.log('y: ' + y);
        			 },
        			stop: function(){
+       			
        				console.log('Begin X: ' + xPos);
             		console.log('Begin Y: ' + yPos);
        				first = true;

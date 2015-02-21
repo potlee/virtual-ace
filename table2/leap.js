@@ -188,7 +188,10 @@ $(function() {
 		var x = indexFinger.x;
 		var y = indexFinger.y;
 		
+		
+		
 		if(LeapController.mousedown) {
+			$(LeapController.hEle).simulate("mousedown", {clientX: x, clientY: y});
 			$(document).simulate("mousemove", {clientX: x, clientY: y});
 		} else {
 			handleMouseOver(x,y);
@@ -234,28 +237,19 @@ $(function() {
 		c.style.zIndex = "1000000";
 		c.style.width = "100%";
 		c.style.height = "100%";
-		c.style.pointer-events = "none";
 		c.width = c.offsetWidth;
 		c.height = c.offsetHeight;
 		c.id = 'leap-motion-canvas';
-		
-		
 		LeapController.canvas = c;
 		LeapController.ctx = LeapController.canvas.getContext("2d");
 	}
 	
 	function handleMouseOver(x,y) {
 	
-	
-		// Hiding canvas triggers mousemove on Chrome
-		var w = LeapController.canvas.style.width;
-		var h = LeapController.canvas.style.height;
-		
-		LeapController.canvas.style.width = '0';
-		LeapController.canvas.style.height = '0';
+		LeapController.canvas.style.display = 'none';
 		var el = document.elementFromPoint(x,y);
-		LeapController.canvas.style.width = w;
-		LeapController.canvas.style.height = h;
+		console.log(LeapController.mousedown + '  elementFromPoint');
+		LeapController.canvas.style.display = 'block';
 		
 		var card = false;
 		
