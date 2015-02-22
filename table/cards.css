@@ -11,6 +11,7 @@
 ********************************************************************/
 
 .playingCards .card {
+	/*position: relative;*/
     display: inline-block;
     width: 3.3em;
     height: 4.6em;
@@ -25,7 +26,6 @@
     font-size: 1.2em; /* @change: adjust this value to make bigger or smaller cards */
     font-weight: normal;
     font-family: Arial, sans-serif;
-    position: relative;
     background-color: #fff;
     -moz-box-shadow: .2em .2em .5em #333;
     -webkit-box-shadow: .2em .2em .5em #333;
@@ -468,12 +468,8 @@
     position: relative;
     clear: both;
 }
-
-/* affects how far above the cards are from bottom of div*/
 .playingCards ul.hand {
-    margin-bottom: 0.5em;
-/*    margin-bottom: 3.5em;*/
-
+    margin-bottom: 3.5em;
 }
 .playingCards ul.table li,
 .playingCards ul.hand li,
@@ -498,64 +494,7 @@
 	position: static; /* Brian css hack to make cards  spread out */
 }
 
-/*hand area takes up entire bottom of screen*/
-/*if there is time:
-	find a better way to do this, change it to
-	adjust to a smaller screen*/
-.handarea {
-	position: absolute;
-	height: 20%;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
-border-style:solid;
-border-color:#FFFFFF;
-border-width:8px;
-padding: 10px;
-}
 
-/*the display for the other players
-need to work on better layout/relative positioning,
-make the hand into their own pile*/
-.others {
-	position: absolute;
-	width: 20%;
-	right: 0px;
-	top: 0px;
-	bottom: 0px
-}
-
-/*currently all player boxes are using .player2*/
-.player2 {
-	position: relative;
-	width: 98%;
-	right: 0px;
-	border-style: solid;
-	height: 18.5%;
-}
-
-/*may implement these*/
-.player3 {
-	position: relative;
-	width: 100%;
-	right: 0px;
-	border-style: solid;
-	height: 18%;
-}
-.player4 {
-	position: relative;
-	width: 100%;
-	right: 0px;
-	border-style: solid;
-	height: 18%;
-}
-.player1 {
-	position: relative;
-	width: 100%;
-	right: 0px;
-	border-style: solid;
-	height: 18%;
-}
 .playingCards ul.hand li:nth-child(1)  { left: 0; }
 .playingCards ul.hand li:nth-child(2)  { left: 1.1em; }
 .playingCards ul.hand li:nth-child(3)  { left: 2.2em; }
@@ -699,3 +638,6 @@ make the hand into their own pile*/
 .playingCards ul.deck li:nth-child(30) { left: 58px; bottom: 29px; }
 .playingCards ul.deck li:nth-child(31) { left: 60px; bottom: 30px; }
 .playingCards ul.deck li:nth-child(32) { left: 62px; bottom: 31px; }
+
+
+
