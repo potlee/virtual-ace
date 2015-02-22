@@ -46,6 +46,15 @@ table {
 /* End of Eric Meyer's CSS Reset */
 
 
+html {
+	background-color: #34794d;
+	height: 100%;
+}
+
+#bounds, section, aside{
+	height: 89%; /* 100 - header % - footer % */
+}
+
 body {
     height: 100%;
     color: white;
@@ -57,32 +66,28 @@ header {
 }
 aside {
     float: right;
-    min-height: 480px;
     padding: 2%;
     width: 21%;
-    background:#ddd;
+    background:#1F482E;
     padding: 2%;
+    box-shadow: inset 0px 0px 30px 0px #000000;
 }
+
 section {
     float: left;
     width: 71%;
     padding: 2%;
-    background:#fff;
-    background: url('table.jpg') no-repeat;
-    background-size: 100%;
-    min-height: 480px;
-    -moz-box-shadow: inset 0px 0px 40px 0px #000000;
-    -webkit-box-shadow: inset 0px 0px 40px 0px #000000;
-    box-shadow: inset 0px 0px 40px 0px #000000;
+    box-shadow: inset 0px 0px 300px 0px #021D0C;
 }
 footer {
     position:absolute;
     bottom:0;
     left:0;
-    height: 50px;
+    height: 10%;
     width: 100%;
     clear:both;
-    background:#eee;
+    background:#000;
+    border-top: 1px solid white;
 }
 
 
@@ -91,26 +96,20 @@ footer {
      position: relative;
 }
 
-.droppable div {
-	background-color: red;
-}
-
-
 
 #hand {
     height: 120px;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     width: 100%;
-    border: 2px #c08430 ridge;
 }
 
 .droppable {
-	 border: 1px solid red;
+	 border: 1px dotted white;
 }
 
 #table {
-    min-height: 350px;
+    height: calc(100% - 120px);
     width: 100%;
 }
 

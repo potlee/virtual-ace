@@ -234,7 +234,7 @@ $(function() {
 		c.style.zIndex = "1000000";
 		c.style.width = "100%";
 		c.style.height = "100%";
-		c.style.pointer-events = "none";
+		c.style.pointerEvents = "none";
 		c.width = c.offsetWidth;
 		c.height = c.offsetHeight;
 		c.id = 'leap-motion-canvas';
