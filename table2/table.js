@@ -4,16 +4,6 @@ $(function() {
 $('*:not(:input)').disableSelection();
 
 
-// Make only droppable cards sortable because cards in hand
-// because sortable when we run sortable()
-$('.droppable .card').draggable({
-    connectToSortable: '#hand',
-    revert: 'invalid',
-    stack: 'div',
-    containment: '#bounds'
-});
-
-
 render_game("user1");
 
 			//Takes in a json file and recreats all the cards.
@@ -289,5 +279,17 @@ $('body').bind('contextmenu', function(){ return false });
 						alert('You have a strange Mouse!');
 				}
 			});
+			
+			
+// Make only droppable cards sortable because cards in hand
+// because sortable when we run sortable()
+$('.droppable .card').draggable({
+    connectToSortable: '#hand',
+    revert: 'invalid',
+    stack: 'div',
+    containment: '#bounds'
+});
+
+
 		
 });
