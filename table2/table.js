@@ -11,7 +11,8 @@ render_game("user1");
 			function render_game(user/*, game_state*/){
 			//removes all card divs
 			$(".card").remove();
-			
+		
+	
 			//var game = JSON.parse(game_state);
 			var game_state = {
 				turn: 'user1',
@@ -28,8 +29,8 @@ render_game("user1");
 					},
 					'AH': {
 						position: {
-							x: 200,
-							y: 100,
+							x: 14,
+							y: 16,
 							z: 2
 						},
 						username: 'table', // or 'table'
@@ -37,8 +38,8 @@ render_game("user1");
 					},
 					'AC': {
 						position: {
-							x: 250,
-							y: 100,
+							x: 19,
+							y: 15,
 							z: 1
 						},
 						username: 'table', // or 'table'
@@ -46,8 +47,8 @@ render_game("user1");
 					},
 					'AD': {
 						position: {
-							x: 225,
-							y: 125,
+							x: 16,
+							y: 19,
 							z: 3
 						},
 						username: 'table', // or 'table'
@@ -72,8 +73,8 @@ render_game("user1");
 						
 					case "table":
 							$("#table").append(create_card(key, value.faceup)
-												.css({"top" : value.position.y,
-													"left" : value.position.x, 
+												.css({"top" : value.position.y+'%',
+													"left" : value.position.x+'%', 
 													"z-index" : value.position.z})
 							);
 							break;
@@ -241,45 +242,43 @@ $(".droppable").droppable({
 
 
 
-
-
 $('body').bind('contextmenu', function(){ return false });
     
-			$("body").mousedown(function(event) {
-				var el = document.elementFromPoint(event.clientX,event.clientY);
-				
-				var card = false;
-				
-				if($(el).hasClass('card')) {
-					card = true;
-				} else {
-					var parentCard = $(el).parents('.card')[0];
-					if(parentCard) {
-						card = true;
-						el = parentCard;
-					}
-				}
-				
-				if(!card) return;
-				
-				switch (event.which) {
-					case 2:
-						//alert('Left Mouse button pressed.');
-						break;
-					case 1:
-						//alert('Middle Mouse button pressed.');
-						
-						break;
-					case 3:
-						//alert('Right Mouse button pressed.');
-						$(el).toggleClass("back");
-						event.preventDefault();
-						break;
-					default:
-						alert('You have a strange Mouse!');
-				}
-			});
+$("body").mousedown(function(event) {
+	var el = document.elementFromPoint(event.clientX,event.clientY);
+	
+	var card = false;
+	
+	if($(el).hasClass('card')) {
+		card = true;
+	} else {
+		var parentCard = $(el).parents('.card')[0];
+		if(parentCard) {
+			card = true;
+			el = parentCard;
+		}
+	}
+	
+	if(!card) return;
+	
+	switch (event.which) {
+		case 2:
+			//alert('Left Mouse button pressed.');
+			break;
+		case 1:
+			//alert('Middle Mouse button pressed.');
 			
+			break;
+		case 3:
+			//alert('Right Mouse button pressed.');
+			$(el).toggleClass("back");
+			event.preventDefault();
+			break;
+		default:
+			alert('You have a strange Mouse!');
+	}
+});
+
 			
 // Make only droppable cards sortable because cards in hand
 // because sortable when we run sortable()
