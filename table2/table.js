@@ -1,12 +1,25 @@
 $(function() {
+
+// Disable highlight text for all but inputs
 $('*:not(:input)').disableSelection();
+
+// Make only droppable cards sortable because cards in hand
+// because sortable when we run sortable()
+$('.droppable .card').draggable({
+    connectToSortable: '#hand',
+    revert: 'invalid',
+    stack: 'div',
+    containment: '#bounds'
+});
+
 
 $("#hand").sortable({
 	revert: 100,
     connectWith: '#hand, .droppable',
     containment: '#bounds',
     receive: function(event, ui) {
-		console.log('move_card_to_hand(card)');
+		var card = ui.item.data('card');
+		console.log('move_card_to_hand(\''+card+'\')');
     },
     beforeStop: function (event, ui) {
         ui.item.css('position', 'relative');
@@ -15,45 +28,49 @@ $("#hand").sortable({
 
 $(".droppable").droppable({
 	tolerance: "intersect",
+	out: function (ev, ui) {
+		window.origin = this;
+	},
     drop: function (ev, ui) {
-        //if(ui.draggable.parent().hasClass('ui-sortable')) {
+		
+		
+        if((window.origin !== null && this != window.origin) || ui.draggable.parent().hasClass('ui-sortable')) {
             var clone = ui.draggable.clone();
             ui.draggable.remove();
+            
+            $(clone).css({
+				width: '',
+				height: ''
+            });
+            
             $(this).append(clone);
+            
             $(clone).draggable({
 				connectToSortable: '#hand',
 				revert: 'invalid',
 				stack: 'div',
 				containment: '#bounds'
-
             });
-       // }
+            
+            ui.draggable = clone;
+        }
+		
+		window.origin = null;
 
-/*
-		var re = /rank\-(.)/; 
-		var str = $(clone).attr('class');
-		var m;
-		 
-		while ((m = re.exec(str)) != null) {
-			if (m.index === re.lastIndex) {
-				re.lastIndex++;
-			}
-		}
+		var left = $(ui.draggable).position().left;
+		var top  = $(ui.draggable).position().top;
+		var percentLeft = (left / $(window).width()) * 100;
+		var precentTop  = (top / $(window).height()) * 100;
+		var position = { left: percentLeft+'%', top: precentTop +'%' };
 
-
-*/
-       console.log('move_card(card, location)');
-
+		var card = $(ui.draggable).data('card');
+		$(ui.draggable).css(position);  
+		console.log('move_card(\''+card+'\', { left: '+percentLeft+'%, top: '+precentTop+'% })');
     }
 });
 
 
-$('.card').draggable({
-    connectToSortable: '#hand',
-    revert: 'invalid',
-    stack: 'div',
-    containment: '#bounds'
-});
+
 
 
 $('body').bind('contextmenu', function(){ return false });
