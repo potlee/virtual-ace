@@ -73,9 +73,11 @@ render_game("user1");
 						
 					case "table":
 							$("#table").append(create_card(key, value.faceup)
-												.css({"top" : value.position.y+'%',
+												.css({
+													"top" : value.position.y+'%',
 													"left" : value.position.x+'%', 
-													"z-index" : value.position.z})
+													"z-index" : value.position.z
+												})
 							);
 							break;
 					default:
