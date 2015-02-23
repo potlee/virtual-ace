@@ -7,7 +7,7 @@ window.gameCache = {};
 var reset = function (snapshot) {
   gameCache = snapshot.val();
   rerender();
-  console.log(gameCache);
+  //console.log(gameCache);
 };
 
 game.on('child_added', reset);
