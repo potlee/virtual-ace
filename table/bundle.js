@@ -262,9 +262,11 @@ var game = root.child('game');
 var User = require('./user');
 window.gameCache = {};
 var reset = function (snapshot) {
-  gameCache = snapshot.val();
-  rerender();
-  console.log(gameCache);
+  game.on('value', function(snapshot) {
+    gameCache = snapshot.val();
+    rerender();
+  });
+  //console.log(gameCache);
 };
 
 game.on('child_added', reset);
@@ -306,8 +308,10 @@ var cache = {};
 var currentUser = null;
 
 var reset = function (snapshot) {
-  cache = snapshot.val();
-  console.log(cache);
+  users.on('value', function(snapshot) {
+    cache = snapshot.val();
+  });
+  //console.log(cache);
 };
 
 users.on('child_added', reset);
