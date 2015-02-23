@@ -260,11 +260,11 @@ var emitter = new EventEmitter();
 var root = require('./fb');
 var game = root.child('game');
 var User = require('./user');
-var cache = {};
+window.gameCache = {};
 var reset = function (snapshot) {
-  cache = snapshot.val();
+  gameCache = snapshot.val();
   rerender();
-  console.log(cache);
+  console.log(gameCache);
 };
 
 game.on('child_added', reset);
@@ -272,8 +272,7 @@ game.on('child_removed', reset);
 game.on('child_changed', reset);
 game.on('value', reset);
 
-
-var rerender = function() { emitter.emit('render_game', cache); };
+var rerender = function() { emitter.emit('render_game', gameCache); };
 
 emitter.on('start_game', function(users) {
   var cards = {};
@@ -292,7 +291,7 @@ emitter.on('move_card_to_hand', function(card) {
   game.child('cards').child(card).update({ username: User.currentUser.name }, rerender);
 });
 emitter.on('flip_card', function(card) {
-  game.child('cards').child(card).update({ faceup: !cache[card].flipped }, rerender);
+  game.child('cards').child(card).update({ faceup: !gameCache[card].flipped }, rerender);
 });
 
 module.exports = emitter;
