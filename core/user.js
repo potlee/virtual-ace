@@ -4,8 +4,10 @@ var cache = {};
 var currentUser = null;
 
 var reset = function (snapshot) {
-  cache = snapshot.val();
-  console.log(cache);
+  users.on('value', function(snapshot) {
+    cache = snapshot.val();
+  });
+  //console.log(cache);
 };
 
 users.on('child_added', reset);

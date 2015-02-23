@@ -5,8 +5,10 @@ var game = root.child('game');
 var User = require('./user');
 window.gameCache = {};
 var reset = function (snapshot) {
-  gameCache = snapshot.val();
-  rerender();
+  game.on('value', function(snapshot) {
+    gameCache = snapshot.val();
+    rerender();
+  });
   //console.log(gameCache);
 };
 
