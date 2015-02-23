@@ -4,17 +4,24 @@ $(function() {
 $('*:not(:input)').disableSelection();
 $('.cardDealt').hide();
 
-render_game("user1");
+
+emitter.emit('start_game', ["deep"]);
+//window.ghetto_counter = 0;
 
 		//Takes in a json file and recreats all the cards.
 		//--Need to figure out where the file is coming from
-		function render_game(user/*, game_state*/){
+		function render_game(){
 			//removes all card divs
 			$(".card").remove();
+			//game = JSON.parse(window.gameCache);
 		
-	
-			//var game = JSON.parse(game_state);
-			var game_state = {
+			//if(window.ghetto_counter == 4)
+			window.gameCache = window.gameCache;
+
+//			return;	
+	/*
+			//var game = JSON.parse(window.gameCache);
+			var window.gameCache = {
 				turn: 'user1',
 				users: ['user1','user2','...'],
 				cards: {
@@ -57,6 +64,9 @@ render_game("user1");
 				},
 				game: 'game 1'
 			}; 
+
+*/
+			
 			
 			//go through each card and create them.
 			
@@ -64,10 +74,10 @@ render_game("user1");
 			//-- Currently only distinguishes between hand and table, ownership
 			//-- should be implemented later (create ownership id by username, then
 			//--(#'username').append( )etc.)
-			$.each(game_state.cards, function(key, value){
+			$.each(window.gameCache.cards, function(key, value){
 			//do checks for users/table or hand checks here.
 				switch (value.username){
-					case user:
+					case User.currentUser():
 							$("#hand").append(create_card(key, value.faceup));
 							break;
 						
@@ -88,7 +98,12 @@ render_game("user1");
 				
 			});
 		}
-			
+
+
+
+
+		emitter.on('render_game', render_game);
+		
 		//parameters: The data_card (AS, 1H, 10D, or etc), and whether or not the card is faceup.
 		//returns: a div object of the card. to be appended to whatever div it goes to.
 		//i.e. $("#hand").append(create_card("7D", true));
