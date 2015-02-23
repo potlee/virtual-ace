@@ -39,3 +39,4 @@ emitter.on('flip_card', function(card) {
 });
 
 module.exports = emitter;
+global.emitter = emitter;

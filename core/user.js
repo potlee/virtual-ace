@@ -36,3 +36,5 @@ User = {
 };
 
 module.exports = User;
+
+global.User = User;
