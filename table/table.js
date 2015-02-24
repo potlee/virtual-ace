@@ -206,8 +206,9 @@ $("#hand").sortable({
     connectWith: '#hand, .droppable',
     containment: '#bounds',
     receive: function(event, ui) {
-		var card = ui.item.data('card');
-		console.log('move_card_to_hand(\''+card+'\')');
+      var card = ui.item.data('card');
+      console.log('move_card_to_hand(\''+card+'\')');
+      emitter.emit('move_card_to_hand', card);
     },
     beforeStop: function (event, ui) {
         ui.item.css('position', 'relative');
@@ -254,6 +255,7 @@ $(".droppable").droppable({
 		var card = $(ui.draggable).data('card');
 		$(ui.draggable).css(position);  
 		console.log('move_card(\''+card+'\', { left: '+percentLeft+'%, top: '+precentTop+'% })');
+    emitter.emit('move_card', card, {x: percentLeft, y: precentTop, z: 0});
     }
 });
 
