@@ -46,6 +46,10 @@ User = {
 
 	});
 	
+	document.querySelector('.begin-game').onclick = function() {
+
+	}
+
 	$("#create-login-form").submit(function(e) {
 		e.preventDefault();
 		var username = $(".username").val();
