@@ -25,7 +25,7 @@ emitter.on('start_game', function(users) {
   var cards = {};
   ['H', 'D', 'C', 'S'].forEach(function(suit) {
     [2,3,4,5,6,7,8,9,'J','K','Q','A'].forEach(function(value) {
-      cards[value + suit] = {position: {x:0,y:0,z:0}, faceup: true, username: 'table'};
+      cards[value + suit] = {position: {x:0,y:0,z:0}, faceup: true, username: 'table', location: 'table'};
     });
   });
   game.set({cards: cards, users: users, turn: users[0]});
