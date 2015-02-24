@@ -35,7 +35,7 @@ $(function() {
 				console.log($('.droppable[data-location=\''+value.location+'\']'));			
 			}
 
-			$('.droppable[data-location='+value.location+']').append(create_card(key, value.faceup)
+			$('.droppable[data-location=\''+value.location+'\']').append(create_card(key, value.faceup)
 											.css({
 												"top" : value.position.y+'%',
 												"left" : value.position.x+'%', 
