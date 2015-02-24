@@ -11713,9 +11713,9 @@ emitter.on('start_game', function(users) {
   game.set({cards: cards, users: users, turn: users[0]});
 });
 
-emitter.on('move_card', function(card, position) {
+emitter.on('move_card', function(card, position, location) {
   console.log('move card emitted');
-  game.child('cards').child(card).update({ position: position, username: 'table' });
+  game.child('cards').child(card).update({ position: position, username: 'table', location: location });
 });
 emitter.on('move_card_to_hand', function(card) {
   console.log('move card to hand emitted');
