@@ -14,6 +14,8 @@ $(function() {
 	emitter.emit('render_game');
 
 	function render_game(){
+	
+		
 		console.log('begin render_game()');
 		//removes all card divs
 		$(".card").remove();
@@ -27,39 +29,21 @@ $(function() {
 		//--(#'username').append( )etc.)
 		$.each(window.gameCache.cards, function(key, value){
 		//do checks for users/table or hand checks here.
-		
 
-			if(key == 'QS') {
-				
-				console.log(value.location);
-				console.log($('.droppable[data-location=\''+value.location+'\']'));			
-			}
 
-			$('.droppable[data-location=\''+value.location+'\']').append(create_card(key, value.faceup)
-											.css({
-												"top" : value.position.y+'%',
-												"left" : value.position.x+'%', 
-												"z-index" : value.position.z
-											})
-						);
-			
-			
 			switch (value.username){
 				case User.currentUser():
 						$("#hand").append(create_card(key, value.faceup));
 						break;
 					
-				case "table":
-				
-				/*
-						$("#table").append(create_card(key, value.faceup)
-											.css({
-												"top" : value.position.y+'%',
-												"left" : value.position.x+'%', 
-												"z-index" : value.position.z
-											})
+				case "table":			
+						$('.droppable[data-location=\''+value.location+'\']').append(create_card(key, value.faceup)
+							.css({
+								"top" : value.position.y+'%',
+								"left" : value.position.x+'%', 
+								"z-index" : value.position.z
+							})
 						);
-						*/
 						break;
 				default:
 						//The case where someone else owns the card, may have to
