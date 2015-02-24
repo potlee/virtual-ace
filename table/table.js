@@ -11,6 +11,7 @@ $(function() {
 	
 	emitter.on('render_game', render_game);
 
+	emitter.emit('render_game');
 
 	function render_game(){
 		console.log('begin render_game()');
@@ -18,6 +19,7 @@ $(function() {
 		$(".card").remove();
 		console.log('    cards removed');
 		//go through each card and create them.
+		
 		
 		//=== does not change data types of either side
 		//-- Currently only distinguishes between hand and table, ownership
@@ -252,6 +254,9 @@ $(function() {
 				case 3:
 					//alert('Right Mouse button pressed.');
 					$(el).toggleClass("back");
+					var card = $(el).data('card');
+					console.log('flip_card('+card+')');
+					emitter.emit('flip_card', card);
 					event.preventDefault();
 					break;
 				default:
@@ -264,6 +269,7 @@ $(function() {
 		// buttons
 		$( '.next' ).click(function() {
 		  console.log('end_turn()');
+		  emitter.emit('end_turn');
 		});
 		$('.finish').click(function() {
 			$.fn.jAlert({
@@ -285,6 +291,7 @@ $(function() {
 								'onClick': function() {
 									var text = prompt("Number of Cards to be Dealt", "0");
 									console.log('deal_and_shuffle(' + text + ')');
+									emitter.emit('deal_and_shuffle', text);
 								}
 							}, {
 								'label': 'Deal',
@@ -292,6 +299,7 @@ $(function() {
 								'onClick': function() {
 									var text = prompt("Number of Cards to be Dealt", "0");
 									console.log('deal(' + text + ')');
+									emitter.emit('deal',text);
 								}
 							}, {
 								'label': 'Skip',
