@@ -11723,7 +11723,7 @@ emitter.on('move_card_to_hand', function(card) {
 });
 emitter.on('flip_card', function(card) {
   console.log('flip card emitted');
-  game.child('cards').child(card).update({ faceup: !gameCache.cards[card].faceup }, rerender);
+  game.child('cards').child(card).update({ faceup: !gameCache.cards[card].faceup });
 });
 emitter.on('end_turn', function() {
   game.child('turn');
