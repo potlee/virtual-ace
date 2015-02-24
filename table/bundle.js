@@ -266,7 +266,6 @@ var reset = function (snapshot) {
     gameCache = snapshot.val();
     rerender();
   });
-  //console.log(gameCache);
 };
 
 game.on('child_added', reset);
@@ -293,7 +292,7 @@ emitter.on('move_card_to_hand', function(card) {
   game.child('cards').child(card).update({ username: User.currentUser.name }, rerender);
 });
 emitter.on('flip_card', function(card) {
-  game.child('cards').child(card).update({ faceup: !gameCache[card].flipped }, rerender);
+  game.child('cards').child(card).update({ faceup: !gameCache.cards[card].flipped }, rerender);
 });
 
 module.exports = emitter;
