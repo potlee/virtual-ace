@@ -3,11 +3,14 @@ var emitter = new EventEmitter();
 var root = require('./fb');
 var game = root.child('game');
 var User = require('./user');
+var _ = require('lodash');
 window.gameCache = {};
 var reset = function (snapshot) {
   game.on('value', function(snapshot) {
-    gameCache = snapshot.val();
-    rerender();
+    if(!_.isEqual(snapshot.val(), gameCache)) {
+      gameCache = snapshot.val();
+      rerender();
+    }
   });
 };
 
@@ -29,13 +32,19 @@ emitter.on('start_game', function(users) {
 });
 
 emitter.on('move_card', function(card, position) {
-  game.child('cards').child(card).update({ position: position }, rerender);
+  console.log('move card emitted');
+  game.child('cards').child(card).update({ position: position });
 });
 emitter.on('move_card_to_hand', function(card) {
+  console.log('move card to hand emitted');
   game.child('cards').child(card).update({ username: User.currentUser.name }, rerender);
 });
 emitter.on('flip_card', function(card) {
+  console.log('flip card emitted');
   game.child('cards').child(card).update({ faceup: !gameCache.cards[card].flipped }, rerender);
+});
+emitter.on('end_turn', function() {
+  game.child('turn');
 });
 
 module.exports = emitter;
