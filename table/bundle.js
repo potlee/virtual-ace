@@ -11719,7 +11719,7 @@ emitter.on('move_card', function(card, position) {
 });
 emitter.on('move_card_to_hand', function(card) {
   console.log('move card to hand emitted');
-  game.child('cards').child(card).update({ username: User.currentUser.name }, rerender);
+  game.child('cards').child(card).update({ username: User.currentUser().name }, rerender);
 });
 emitter.on('flip_card', function(card) {
   console.log('flip card emitted');
@@ -11767,8 +11767,8 @@ User = {
 
   currentUser: function() {
     if(!localStorage.username)
-      localStorage.username = ["Condomman", "Squishypoo", "Retbull", "Love to laugh", "The king of bitches", "Long and hard", "Braveheart", "Demon of Death", "ZombieMage", "Fat Idol", "Short Circuit", "Yahooize", "Ice Geek", "Hockey undecided", "Hitch hiker", "Twister", "Rocky road dream", "Tiger apple", "Vanilla mousse", "Twit twit"][Math.round(Math.random() * 20)]
-    return localStorage.username
+      localStorage.username = ["Condomman", "Squishypoo", "Retbull", "Love to laugh", "The king", "Long and hard", "Braveheart", "Demon of Death", "ZombieMage", "Fat Idol", "Short Circuit", "Yahooize", "Ice Geek", "Hockey undecided", "Hitch hiker", "Twister", "Rocky road dream", "Tiger apple", "Vanilla mousse", "John"][Math.round(Math.random() * 20)];
+    return localStorage.username;
 
   },
 
