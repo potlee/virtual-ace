@@ -4,7 +4,7 @@ $(function() {
 	$('*:not(:input)').disableSelection();
 	$('.cardDealt').hide();
 
-	emitter.emit('start_game', ["deep"]);
+	//emitter.emit('start_game', ["deep"]);
 	
 	create_events();
 	create_jquery_widgets();
@@ -27,12 +27,31 @@ $(function() {
 		//--(#'username').append( )etc.)
 		$.each(window.gameCache.cards, function(key, value){
 		//do checks for users/table or hand checks here.
+		
+
+			if(key == 'QS') {
+				
+				console.log(value.location);
+				console.log($('.droppable[data-location='+value.location+']'));			
+			}
+
+			$('.droppable[data-location='+value.location+']').append(create_card(key, value.faceup)
+											.css({
+												"top" : value.position.y+'%',
+												"left" : value.position.x+'%', 
+												"z-index" : value.position.z
+											})
+						);
+			
+			
 			switch (value.username){
 				case User.currentUser():
 						$("#hand").append(create_card(key, value.faceup));
 						break;
 					
 				case "table":
+				
+				/*
 						$("#table").append(create_card(key, value.faceup)
 											.css({
 												"top" : value.position.y+'%',
@@ -40,6 +59,7 @@ $(function() {
 												"z-index" : value.position.z
 											})
 						);
+						*/
 						break;
 				default:
 						//The case where someone else owns the card, may have to
@@ -52,6 +72,10 @@ $(function() {
 		make_cards_draggable();
 		console.log('    cards functionality applied');
 		console.log('begin render_game()');
+		console.log('');
+		console.log('');
+		console.log('');
+		
 	}
 
 	
@@ -214,10 +238,13 @@ $(function() {
 				var precentTop  = (top / $(window).height()) * 100;
 				var position = { left: percentLeft+'%', top: precentTop +'%' };
 
-				var card = $(ui.draggable).data('card');
+				
 				$(ui.draggable).css(position);  
-				console.log('move_card(\''+card+'\', { left: '+percentLeft+'%, top: '+precentTop+'% })');
-				emitter.emit('move_card', card, {x: percentLeft, y: precentTop, z: 0});
+				var zIndex = $(ui.draggable).zIndex();
+				var location = $(this).data('location');
+				var cardString = $(ui.draggable).data('card');
+				console.log('move_card(\''+cardString+'\', { left: '+percentLeft+'%, top: '+precentTop+'% }, zindex: '+zIndex+', location: '+location+')');
+				emitter.emit('move_card', cardString, {x: percentLeft, y: precentTop, z: zIndex}, location);
 			}
 		});
 	}

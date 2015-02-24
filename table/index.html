@@ -16,7 +16,7 @@
     <!--[if IE 9]>
         <link rel="stylesheet" type="text/css" href="cards-ie9.css" media="screen" />
         <![endif]-->
-  <script src="bundle.js"></script>
+	<script src="bundle.js"></script>
 	<link href="http://code.jquery.com/ui/1.9.2/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
 	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
 	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
@@ -25,7 +25,6 @@
     <script src="jquery.simulate.js"></script>
     <script src="leap.js"></script>
     <script src="table.js"></script>
-    <!--<script src='https://code.jquery.com/jquery-2.0.3.min.js'></script>-->
 	<script src='jAlert-v2.js'></script>
 </head>
 
@@ -33,7 +32,7 @@
 	<header></header>
 	<article id="bounds">
 	<section class='playingCards fourColours'>
-	<div id="table" class="droppable">
+	<div id="table" class="droppable" data-location='table'>
 	<!--
 		<div data-card="2D" class="card rank-2 diams back"><span class="rank">2</span><span class="suit">&diams;</span></div>
 		<div data-card="3D" class="card rank-3 diams back"><span class="rank">3</span><span class="suit">&diams;</span></div>
@@ -58,18 +57,15 @@
 	</div>
 	</section>
 	<aside class='playingCards inText'>
-		<div style="height: 25%" class="droppable">Player 1</div>
-		<div style="height: 25%" class="droppable">Player 2</div>
-		<div style="height: 25%" class="droppable">Player 3</div>
-		<div style="height: 25%" class="droppable">Player 4</div>
+		<div style="height: 33%" data-location="Yahooize" class="droppable">Yahooize</div>
+		<div style="height: 33%" data-location="Vanilla mousse" class="droppable">Vanilla mousse</div>
+		<div style="height: 33%" data-location="Fat Idle" class="droppable">Fat Idle</div>
 	</aside>
 	</article>
 	<footer>
 	
 	<div class="button finish">Finish Game</div>
 	<div class="button next">Next Player</div>
-	
-	
 	</footer>
 </body>
 </html>
