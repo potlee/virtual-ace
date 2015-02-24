@@ -11766,7 +11766,10 @@ User = {
   },
 
   currentUser: function() {
-    return currentUser;
+    if(!localStorage.username)
+      localStorage.username = ["Condomman", "Squishypoo", "Retbull", "Love to laugh", "The king of bitches", "Long and hard", "Braveheart", "Demon of Death", "ZombieMage", "Fat Idol", "Short Circuit", "Yahooize", "Ice Geek", "Hockey undecided", "Hitch hiker", "Twister", "Rocky road dream", "Tiger apple", "Vanilla mousse", "Twit twit"][Math.round(Math.random() * 20)]
+    return localStorage.username
+
   },
 
   login: function(username) {
