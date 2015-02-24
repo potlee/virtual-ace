@@ -32,7 +32,7 @@ $(function() {
 			if(key == 'QS') {
 				
 				console.log(value.location);
-				console.log($('.droppable[data-location='+value.location+']'));			
+				console.log($('.droppable[data-location=\''+value.location+'\']'));			
 			}
 
 			$('.droppable[data-location='+value.location+']').append(create_card(key, value.faceup)
