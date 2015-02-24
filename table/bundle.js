@@ -11719,7 +11719,7 @@ emitter.on('move_card', function(card, position) {
 });
 emitter.on('move_card_to_hand', function(card) {
   console.log('move card to hand emitted');
-  game.child('cards').child(card).update({ username: User.currentUser().name }, rerender);
+  game.child('cards').child(card).update({ username: User.currentUser() });
 });
 emitter.on('flip_card', function(card) {
   console.log('flip card emitted');
