@@ -255,6 +255,9 @@ $(function() {
 		$('body').bind('contextmenu', function(){ return false });
 			
 		$("body").mousedown(function(event) {
+			//Prevent other players from flipping cards when it is not their turn
+			//if(User.currentUser === window.gameCache.turn)
+			//{
 			var el = document.elementFromPoint(event.clientX,event.clientY);
 			
 			var card = false;
@@ -290,6 +293,8 @@ $(function() {
 				default:
 					alert('You have a strange Mouse!');
 			}
+			
+			//}
 		});
 
 					
