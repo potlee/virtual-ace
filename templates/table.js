@@ -345,8 +345,8 @@ $(function() {
 				'label': 'Decline Invite',
 				'cssClass': 'green',
 				'onClick': function() {
-					console.log('decline_invite()');
-					emitter.emit('decline_invite'); 
+					console.log('leave_game()');
+					emitter.emit('leave_game'); 
 				}
 			}],
 			'closeBtn': false,
@@ -370,8 +370,8 @@ $(function() {
 				'label': 'Return to Lobby',
 				'cssClass': 'green',
 				'onClick': function() {
-					console.log('go_to_lobby()');
-					emitter.emit('go_to_lobby'); 
+					console.log('leave_game()');
+					emitter.emit('leave_game'); 
 				}
 			}],
 			'closeBtn': false,
