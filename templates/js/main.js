@@ -8,8 +8,16 @@ $(document).ready(function() {
 		e.preventDefault();
 		var username = $(".username").val();
 		if (username.length > 0) {
-			// Do something with the username here
-			window.location.href=$(this).attr("action");
+			try {
+      			User.login(username);
+      			window.location.href=$(this).attr("action");
+      		}
+      		catch (err)
+      		{
+      			$(".login-errors").html("This username does not exist");
+      		}
+		
+			
 
 		}
 		else
@@ -28,9 +36,16 @@ $(document).ready(function() {
 		e.preventDefault();
 		var username = $(".username").val();
 		if (username.length > 0) {
-      	User.create(username, [], function() {
-       	 	window.location.href= '/lobby.html';
-      	});
+			try {
+      			User.create(username, [], function() {
+       	 			window.location.href= '/lobby.html';
+      			});
+      		}
+      		catch (err)
+      		{
+      			$(".login-errors").html("This username already exists");
+      		}
+
 		}
 		else
 		{
