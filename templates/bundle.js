@@ -11936,7 +11936,7 @@ if(gameId !== '') {
   game.on('value', reset);
 
   emitter.once('accept_invite', function() {
-    game = games.child(localStorage.gameId);
+    game = games.child(gameId);
     var users = gameCache.users;
     users.push(User.currentUser());
     game.update({users: users});
@@ -11980,12 +11980,12 @@ if(gameId !== '') {
       users: [ User.currentUser() ]
     }, function() { cb(gameId); });
   });
-  //games.on('child_added', function(child) {
-  //  var snapshot = child.val();
-  //  if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1) {
-  //    location.href = '/index.html?gameId=' + snapshot.id;
-  //  }
-  //});
+  games.on('child_added', function(child) {
+    var snapshot = child.val();
+    if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1) {
+      location.href = '/index.html?gameId=' + snapshot.id;
+    }
+  });
 }
 
 module.exports = emitter;
