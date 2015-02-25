@@ -65,7 +65,9 @@ $(document).ready(function() {
 				gameName = user.getAttribute('game-name');
 			}
 		});
-		emitter.emit("start_new_game", inviteUsers, gameName, function(){window.location.href= '/index.html'});
+		emitter.emit("start_new_game", inviteUsers, gameName, function(gameId){
+      window.location.href= '/index.html?gameId=' + gameId;
+    });
 		console.log("here");
 	});
 

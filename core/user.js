@@ -37,6 +37,8 @@ User = {
   },
 
   login: function(username) {
+    if(!cache[username])
+      throw new Error("user doesnt exist");
     currentUser = cache[username];
     localStorage.username = currentUser.name;
   },
