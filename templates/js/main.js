@@ -3,31 +3,6 @@
 
 $(document).ready(function() {
 
-//FOR TESTING PURPOSES SO THE CODE FUNCTIONS PROPERLY
-//User = {
-//  onlineUsers: function() {
-//    return [
-//      {
-//        name: 'Kristen',
-//        favoriteGames: ['solitair', 'rummy 500', 'poker', 'blackjack']
-//      },
-//      {
-//        name: 'Kristen G',
-//        favoriteGames: ['solitair', 'blackjack']
-//      }
-//    ];
-//  },
-//  create: function() {
-//    return true;
-//  },
-//  currentUser: function() {
-//    return {
-//      name: 'user 1',
-//      favoriteGames: ['game 1', 'game 2', 'game 3']
-//    };
-//  }
-//};
-
 	// Update username
 	$("#login-form").submit(function(e) {
 		e.preventDefault();
@@ -53,9 +28,9 @@ $(document).ready(function() {
 		e.preventDefault();
 		var username = $(".username").val();
 		if (username.length > 0) {
-      User.create(username, [], function() {
-        window.location.href= '/lobby.html';
-      });
+      	User.create(username, [], function() {
+       	 	window.location.href= '/lobby.html';
+      	});
 		}
 		else
 		{
@@ -90,7 +65,8 @@ $(document).ready(function() {
 				gameName = user.getAttribute('game-name');
 			}
 		});
-		emitter.emit("start_new_game", inviteUsers, gameName, function(){index.html});
+		emitter.emit("start_new_game", inviteUsers, gameName, function(){window.location.href= '/index.html'});
+		console.log("here");
 	});
 
 	$("#level-form").submit(function(e) {
