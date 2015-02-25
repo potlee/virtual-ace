@@ -1,7 +1,8 @@
 var EventEmitter = require('events').EventEmitter;
-global.emitter = new EventEmitter();
+window.emitter = new EventEmitter();
 var root = require('./fb');
 var games = root.child('games');
+var uuid = require('uuid');
 if(localStorage.gameId)
   var game = games.child(localStorage.gameId);
 else
@@ -9,6 +10,7 @@ else
 var User = require('./user');
 var _ = require('lodash');
 window.gameCache = {};
+var rerender = function() { emitter.emit('render_game', gameCache); };
 
 var reset = function (snapshot) {
   game.on('value', function(snapshot) {
@@ -18,23 +20,26 @@ var reset = function (snapshot) {
     }
   });
 };
-
-game.on('child_added', reset);
-game.on('child_removed', reset);
-game.on('child_changed', reset);
-game.on('value', reset);
+listen = function() {
+  game.on('child_added', reset);
+  game.on('child_removed', reset);
+  game.on('child_changed', reset);
+  game.on('value', reset);
+};
+if(game) listen();
 
 games.on('child_added', function(child) {
-  if(child.invitedUsers.indexOf(User.currentUser()) != -1) {
-    localStorage.gameId = child.id;
+  var snapshot = child.val();
+  if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1) {
+    localStorage.gameId = snapshot.id;
     game = games.child(localStorage.gameId);
+    listen();
   }
 });
 
-var rerender = function() { emitter.emit('render_game', gameCache); };
-
 emitter.on('start_new_game', function(usernames, name, cb) {
-  localStorage.gameId = Math.random();
+  console.log('starting new game');
+  localStorage.gameId = uuid.v4();
   game = games.child(localStorage.gameId);
   var cards = {};
   ['H', 'D', 'C', 'S'].forEach(function(suit) {
@@ -64,4 +69,3 @@ emitter.on('end_turn', function() {
 });
 
 module.exports = emitter;
-global.emitter = emitter;
