@@ -11983,7 +11983,15 @@ if(gameId !== '') {
   games.on('child_added', function(child) {
     var snapshot = child.val();
     if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1) {
-      location.href = '/index.html?gameId=' + snapshot.id;
+      games.child(snapshot.id).child('users').on('value', function(users) {
+        users = users.val();
+        users = users.filter(function(user) {
+          return user != User.currentUser();
+        });
+        games.child(snapshot.id).update({invitedUsers: users}, function() {
+          location.href = '/index.html?gameId=' + snapshot.id;
+        });
+      });
     }
   });
 }
