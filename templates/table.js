@@ -1,5 +1,14 @@
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+    var results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
 $(function() {
 
+
+	console.log('Game is: ' + getParameterByName('game'));
 	// Disable highlight text for all but inputs
 	$('*:not(:input)').disableSelection();
 	$('.cardDealt').hide();
@@ -11,6 +20,7 @@ $(function() {
 	
 	emitter.on('render_game', render_game);
 
+	emitter.on('invitation', game_invite);
 	
 	//Rendering the ownership boxes. Should be ran after handling all
 	//invitations and before starting the game.
@@ -32,6 +42,14 @@ $(function() {
 	
 	function render_game(){
 	
+		console.log('me:', User.currentUser());
+		console.log('users:', gameCache.users);
+		
+		
+		
+		if($.inArray(User.currentUser(), gameCache.users) == -1) {
+			game_invite(gameCache.dealer, gameCache.id);
+		}
 		
 		//removes all card divs
 		$(".card").remove();
@@ -39,9 +57,7 @@ $(function() {
 		
 		
 		//go through each card and create them.
-		
-		console.log(gameCache);
-		
+				
 		//=== does not change data types of either side
 		//-- Currently only distinguishes between hand and table, ownership
 		//-- should be implemented later (create ownership id by username, then
@@ -73,7 +89,7 @@ $(function() {
 		});
 		
 		//Prevent other players from moving cards when it is not their turn
-		//if(User.currentUser === window.gameCache.turn)
+		//if(User.currentUser() === window.gameCache.turn)
 		
 		make_cards_draggable();
 		console.log('-------------- render_game()');		
@@ -310,6 +326,34 @@ $(function() {
 		});
 		
 	} // create_events
+	
+	
+	
+	function game_invite(dealer, gameid) {
+		$.fn.jAlert({
+			'title': 'Invitation sent by ' + dealer,
+			'theme': 'success',
+			'size': 'small',
+			'btn': [{
+				'label': 'Accept Invite',
+				'cssClass': 'green',
+				'onClick': function() {
+					console.log('accept_invite()');
+					emitter.emit('accept_invite'); 
+				}
+			},{
+				'label': 'Decline Invite',
+				'cssClass': 'green',
+				'onClick': function() {
+					console.log('decline_invite()');
+					emitter.emit('decline_invite'); 
+				}
+			}],
+			'closeBtn': false,
+			'autofocus': 'btn:last'
+		}); //$.fn.jAlert
+	}
+	
 	
 	function gameComplete() {
 		$.fn.jAlert({
