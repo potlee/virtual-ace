@@ -169,6 +169,7 @@ body.lobby {
 
 .users-games {
     margin-left: 50px;
+    margin-top: 10px;
 }
 
 .users-games .users {
@@ -380,6 +381,15 @@ a.cancel-button {
 
 .favorite-game-errors {
     color: white;
+}
+
+.my-favorite-games {
+    margin-left: 30px;
+}
+
+.my-favorite-game-list {
+    font-size: 20px;
+    color: #9CBA7F;
 }
 
 /*END LEVEL SCREEN*/
