@@ -90,7 +90,7 @@ $(document).ready(function() {
 				gameName = user.getAttribute('game-name');
 			}
 		});
-		emitter.emit("start_new_game", inviteUsers, gameName);
+		emitter.emit("start_new_game", inviteUsers, gameName, function(){index.html});
 	});
 
 	$("#level-form").submit(function(e) {

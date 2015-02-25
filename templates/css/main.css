@@ -240,6 +240,12 @@ a.help-button {
 
 }
 
+a.logout-button {
+    background-color: white;
+    color: #005a00;
+    border: black solid 2px;
+}
+
 .nav-wrapper .username-holder {
     vertical-align: middle;
 }
@@ -248,7 +254,7 @@ a.help-button {
     color: white;
     font-size: 25px;
     margin-bottom: 0px;
-    margin-left: 100px;
+    margin-left: 170px;
     margin-right: 0px;
     vertical-align: middle;
     margin-top: 10px;
