@@ -69,12 +69,12 @@ if(gameId !== '') {
       users: [ User.currentUser() ]
     }, function() { cb(gameId); });
   });
-  games.on('child_added', function(child) {
-    var snapshot = child.val();
-    if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1) {
-      location.href = '/index.html?gameId=' + snapshot.id;
-    }
-  });
+  //games.on('child_added', function(child) {
+  //  var snapshot = child.val();
+  //  if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1) {
+  //    location.href = '/index.html?gameId=' + snapshot.id;
+  //  }
+  //});
 }
 
 module.exports = emitter;
