@@ -90,6 +90,11 @@ $(document).ready(function() {
       		if(User.onlineUsers()[username].favoriteGames)
        		 games = User.onlineUsers()[username].favoriteGames.join(',');
       		if(games === '') games = "no favorite games :("
+      		if (username === User.currentUser())
+      		{
+      			$(".my-favorite-game-list").html('');
+                $(".my-favorite-game-list").append("<p> My Favorite Games: " + games + "</p>");
+      		}
       		if (username != User.currentUser())
       		{
       			$section.append('<li><input type="checkbox" class="user" username="' + username + '">' +
@@ -106,6 +111,7 @@ $(document).ready(function() {
 		$section.html('');
 		$section.append("<p>" + User.currentUser() + "</p>");
 	};
+
   emitter.on('change_users', updateUsername);
 
   var	insertFavoriteGames = function() {
