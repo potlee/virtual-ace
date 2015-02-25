@@ -31,9 +31,15 @@ if(game) listen();
 games.on('child_added', function(child) {
   var snapshot = child.val();
   if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1) {
-    localStorage.gameId = snapshot.id;
-    game = games.child(localStorage.gameId);
-    listen();
+    emitter.emit('invitation', child.dealer, child.name);
+    emitter.once('accept_invite', function() {
+      localStorage.gameId = snapshot.id;
+      game = games.child(localStorage.gameId);
+      var users = gameCache.users;
+      users.push(User.currentUser());
+      game.update({users: users});
+      listen();
+    });
   }
 });
 
@@ -49,7 +55,15 @@ emitter.on('start_new_game', function(usernames, name, cb) {
       };
     });
   });
-  game.set({ cards: cards, invitedUsers: usernames, turn: User.currentUser(), name: name, id: localStorage.gameId }, cb);
+  game.set({
+    cards: cards,
+    invitedUsers: usernames,
+    turn: User.currentUser(),
+    name: name,
+    id: localStorage.gameId,
+    dealer: User.currentUser(),
+    users: [ User.currentUser() ]
+  }, cb);
 });
 
 emitter.on('move_card', function(card, position, location) {
