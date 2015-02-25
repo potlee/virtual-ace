@@ -2,13 +2,15 @@ var root = require('./fb');
 var users = root.child('users');
 var cache = {};
 var currentUser = null;
+var _ = require('lodash');
 
 var reset = function (snapshot) {
   users.on('value', function(snapshot) {
-    cache = snapshot.val();
+    if(!_.isEqual(snapshot.val(), cache)) {
+      cache = snapshot.val();
+    }
   });
   emitter.emit('change_users');
-  //console.log(cache);
 };
 
 users.on('child_added', reset);

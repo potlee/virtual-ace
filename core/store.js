@@ -1,10 +1,15 @@
 var EventEmitter = require('events').EventEmitter;
 global.emitter = new EventEmitter();
 var root = require('./fb');
-var game = root.child('game');
+var games = root.child('games');
+if(localStorage.gameId)
+  var game = games.child(localStorage.gameId);
+else
+  var game = null;
 var User = require('./user');
 var _ = require('lodash');
 window.gameCache = {};
+
 var reset = function (snapshot) {
   game.on('value', function(snapshot) {
     if(!_.isEqual(snapshot.val(), gameCache)) {
@@ -19,16 +24,27 @@ game.on('child_removed', reset);
 game.on('child_changed', reset);
 game.on('value', reset);
 
+games.on('child_added', function(child) {
+  if(child.invitedUsers.indexOf(User.currentUser()) != -1) {
+    localStorage.gameId = child.id;
+    game = games.child(localStorage.gameId);
+  }
+});
+
 var rerender = function() { emitter.emit('render_game', gameCache); };
 
-emitter.on('start_game', function(users) {
+emitter.on('start_new_game', function(usernames, name, cb) {
+  localStorage.gameId = Math.random();
+  game = games.child(localStorage.gameId);
   var cards = {};
   ['H', 'D', 'C', 'S'].forEach(function(suit) {
     [2,3,4,5,6,7,8,9,'J','K','Q','A'].forEach(function(value) {
-      cards[value + suit] = {position: {x:0,y:0,z:0}, faceup: true, username: 'table', location: 'table'};
+      cards[value + suit] = {
+        position: {x:0,y:0,z:0}, faceup: true, username: 'table', location: 'table'
+      };
     });
   });
-  game.set({cards: cards, users: users, turn: users[0]});
+  game.set({ cards: cards, invitedUsers: usernames, turn: User.currentUser(), name: name, id: localStorage.gameId }, cb);
 });
 
 emitter.on('move_card', function(card, position, location) {
