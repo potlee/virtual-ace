@@ -11,6 +11,25 @@ $(function() {
 	
 	emitter.on('render_game', render_game);
 
+	
+	//Rendering the ownership boxes. Should be ran after handling all
+	//invitations and before starting the game.
+	emitter.on('render_users', render_users);
+	
+	function render_users(){
+	var userslist = ['Yahooize', 'Vanilla mousse', 'Fat Idol'];
+	
+		$.each(/*window.gameCache.users*/ userslist, function(key, value){
+			$("aside.playingCards").append($("<div/>")
+					.attr("data-location", value)
+					.css({"height": (100/ /*window.gameCache.users.length*/ userslist.length) + "%" })
+					.addClass("droppable")
+					.text(value)
+					);
+		});
+	}
+	
+	
 	function render_game(){
 	
 		
