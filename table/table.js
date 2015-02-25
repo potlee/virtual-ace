@@ -71,6 +71,10 @@ $(function() {
 			}
 			
 		});
+		
+		//Prevent other players from moving cards when it is not their turn
+		//if(User.currentUser === window.gameCache.turn)
+		
 		make_cards_draggable();
 		console.log('-------------- render_game()');		
 	}
