@@ -439,6 +439,53 @@ a.cancel-button {
 }
 /*END FAVORITE GAME SCREEN*/
 
+/*LOBBY HELP SCREEN*/
+body.lobby-help {
+    background-color: #004b00; 
+    color: white;
+
+}
+
+.back-to-lobby {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 100%;
+    float: left;
+   
+}
+
+a.to-lobby {
+    /*float: left;*/
+    background-color: white;
+    color: #005a00;\ background-color: white;
+    color: #005a00;
+    border: black solid 2px;
+    border-radius: 6px;
+
+
+
+}
+
+
+.help-body {
+    background-color: #005a00;
+    margin-right : 25%;
+    margin-left: 25%;
+    border: black solid 2px;
+    margin-top: 30px;
+    padding: 20px;
+}
+
+.help-text {
+    font-size: 30px;
+    margin-left: auto;
+    margin-right: auto; 
+    margin-top: 10px;
+    text-align: center;
+}
+
+/*END LOBBY HELP SCREEN*/
+
 
 /* ==========================================================================
    Helper classes

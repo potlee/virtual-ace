@@ -30,7 +30,8 @@
 .jAlert.sm{ width: 300px; } .jAlert.md{ width: 500px; } .jAlert.lg{ width: 800px; } .jAlert.full{ width: 100%; }
 .jAlert.noTitle{ border: 2px solid #555; }
 .jTitle{
-	width: 100%; border-top-left-radius: 3px; border-top-right-radius: 3px; background: #f3f3f3; border: 3px solid #E2E2E2;
+	/*width: 100%; Brian fix title */ 
+	border-top-left-radius: 3px; border-top-right-radius: 3px; background: #f3f3f3; border: 3px solid #E2E2E2;
 }
 .jTitle > div{
 	color: #555; font-size: 25px; font-weight: bold; padding: 10px 20px 10px 20px;
