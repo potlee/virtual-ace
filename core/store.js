@@ -1,5 +1,5 @@
 var EventEmitter = require('events').EventEmitter;
-var emitter = new EventEmitter();
+global.emitter = new EventEmitter();
 var root = require('./fb');
 var game = root.child('game');
 var User = require('./user');

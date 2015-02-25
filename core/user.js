@@ -7,6 +7,7 @@ var reset = function (snapshot) {
   users.on('value', function(snapshot) {
     cache = snapshot.val();
   });
+  emitter.emit('change_users');
   //console.log(cache);
 };
 
@@ -26,19 +27,29 @@ User = {
     var user = {};
     user[username] = { name: username, favoriteGames: favoriteGames };
     users.update(user, cb);
+    this.login(username);
   },
 
   currentUser: function() {
-    if(!localStorage.username)
-      localStorage.username = ["Condomman", "Squishypoo", "Retbull", "Love to laugh", "The king", "Long and hard", "Braveheart", "Demon of Death", "ZombieMage", "Fat Idol", "Short Circuit", "Yahooize", "Ice Geek", "Hockey undecided", "Hitch hiker", "Twister", "Rocky road dream", "Tiger apple", "Vanilla mousse", "John"][Math.round(Math.random() * 20)];
     return localStorage.username;
-
   },
 
   login: function(username) {
     currentUser = cache[username];
+    localStorage.username = currentUser.name;
+  },
+
+  logout: function() {
+    localStorage.username = null;
   }
 };
+emitter.on('add_favorite_game', function(name) {
+  if(cache[User.currentUser()]) {
+    games = cache[User.currentUser()].favoriteGames || [];
+    games.push(name);
+    users.child(User.currentUser()).update({favoriteGames: games});
+  }
+});
 
 module.exports = User;
 
