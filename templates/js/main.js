@@ -88,14 +88,13 @@ $(document).ready(function() {
 
 	$("#level-form").submit(function(e) {
 		e.preventDefault();
-		var levelNumber;
 		if ($('input[name=level-name]:checked').length > 0)
 		{
-			levelNumber = $('input[name=level-name]:checked').val();
+			window.levelNumber = $('input[name=level-name]:checked').val();
 		}
+		window.location.href='lobby.html';
 
-		window.levelNumber;
-
+		
 	});
   var refreshLobby = function(){
 		var $section = $(".users-online");
