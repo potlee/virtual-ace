@@ -76,6 +76,23 @@ $(document).ready(function() {
 		}
 	});
 
+	$("#begin-game").click(function(e) {
+		e.preventDefault();
+		var inviteUsers = [];
+		var gameName;
+		[].forEach.call(document.querySelectorAll('.user'), function(user) {
+			if(user.checked) {
+				inviteUsers.push(user.getAttribute('username'));
+			}
+		});
+		[].forEach.call(document.querySelectorAll('.game-name'), function(user) {
+			if(user.checked) {
+				gameName = user.getAttribute('game-name');
+			}
+		});
+		emitter.emit("start_new_game", inviteUsers, gameName);
+	});
+
 	$("#level-form").submit(function(e) {
 		e.preventDefault();
 		var levelNumber;
@@ -87,17 +104,21 @@ $(document).ready(function() {
 		window.levelNumber;
 
 	});
-  var	refreshLobby = function(){
+  var refreshLobby = function(){
 		var $section = $(".users-online");
 		$section.html('');
-    Object.keys(User.onlineUsers()).forEach(function(username) {
-      var games = '';
-      if(User.onlineUsers()[username].favoriteGames)
-        games = User.onlineUsers()[username].favoriteGames.join(',');
-      if(games === '') games = "no favorite games :("
-      $section.append("<li><input type='checkbox'>" +
+    	Object.keys(User.onlineUsers()).forEach(function(username) {
+     		 var games = '';
+      		if(User.onlineUsers()[username].favoriteGames)
+       		 games = User.onlineUsers()[username].favoriteGames.join(',');
+      		if(games === '') games = "no favorite games :("
+      		if (username != User.currentUser())
+      		{
+      			$section.append('<li><input type="checkbox" class="user" username="' + username + '">' +
                       username + ": " + games + "</li>");
-    });
+      		}
+    	});
+
 	};
   emitter.on('change_users', refreshLobby);
 
@@ -122,7 +143,7 @@ $(document).ready(function() {
       });
     }
 		for (var i = 0; i < games.length; i++) {
-			$section.append("<li><input type='checkbox'>" + games[i] + "</li>");
+			$section.append('<li><input type="checkbox" class="game-name" game-name=' + games[i] + '>' + games[i] + "</li>");
 		}
   };
   emitter.on('change_users', insertFavoriteGames);
