@@ -11961,7 +11961,7 @@ if(gameId !== '') {
     var left = gameCache.left;
     left.push(User.currentUser());
     game.update({left: left}, function() {
-      location.href = '/index.html';
+      location.href = '/lobby.html';
     });
   });
 } else {
