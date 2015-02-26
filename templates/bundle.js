@@ -11920,6 +11920,16 @@ var gameId = require("./parse_game_id");
 var User = require('./user');
 window.gameCache = {};
 window.x = gameId;
+var child_added = function(child, parent) {
+  var snapshot = child.val();
+  if(snapshot.turn) {
+    if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1 &&
+       snapshot.left.indexOf(User.currentUser()) == -1
+      ) {
+      location.href = '/index.html?gameId=' + snapshot.id;
+    }
+  }
+};
 if(gameId !== '') {
   var game = games.child(gameId);
   var reset = function (snapshot) {
@@ -11994,18 +12004,7 @@ if(gameId !== '') {
   });
 } else {
   games.on('child_added', child_added);
-  var child_added = function(child, parent) {
-    var snapshot = child.val();
-    if(snapshot.turn) {
-      if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1 &&
-         snapshot.left.indexOf(User.currentUser()) == -1
-        ) {
-        location.href = '/index.html?gameId=' + snapshot.id;
-      }
-    }
-  };
 }
-
 
 emitter.on('start_new_game', function(usernames, name) {
   console.log('starting new game');
