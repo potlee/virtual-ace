@@ -46,7 +46,7 @@ if(gameId !== '') {
   emitter.on('end_turn', function() {
     var position = gameCache.users.indexOf(gameCache.turn);
     position++;
-    game.update({turn: gameCache[position % gameCache.users.length]});
+    game.update({turn: gameCache.users[position % gameCache.users.length]});
   });
   emitter.on('leave_game', function() {
     var left = gameCache.left;
