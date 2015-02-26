@@ -216,6 +216,9 @@ $(function() {
 			},
 			drop: function (ev, ui) {
 				
+				if(User.currentUser() != window.gameCache.turn) {
+					return;
+				}
 				
 				if((window.origin !== null && this != window.origin) || ui.draggable.parent().hasClass('ui-sortable')) {
 					var clone = ui.draggable.clone();
@@ -308,8 +311,10 @@ $(function() {
 
 		// buttons
 		$( '.next' ).click(function() {
-		  console.log('end_turn()');
-		  emitter.emit('end_turn');
+			if(User.currentUser() != window.gameCache.turn) {
+				console.log('end_turn()');
+				emitter.emit('end_turn');
+			}
 		});
 		
 		$('.finish').click(function() {
@@ -347,6 +352,10 @@ $(function() {
 	
 	
 	function gameComplete() {
+		if(User.currentUser() != window.gameCache.turn) {
+			return;
+		}
+		
 		$.fn.jAlert({
 			'title': 'Game Complete',
 			'theme': 'success',
