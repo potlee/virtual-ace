@@ -17,12 +17,12 @@ $(function() {
 	emitter.on('render_users', render_users);
 	
 	function render_users(){
-	var userslist = ['Yahooize', 'Vanilla mousse', 'Fat Idol'];
+	//var userslist = ['Yahooize', 'Vanilla mousse', 'Fat Idol'];
 	
-		$.each(/*window.gameCache.users*/ userslist, function(key, value){
+		$.each(gameCache.users, function(key, value){
 			$("aside.playingCards").append($("<div/>")
 					.attr("data-location", value)
-					.css({"height": (100/ /*window.gameCache.users.length*/ userslist.length) + "%" })
+					.css({"height": (100/ gameCache.users.length) + "%" })
 					.addClass("droppable")
 					.text(value)
 					);
@@ -31,7 +31,10 @@ $(function() {
 	
 	
 	function render_game(){
-
+		
+		render_users();
+		
+		//hack
 		if(window.cardsDealt != true && User.currentUser() == gameCache.dealer) {
 			dealCards();
 			window.cardsDealt = true;
