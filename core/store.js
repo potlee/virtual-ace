@@ -53,6 +53,22 @@ if(gameId !== '') {
       location.href = '/lobby.html';
     });
   });
+  emitter.on('deal', function(num) {
+    var offset = 0;
+    cards = gameCache.cards;
+    cardsArray = Object.keys(cards).map(function(key) {
+      return cards[key];
+    });
+    //cardsArray = cardsArray.sort(function(a,b) { return a.position.z < b.position.z; });
+    gameCache.users.forEach(function(user) {
+      var i = 0;
+      while(i++ <= num) {
+        cardsArray[offset++].username = user;
+        console.log(user);
+      }
+    });
+    game.update({cards: cards});
+  });
 } else {
   emitter.on('start_new_game', function(usernames, name, cb) {
     console.log('starting new game');
