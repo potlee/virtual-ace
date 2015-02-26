@@ -68,7 +68,7 @@ if(gameId !== '') {
     var users = gameCache.users;
     var name = gameCache.name;
     games.once('child_added', child_added);
-    game.remove();
+    //game.remove();
     emitter.emit('start_new_game', users, name);
   });
   emitter.on('deal', function(num) {
