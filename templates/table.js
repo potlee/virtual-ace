@@ -409,7 +409,7 @@ $(function() {
 				'label': 'Shuffle and Deal',
 				'cssClass': 'green',
 				'onClick': function() {
-					prompt("Deal and Shuffle", "Number of Cards to be Dealt", "deal_and_shuffle");
+					prompt("Deal and Shuffle", "Number of Cards to be Dealt", "deal");
 				}
 			}, {
 				'label': 'Deal',
