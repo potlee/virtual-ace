@@ -62,11 +62,11 @@ if(gameId !== '') {
   emitter.on('leave_game', function() {
     //var left = gameCache.left;
     //left.push(User.currentUser());
-    //game.update({left: left}, function() {
-    game.update({ ended: true }, function() {
-      location.href = '/lobby.html';
+    game.update({left: gameCache.users}, function() {
+      game.update({ ended: true }, function() {
+        location.href = '/lobby.html';
+      });
     });
-    //});
   });
   emitter.on('restart_game', function() {
     var users = gameCache.users;
