@@ -326,7 +326,7 @@ $(function() {
 		});
 		
 		$('.finish').click(function() {
-			emitter.emit('start_new_game');
+			emitter.emit('restart_game');
 			//gameComplete();
 		});
 		
