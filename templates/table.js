@@ -17,21 +17,28 @@ $(function() {
 	emitter.on('render_users', render_users);
 	
 	function render_users(){
-	var userslist = ['Yahooize', 'Vanilla mousse', 'Fat Idol'];
+	//var userslist = ['Yahooize', 'Vanilla mousse', 'Fat Idol'];
 	
-		$.each(/*window.gameCache.users*/ userslist, function(key, value){
+	$("aside div").remove();
+	
+		$.each(gameCache.users, function(key, value){
 			$("aside.playingCards").append($("<div/>")
 					.attr("data-location", value)
-					.css({"height": (100/ /*window.gameCache.users.length*/ userslist.length) + "%" })
-					.addClass("droppable")
+					.css({"height": (100/ gameCache.users.length) + "%" })
+					//.addClass("droppable")
 					.text(value)
 					);
 		});
+		
+			create_jquery_widgets();
 	}
 	
 	
 	function render_game(){
-
+		
+		render_users();
+		
+		//hack
 		if(window.cardsDealt != true && User.currentUser() == gameCache.dealer) {
 			dealCards();
 			window.cardsDealt = true;
@@ -346,8 +353,7 @@ $(function() {
 					emitter.emit('leave_game'); 
 				}
 			}],
-			'closeBtn': false,
-			'autofocus': 'btn:last'
+			'closeBtn': false
 		}); //$.fn.jAlert
 	}
 	
@@ -375,8 +381,7 @@ $(function() {
 					emitter.emit('leave_game'); 
 				}
 			}],
-			'closeBtn': false,
-			'autofocus': 'btn:last'
+			'closeBtn': false
 		}); //$.fn.jAlert
 	}
 
@@ -394,8 +399,7 @@ $(function() {
 					emitter.emit(call, value);
 				}
 			}],
-			'closeBtn': false,
-			'autofocus': 'btn:last'
+			'closeBtn': false
 		});
 	}
 	
@@ -424,8 +428,7 @@ $(function() {
 					console.log('start_game()???');
 				}
 			}],
-			'closeBtn': false,
-			'autofocus': 'btn:last'
+			'closeBtn': false
 		});
 	}
 });
