@@ -352,9 +352,9 @@ $(function() {
 	
 	
 	function gameComplete() {
-		if(User.currentUser() != window.gameCache.turn) {
-			return;
-		}
+		//if(User.currentUser() != window.gameCache.turn) {
+		//	return;
+		//}
 		
 		$.fn.jAlert({
 			'title': 'Game Complete',
