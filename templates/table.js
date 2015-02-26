@@ -326,7 +326,8 @@ $(function() {
 		});
 		
 		$('.finish').click(function() {
-			gameComplete();
+			emitter.emit('start_new_game');
+			//gameComplete();
 		});
 		
 	} // create_events
@@ -353,7 +354,8 @@ $(function() {
 					emitter.emit('leave_game'); 
 				}
 			}],
-			'closeBtn': false
+			'closeBtn': false,
+			'autofocus': 'btn:last'
 		}); //$.fn.jAlert
 	}
 	
@@ -381,7 +383,8 @@ $(function() {
 					emitter.emit('leave_game'); 
 				}
 			}],
-			'closeBtn': false
+			'closeBtn': false,
+			'autofocus': 'btn:last'
 		}); //$.fn.jAlert
 	}
 
@@ -399,7 +402,8 @@ $(function() {
 					emitter.emit(call, value);
 				}
 			}],
-			'closeBtn': false
+			'closeBtn': false,
+			'autofocus': 'btn:last'
 		});
 	}
 	
@@ -428,7 +432,8 @@ $(function() {
 					console.log('start_game()???');
 				}
 			}],
-			'closeBtn': false
+			'closeBtn': false,
+			'autofocus': 'btn:last'
 		});
 	}
 });
