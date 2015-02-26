@@ -326,7 +326,7 @@ $(function() {
 		});
 		
 		$('.finish').click(function() {
-			//emitter.emit('leave_game');
+			emitter.emit('leave_game');
 			//gameComplete();
 		});
 		
