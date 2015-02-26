@@ -67,7 +67,7 @@ if(gameId !== '') {
       var i = 0;
       while(i++ < num) {
         cardsArray[offset++].username = user;
-        cardsArray[offset++].faceup = true;
+        cardsArray[offset].faceup = true;
         console.log(user);
       }
     });
