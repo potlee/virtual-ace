@@ -266,7 +266,8 @@ $(function() {
 			
 		$("body").mousedown(function(event) {
 			//Prevent other players from flipping cards when it is not their turn
-			if(User.currentUser != window.gameCache.turn) {
+			if(User.currentUser() != window.gameCache.turn) {
+				
 				return;
 			}
 			
