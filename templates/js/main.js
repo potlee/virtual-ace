@@ -80,9 +80,7 @@ $(document).ready(function() {
 				gameName = user.getAttribute('game-name');
 			}
 		});
-		emitter.emit("start_new_game", inviteUsers, gameName, function(gameId){
-      window.location.href= '/index.html?gameId=' + gameId;
-    });
+		emitter.emit("start_new_game", inviteUsers, gameName);
 		console.log("here");
 	});
 

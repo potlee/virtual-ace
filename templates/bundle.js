@@ -11965,6 +11965,12 @@ if(gameId !== '') {
       location.href = '/lobby.html';
     });
   });
+  emitter.on('restart_game', function() {
+    var users = gameCache.users;
+    var name = gameCache.name;
+    game.remove();
+    emitter.emit('start_new_game', users, name);
+  });
   emitter.on('deal', function(num) {
     var offset = 0;
     cards = gameCache.cards;
@@ -11985,42 +11991,42 @@ if(gameId !== '') {
       emitter.emit('render_game');
     });
   });
-} else {
-  emitter.on('start_new_game', function(usernames, name, cb) {
-    console.log('starting new game');
-    var gameId = uuid.v4();
-    var game = games.child(gameId);
-    var cards = {};
-    ['H', 'D', 'C', 'S'].forEach(function(suit) {
-      [2,3,4,5,6,7,8,9,'J','K','Q','A'].forEach(function(value) {
-        cards[value + suit] = {
-          position: {x:0,y:0,z:0}, faceup: false, username: 'table', location: 'table'
-        };
-      });
-    });
-    game.set({
-      cards: cards,
-      invitedUsers: usernames,
-      turn: User.currentUser(),
-      name: name,
-      id: gameId,
-      dealer: User.currentUser(),
-      users: [ User.currentUser() ],
-      left: ['none']
-    }, function() { cb(gameId); });
-  });
-  games.on('child_added', function(child, parent) {
-    var snapshot = child.val();
-    if(snapshot.turn) {
-      if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1 &&
-         snapshot.left.indexOf(User.currentUser()) == -1
-        ) {
-        location.href = '/index.html?gameId=' + snapshot.id;
-      }
-    }
-  });
 }
 
+games.on('child_added', function(child, parent) {
+  var snapshot = child.val();
+  if(snapshot.turn) {
+    if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1 &&
+       snapshot.left.indexOf(User.currentUser()) == -1
+      ) {
+      location.href = '/index.html?gameId=' + snapshot.id;
+    }
+  }
+});
+
+emitter.on('start_new_game', function(usernames, name) {
+  console.log('starting new game');
+  var gameId = uuid.v4();
+  var game = games.child(gameId);
+  var cards = {};
+  ['H', 'D', 'C', 'S'].forEach(function(suit) {
+    [2,3,4,5,6,7,8,9,'J','K','Q','A'].forEach(function(value) {
+      cards[value + suit] = {
+        position: {x:0,y:0,z:0}, faceup: false, username: 'table', location: 'table'
+      };
+    });
+  });
+  game.set({
+    cards: cards,
+    invitedUsers: usernames,
+    turn: User.currentUser(),
+    name: name,
+    id: gameId,
+    dealer: User.currentUser(),
+    users: [ User.currentUser() ],
+    left: ['none']
+  }, function() { window.location.href = '/index.html?gameId=' + gameId; });
+});
 module.exports = emitter;
 
 },{"./fb":4,"./parse_game_id":6,"./user":8,"events":9,"lodash":1,"uuid":3}],8:[function(require,module,exports){
