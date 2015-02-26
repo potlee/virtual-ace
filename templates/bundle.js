@@ -11978,7 +11978,7 @@ if(gameId !== '') {
       var i = 0;
       while(i++ < num) {
         cardsArray[offset++].username = user;
-        cardsArray[offset++].faceup = true;
+        cardsArray[offset - 1].faceup = true;
         console.log(user);
       }
     });
