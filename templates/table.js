@@ -353,8 +353,7 @@ $(function() {
 					emitter.emit('leave_game'); 
 				}
 			}],
-			'closeBtn': false,
-			'autofocus': 'btn:last'
+			'closeBtn': false
 		}); //$.fn.jAlert
 	}
 	
@@ -382,8 +381,7 @@ $(function() {
 					emitter.emit('leave_game'); 
 				}
 			}],
-			'closeBtn': false,
-			'autofocus': 'btn:last'
+			'closeBtn': false
 		}); //$.fn.jAlert
 	}
 
@@ -401,8 +399,7 @@ $(function() {
 					emitter.emit(call, value);
 				}
 			}],
-			'closeBtn': false,
-			'autofocus': 'btn:last'
+			'closeBtn': false
 		});
 	}
 	
@@ -431,8 +428,7 @@ $(function() {
 					console.log('start_game()???');
 				}
 			}],
-			'closeBtn': false,
-			'autofocus': 'btn:last'
+			'closeBtn': false
 		});
 	}
 });
