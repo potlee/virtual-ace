@@ -11957,6 +11957,11 @@ if(gameId !== '') {
   emitter.on('end_turn', function() {
     game.child('turn');
   });
+  emitter.on('leave_game', function() {
+    var left = gameCache.left;
+    left.push(User.currentUser());
+    game.update({left: left});
+  });
 } else {
   emitter.on('start_new_game', function(usernames, name, cb) {
     console.log('starting new game');
@@ -11977,21 +11982,18 @@ if(gameId !== '') {
       name: name,
       id: gameId,
       dealer: User.currentUser(),
-      users: [ User.currentUser() ]
+      users: [ User.currentUser() ],
+      left: ['none']
     }, function() { cb(gameId); });
   });
-  games.on('child_added', function(child) {
+  games.on('child_added', function(child, parent) {
     var snapshot = child.val();
-    if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1) {
-      games.child(snapshot.id).child('users').on('value', function(users) {
-        users = users.val();
-        users = users.filter(function(user) {
-          return user != User.currentUser();
-        });
-        games.child(snapshot.id).update({invitedUsers: users}, function() {
-          location.href = '/index.html?gameId=' + snapshot.id;
-        });
-      });
+    if(snapshot.turn) {
+      if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1 &&
+         snapshot.left.indexOf(User.currentUser()) == -1
+        ) {
+        location.href = '/index.html?gameId=' + snapshot.id;
+      }
     }
   });
 }
