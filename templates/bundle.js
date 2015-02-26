@@ -11955,7 +11955,9 @@ if(gameId !== '') {
     game.child('cards').child(card).update({ faceup: !gameCache.cards[card].faceup });
   });
   emitter.on('end_turn', function() {
-    game.child('turn');
+    var position = gameCache.users.indexOf(gameCache.turn);
+    position++;
+    game.update({turn: gameCache.users[position % gameCache.users.length]});
   });
   emitter.on('leave_game', function() {
     var left = gameCache.left;
@@ -11976,6 +11978,7 @@ if(gameId !== '') {
       var i = 0;
       while(i++ < num) {
         cardsArray[offset++].username = user;
+        cardsArray[offset++].faceup = true;
         console.log(user);
       }
     });
@@ -11991,7 +11994,7 @@ if(gameId !== '') {
     ['H', 'D', 'C', 'S'].forEach(function(suit) {
       [2,3,4,5,6,7,8,9,'J','K','Q','A'].forEach(function(value) {
         cards[value + suit] = {
-          position: {x:0,y:0,z:0}, faceup: true, username: 'table', location: 'table'
+          position: {x:0,y:0,z:0}, faceup: false, username: 'table', location: 'table'
         };
       });
     });
