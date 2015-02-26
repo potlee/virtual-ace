@@ -31,9 +31,6 @@ $(function() {
 	
 	
 	function render_game(){
-		console.log('me:', User.currentUser());
-		console.log('users:', gameCache.users);
-		
 
 		if(window.cardsDealt != true && User.currentUser() == gameCache.dealer) {
 			dealCards();
