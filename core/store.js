@@ -57,6 +57,7 @@ if(gameId !== '') {
   emitter.on('restart_game', function() {
     var users = gameCache.users;
     var name = gameCache.name;
+    games.once('child_added', child_added);
     game.remove();
     emitter.emit('start_new_game', users, name);
   });
@@ -80,18 +81,20 @@ if(gameId !== '') {
       emitter.emit('render_game');
     });
   });
+} else {
+  games.on('child_added', child_added);
+  var child_added = function(child, parent) {
+    var snapshot = child.val();
+    if(snapshot.turn) {
+      if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1 &&
+         snapshot.left.indexOf(User.currentUser()) == -1
+        ) {
+        location.href = '/index.html?gameId=' + snapshot.id;
+      }
+    }
+  };
 }
 
-games.on('child_added', function(child, parent) {
-  var snapshot = child.val();
-  if(snapshot.turn) {
-    if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1 &&
-       snapshot.left.indexOf(User.currentUser()) == -1
-      ) {
-      location.href = '/index.html?gameId=' + snapshot.id;
-    }
-  }
-});
 
 emitter.on('start_new_game', function(usernames, name) {
   console.log('starting new game');
