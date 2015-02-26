@@ -11960,7 +11960,9 @@ if(gameId !== '') {
   emitter.on('leave_game', function() {
     var left = gameCache.left;
     left.push(User.currentUser());
-    game.update({left: left});
+    game.update({left: left}, function() {
+      location.href = '/index.html';
+    });
   });
 } else {
   emitter.on('start_new_game', function(usernames, name, cb) {
