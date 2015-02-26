@@ -25,7 +25,7 @@ $(function() {
 			$("aside.playingCards").append($("<div/>")
 					.attr("data-location", value)
 					.css({"height": (100/ gameCache.users.length) + "%" })
-					//.addClass("droppable")
+					.addClass("droppable")
 					.text(value)
 					);
 		});
