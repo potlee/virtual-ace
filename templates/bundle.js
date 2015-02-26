@@ -11943,7 +11943,6 @@ if(gameId !== '') {
   });
 
   emitter.on('move_card', function(card, position, location) {
-    console.log('move card emitted');
     game.child('cards').child(card).update({ position: position, username: 'table', location: location });
   });
   emitter.on('move_card_to_hand', function(card) {
@@ -11982,8 +11981,9 @@ if(gameId !== '') {
         console.log(user);
       }
     });
-    console.log(cardsArray);
-    game.update({cards: cards});
+    game.update({cards: cards}, function() {
+      emitter.emit('render_game');
+    });
   });
 } else {
   emitter.on('start_new_game', function(usernames, name, cb) {
