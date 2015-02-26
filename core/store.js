@@ -25,6 +25,8 @@ if(gameId !== '') {
     game.on('value', function(snapshot) {
       if(!_.isEqual(snapshot.val(), gameCache)) {
         gameCache = snapshot.val();
+        if(gameCache.ended)
+          location.href = '/lobby.html';
         emitter.emit('render_game', gameCache);
       }
     });
@@ -58,17 +60,19 @@ if(gameId !== '') {
     game.update({turn: gameCache.users[position % gameCache.users.length]});
   });
   emitter.on('leave_game', function() {
-    var left = gameCache.left;
-    left.push(User.currentUser());
-    game.update({left: left}, function() {
+    //var left = gameCache.left;
+    //left.push(User.currentUser());
+    //game.update({left: left}, function() {
+    game.update({ ended: true }, function() {
       location.href = '/lobby.html';
     });
+    //});
   });
   emitter.on('restart_game', function() {
     var users = gameCache.users;
     var name = gameCache.name;
     games.once('child_added', child_added);
-    //game.remove();
+    game.remove();
     emitter.emit('start_new_game', users, name);
   });
   emitter.on('deal', function(num) {
