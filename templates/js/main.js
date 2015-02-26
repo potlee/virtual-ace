@@ -93,6 +93,8 @@ $(document).ready(function() {
 			window.levelNumber = $('input[name=level-name]:checked').val();
 		}
 		window.location.href='lobby.html';
+		localStorage.setItem("leapLevel", levelNumber);
+		
 
 		
 	});
