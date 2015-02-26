@@ -25,7 +25,7 @@ $(function() {
 			$("aside.playingCards").append($("<div/>")
 					.attr("data-location", value)
 					.css({"height": (100/ gameCache.users.length) + "%" })
-					//.addClass("droppable")
+					.addClass("droppable")
 					.text(value)
 					);
 		});
@@ -326,7 +326,8 @@ $(function() {
 		});
 		
 		$('.finish').click(function() {
-			gameComplete();
+			emitter.emit('restart_game');
+			//gameComplete();
 		});
 		
 	} // create_events
@@ -353,7 +354,8 @@ $(function() {
 					emitter.emit('leave_game'); 
 				}
 			}],
-			'closeBtn': false
+			'closeBtn': false,
+			'autofocus': 'btn:last'
 		}); //$.fn.jAlert
 	}
 	
@@ -381,7 +383,8 @@ $(function() {
 					emitter.emit('leave_game'); 
 				}
 			}],
-			'closeBtn': false
+			'closeBtn': false,
+			'autofocus': 'btn:last'
 		}); //$.fn.jAlert
 	}
 
@@ -399,7 +402,8 @@ $(function() {
 					emitter.emit(call, value);
 				}
 			}],
-			'closeBtn': false
+			'closeBtn': false,
+			'autofocus': 'btn:last'
 		});
 	}
 	
@@ -428,7 +432,8 @@ $(function() {
 					console.log('start_game()???');
 				}
 			}],
-			'closeBtn': false
+			'closeBtn': false,
+			'autofocus': 'btn:last'
 		});
 	}
 });
