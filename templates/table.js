@@ -19,6 +19,8 @@ $(function() {
 	function render_users(){
 	//var userslist = ['Yahooize', 'Vanilla mousse', 'Fat Idol'];
 	
+	$("aside .playingCards div").remove();
+	
 		$.each(gameCache.users, function(key, value){
 			$("aside.playingCards").append($("<div/>")
 					.attr("data-location", value)
@@ -27,6 +29,8 @@ $(function() {
 					.text(value)
 					);
 		});
+		
+			create_jquery_widgets();
 	}
 	
 	
