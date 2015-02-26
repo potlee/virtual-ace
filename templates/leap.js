@@ -10,30 +10,29 @@ $(function() {
 		console.log("A Leap device has been connected.");
 		createCanvas();
 		
-		var level = 1;
+		var level = localStorage.getItem('leapLevel');
 		
-		if( level == 1) {
-			LeapController.options = {
-				sensitivity : {x: 100, y: 90}
-			};
-			
-			LeapController.on('frame', level_1_frame);
+		console.log('level is: ' + level);
 		
-		} else if (level == 2) {
-			LeapController.options = {
-				sensitivity : {x: 50, y: 50}
-			};
-			
-			LeapController.on('frame', level_2_frame);
-		} else { 
+		if ( level == 3 ) { 
 			LeapController.options = {
 				sensitivity : {x: 0, y: 0}
 			};
 			
 			LeapController.on('frame', level_3_frame);
+		} else if (level == 2 ) {
+			LeapController.options = {
+				sensitivity : {x: 50, y: 50}
+			};
+			LeapController.on('frame', level_2_frame);
+		} else {
+			LeapController.options = {
+				sensitivity : {x: 100, y: 90}
+			};
+			
+			LeapController.on('frame', level_1_frame);
 		}
-
-		
+	
 		var initWidth = LeapController.ctx.canvas.width;
 		var initHeight = LeapController.ctx.canvas.height;
 		LeapController.screenTranslation = getTranslationVariables(initWidth, initHeight);
@@ -151,7 +150,40 @@ $(function() {
 	function level_1_frame(frame) {
 		// Clear the canvas for redraw
 		LeapController.ctx.clearRect(0, 0, LeapController.ctx.canvas.width, LeapController.ctx.canvas.height);
-		
+
+
+		frame.gestures.forEach(function(gesture){
+			switch (gesture.type){
+			  case "circle":
+					console.log("Circle Gesture");
+					
+					if(gesture.id == window.lastgestureid) {
+						if(window.flipped == false && Math.floor(gesture.progress) == 2) {
+							console.log('flip');
+							window.flipped = true;
+						}
+					} else {
+						window.flipped = false;
+					}
+					
+					window.lastgestureid = gesture.id;
+					
+					
+				  break;
+			  case "keyTap":
+				  console.log("Key Tap Gesture");
+				  break;
+			  case "screenTap":
+				  console.log("Screen Tap Gesture");
+				  break;
+			  case "swipe":
+				  console.log("Swipe Gesture");
+				  break;
+			}
+		});
+
+  
+  
 		var hand = frame.hands[0];
 		var distanceThreshold = 27;
 		
