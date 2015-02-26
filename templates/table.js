@@ -311,7 +311,7 @@ $(function() {
 
 		// buttons
 		$( '.next' ).click(function() {
-			if(User.currentUser() != window.gameCache.turn) {
+			if(User.currentUser() == window.gameCache.turn) {
 				console.log('end_turn()');
 				emitter.emit('end_turn');
 			}
