@@ -185,6 +185,53 @@ $(function() {
   
   
 		var hand = frame.hands[0];
+		var distanceThreshold = 30;
+		
+		// There is atleast one hand in view
+		if(hand === undefined) { return false; }
+		
+		var position = hand.stabilizedPalmPosition;
+		var palm = getScreenTranslatedXY(position);
+		
+		var position = hand.thumb.stabilizedTipPosition;
+		var thumb = { x: position[0], y: position[1]};
+
+		var position = hand.indexFinger.stabilizedTipPosition;
+		var indexFinger = { x: position[0], y: position[1]};	
+		
+		drawFinger(palm);
+		drawFinger(getScreenTranslatedXY([thumb.x, thumb.y]));
+		drawFinger(getScreenTranslatedXY([indexFinger.x, indexFinger.y]));
+		
+		var distance;
+		
+		if(hand.type == 'left') {
+			distance = thumb.x - indexFinger.x;
+		} else {
+			distance = indexFinger.x - thumb.x;
+		}
+		
+		var x = palm.x;
+		var y = palm.y;
+		
+		if(LeapController.mousedown) {
+			$(document).simulate("mousemove", {clientX: x, clientY: y});
+		} else {
+			handleMouseOver(x,y);
+		}
+		
+		if(distance > distanceThreshold) {
+			mouseDown(x,y);
+		} else {
+			mouseUp(x,y);
+		}
+	}
+
+	function level_1_frame_old(frame) {
+		// Clear the canvas for redraw
+		LeapController.ctx.clearRect(0, 0, LeapController.ctx.canvas.width, LeapController.ctx.canvas.height);
+  
+		var hand = frame.hands[0];
 		var distanceThreshold = 27;
 		
 		// There is atleast one hand in view
@@ -200,10 +247,11 @@ $(function() {
 		var indexFinger = getScreenTranslatedXY(position);
 		
 		var position = hand.thumb.stabilizedTipPosition;
-		var thumb = { x: position[0], y: position[1]};
-		
+		var thumb = { x: position[0], y: position[1]};	
+
 		var position = hand.stabilizedPalmPosition;
 		var palm = { x: position[0] + palmAdjustment.x, y: position[1] +  palmAdjustment.y};
+	
 		
 		drawFinger(indexFinger);
 		drawFinger(getScreenTranslatedXY([thumb.x, thumb.y]));
@@ -245,6 +293,7 @@ $(function() {
 		if(LeapController.mousedown == false) return;
 		
 		$(LeapController.hEle).simulate("mouseup", {clientX: x, clientY: y});
+		$(LeapController.hEle).simulate("click", {clientX: x, clientY: y});
 		LeapController.mousedown = false;
 		LeapController.color = 'red';
 	}	
