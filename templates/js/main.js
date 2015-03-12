@@ -69,6 +69,7 @@ $(document).ready(function() {
 		[].forEach.call(document.querySelectorAll('.user'), function(user) {
 			if(user.checked) {
 				inviteUsers.push(user.getAttribute('username'));
+				console.log(user.getAttribute('username'));
 			}
 		});
 		[].forEach.call(document.querySelectorAll('.game-name'), function(user) {
@@ -76,8 +77,20 @@ $(document).ready(function() {
 				gameName = user.getAttribute('game-name');
 			}
 		});
-		emitter.emit("start_new_game", inviteUsers, gameName);
-		console.log("here");
+		if(gameName)
+		{
+			emitter.emit("start_new_game", inviteUsers, gameName);
+		}
+      	else 
+      	{
+      		$(".choose-game-errors").html("Please choose a game");
+      	}	
+      	
+
+      	
+      		
+      	
+		
 	});
 
 	$("#level-form").submit(function(e) {
@@ -88,8 +101,6 @@ $(document).ready(function() {
 		}
 		window.location.href='lobby.html';
 		localStorage.setItem("leapLevel", levelNumber);
-		
-
 		
 	});
   var refreshLobby = function(){
@@ -107,8 +118,9 @@ $(document).ready(function() {
       		}
       		if (username != User.currentUser())
       		{
-      			$section.append('<li><input type="checkbox" class="user" username="' + username + '">' +
-                      username + ": " + games + "</li>");
+      			$section.append(  '<li>' + '<input type="checkbox" style="display:none" id="' + username + '" class="user" name="' + username + '">' + '<label class="online-users-checkbox" for="' + username + '"></label> ' + 
+                      username + ": " + games + '</li> ');
+
       		}
     	});
 
@@ -131,13 +143,13 @@ $(document).ready(function() {
 
     for(var user in User.onlineUsers()) {
       (User.onlineUsers()[user].favoriteGames||[]).forEach(function(game) {
-        console.log(game);
+        
         if(games.indexOf(game) == -1)
           games.push(game);
       });
     }
 		for (var i = 0; i < games.length; i++) {
-			$section.append('<li><input type="checkbox" class="game-name" game-name=' + games[i] + '>' + games[i] + "</li>");
+			$section.append('<li><input type="radio" name="games-list" style="display:none" class="game-name" id="' + games[i] + '" game-name=' +  games[i] + '>' + '<label class="online-users-checkbox" for="' + games[i] + '"></label> ' + games[i] + "</li>");
 		}
   };
   emitter.on('change_users', insertFavoriteGames);

@@ -170,6 +170,7 @@ body.lobby {
 .users-games {
     margin-left: 50px;
     margin-top: 10px;
+    overflow: auto;
 }
 
 .users-games .users {
@@ -225,7 +226,7 @@ body.lobby {
 
 .nav-wrapper {
     width: 100%;
-    height: 50px;
+    height: auto;
     margin-top: 10px;
 }
 
@@ -290,7 +291,15 @@ a.begin-game {
     background-color: white;
     color: #005a00;
     border: black solid 2px;
+    max-width: 110px;
 
+}
+
+.choose-game-errors {
+    width: 200px;
+    float: right;
+    display: inline-block;
+    color: white;
 }
 
 a.choose-level {
@@ -307,6 +316,8 @@ ul {
     margin: 20px;
     font-size: 20px;
     list-style-type: none;
+    min-height: 5px;
+    padding-top: 10px;
 }
 
 
@@ -315,14 +326,68 @@ li {
     margin-left: 20px;
     font-size: 20px;
     color: #CFDBC5;
+    min-height: 7px;
+    margin: 5px;
+
 }
 
-input[type = 'checkbox'] {
+/*input[type = 'checkbox']:checked+label {
     vertical-align: middle;
     margin-right: 20px;
+}*/
+
+.users-games .users-select {
+    display: none;
+}
+
+input[type="checkbox"]:checked+label{
+    background-color: black;
+
+}
+
+input[type="radio"]:checked+label{
+    background-color: black;
+
 }
 
 
+
+.users-games label {
+    background-color: white;
+    text-decoration: none;
+    height: 25px;
+    border-radius: 6px;
+    border: black solid 2px;
+    display: inline-block;
+    /*margin: 10px;*/
+    cursor: pointer;
+
+    width: 25px;
+    vertical-align: middle;
+
+}
+
+
+
+
+.favorite-game-errors {
+    color: white;
+}
+
+.my-favorite-games {
+    width: 100%;
+    height: 50px;
+    margin: 0;
+}
+
+.my-favorite-game-list {
+    display: inline-block;
+    font-size: 20px;
+    color: #9CBA7F;
+    margin-right: 0px;
+    margin-left: 30px;
+    max-width: 500px;
+}
 
 
 /*END LOBBY*/
@@ -380,18 +445,7 @@ a.cancel-button {
     padding-right: 7px;
 }
 
-.favorite-game-errors {
-    color: white;
-}
 
-.my-favorite-games {
-    margin-left: 30px;
-}
-
-.my-favorite-game-list {
-    font-size: 20px;
-    color: #9CBA7F;
-}
 
 /*END LEVEL SCREEN*/
 
