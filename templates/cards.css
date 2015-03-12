@@ -43,7 +43,7 @@
 }
 
 .playingCards .card:hover {
-	border: 2px solid red;
+	box-shadow: 0px 0px 0px 2px lime;
 }
 
 .playingCards label.card {
