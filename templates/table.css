@@ -111,14 +111,27 @@ footer {
 #table {
     height: calc(100% - 120px);
     width: 100%;
+    margin-bottom: 10px;
 }
 
 .ui-sortable-placeholder {
     position: relative !important;
 }
 
+
 .droppable .card {
-    position: absolute;
+    position: absolute !important;
+}
+
+.card {
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+	cursor: grab;
+}
+.ui-draggable-dragging, .ui-sortable-helper {
+	cursor: -moz-grabbing !important;
+	cursor: -webkit-grabbing !important;
+	cursor: grabbing !important;
 }
 
 .ui-state-default {

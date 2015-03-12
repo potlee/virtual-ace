@@ -46,6 +46,8 @@ $(function() {
 		LeapController.hEle = null;
 		LeapController.color = 'red';
 		LeapController.lastGesture = 0;
+		LeapController.grabIcon = document.getElementById("grab");
+		LeapController.grabbingIcon = document.getElementById("grabbing");
 	});
 
 	LeapController.on('deviceStopped', function() {
@@ -53,25 +55,31 @@ $(function() {
 	});
 
 	LeapController.connect();
-/*
-	$( window ).resize(function() {
-		var initWidth = LeapController.ctx.canvas.clientWidth;
-		var initHeight = LeapController.ctx.canvas.clientHeight;
-		console.log(LeapController.ctx.canvas.clientHeight);
-		LeapController.screenTranslation = getTranslationVariables(initWidth, initHeight);
-	});
-*/
 
 	function onGesture(gesture,frame) {
 		var msElapsed = Math.round(+new Date()) - LeapController.lastGesture;
 		if(gesture.type == "keyTap" && msElapsed > 200) {
 			if(LeapController.hCard == null || LeapController.hCard === undefined) return;
-			
+
+			/*
+			var pointableIds = gesture.pointableIds;
+			pointableIds.forEach(function(pointableId){
+				if(pointableId == frame.hands[0].middleFinger.id) {
+					$(LeapController.hCard).toggleClass("back");
+					var card = $(LeapController.hCard).data('card');
+					console.log('flip_card('+card+')');
+					emitter.emit('flip_card', card);
+					LeapController.lastGesture = Math.round(+new Date());
+				}
+			});
+			*/
+
 			$(LeapController.hCard).toggleClass("back");
 			var card = $(LeapController.hCard).data('card');
 			console.log('flip_card('+card+')');
 			emitter.emit('flip_card', card);
 			LeapController.lastGesture = Math.round(+new Date());
+					
 		}
 	}
 
@@ -284,12 +292,19 @@ $(function() {
 	}	
 	
 	function drawFinger(position) {
+		if(LeapController.mousedown) {
+			LeapController.ctx.drawImage(LeapController.grabbingIcon,position.x-8, position.y-23);
+		} else {
+			LeapController.ctx.drawImage(LeapController.grabIcon,position.x-8, position.y-23);
+		}
+	}
+
+	function drawPoint(position) {
 		LeapController.ctx.beginPath();
-		LeapController.ctx.rect(position.x, position.y, 20, 20);
+		LeapController.ctx.rect(position.x-2, position.y+2, 4, 4);
 		LeapController.ctx.fillStyle = LeapController.color;
 		LeapController.ctx.fill();
 	}
-
 
 	function createCanvas() {
 		var c = document.createElement('canvas');
