@@ -12,7 +12,7 @@ $(function() {
 	create_jquery_widgets();
 	
 	emitter.on('render_game', render_game);
-
+	emitter.on('cards_dealt', cards_dealt);
 	emitter.on('invitation', game_invite);
 	
 	//Rendering the ownership boxes. Should be ran after handling all
@@ -36,6 +36,24 @@ $(function() {
 			create_jquery_widgets();
 	}
 	
+	// This is the event that gets triggered after deep changes gameCache after deal();
+	// It will REPLACE the hand, not add to it.
+	function cards_dealt() {
+		console.log('cards_dealt');
+		$("#hand .card").remove();
+		$.each(window.gameCache.cards, function(key, value){
+			// Foreach card the player owns, put it in their hand
+			if(value.username == User.currentUser()) {
+				$("#hand").append(create_card(key, value.faceup));
+			}
+		});
+		render_game();
+	}
+	
+	// This is the event that gets triggered after deeps 
+	function show_deal_prompt() {
+	
+	}
 	
 	function render_game(){
 		
@@ -43,10 +61,14 @@ $(function() {
 		
 		//hack
 		if(window.cardsDealt != true && User.currentUser() == gameCache.dealer) {
-			dealCards();
+			dealCardsPrompt();
 			window.cardsDealt = true;
 		}
-			
+		
+		
+		
+		// If the  current user isnt already in the game, then send then an 
+		// invite.
 		if($.inArray(User.currentUser(), gameCache.users) == -1) {
 			game_invite(gameCache.dealer, gameCache.id);
 		}
@@ -54,7 +76,7 @@ $(function() {
 		
 		
 		//removes all card divs
-		$(".card").remove();
+		$(".card").not("#hand .card").remove();
 		
 		
 		
@@ -70,7 +92,7 @@ $(function() {
 
 			switch (value.username){
 				case User.currentUser():
-						$("#hand").append(create_card(key, value.faceup));
+						//$("#hand").append(create_card(key, value.faceup));
 						break;
 					
 				case "table":			
@@ -376,7 +398,7 @@ $(function() {
 				'label': 'Begin New Game',
 				'cssClass': 'green',
 				'onClick': function() {
-					dealCards();
+					dealCardsPrompt();
 				}
 			},{
 				'label': 'Return to Lobby',
@@ -411,7 +433,7 @@ $(function() {
 	}
 	
 	
-	function dealCards() {
+	function dealCardsPrompt() {
 		$.fn.jAlert({
 			'title': 'Begin Game',
 			'message': '#cards to be dealt',
