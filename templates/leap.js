@@ -1,6 +1,6 @@
 $(function() {
-	var LeapController = new Leap.Controller();
-
+	var LeapController = new Leap.Controller({enableGestures: false});
+	
 
 	LeapController.on('connect', function() {
 		console.log("Successfully connected.");
@@ -33,8 +33,10 @@ $(function() {
 			LeapController.on('frame', level_1_frame);
 		}
 	
-		var initWidth = LeapController.ctx.canvas.width;
-		var initHeight = LeapController.ctx.canvas.height;
+		LeapController.on('gesture', onGesture);
+		
+		var initWidth = LeapController.ctx.canvas.clientWidth;
+		var initHeight = LeapController.ctx.canvas.clientHeight;
 		LeapController.screenTranslation = getTranslationVariables(initWidth, initHeight);
 		
 
@@ -43,6 +45,7 @@ $(function() {
 		LeapController.hCard = null;
 		LeapController.hEle = null;
 		LeapController.color = 'red';
+		LeapController.lastGesture = 0;
 	});
 
 	LeapController.on('deviceStopped', function() {
@@ -50,6 +53,27 @@ $(function() {
 	});
 
 	LeapController.connect();
+/*
+	$( window ).resize(function() {
+		var initWidth = LeapController.ctx.canvas.clientWidth;
+		var initHeight = LeapController.ctx.canvas.clientHeight;
+		console.log(LeapController.ctx.canvas.clientHeight);
+		LeapController.screenTranslation = getTranslationVariables(initWidth, initHeight);
+	});
+*/
+
+	function onGesture(gesture,frame) {
+		var msElapsed = Math.round(+new Date()) - LeapController.lastGesture;
+		if(gesture.type == "keyTap" && msElapsed > 200) {
+			if(LeapController.hCard == null || LeapController.hCard === undefined) return;
+			
+			$(LeapController.hCard).toggleClass("back");
+			var card = $(LeapController.hCard).data('card');
+			console.log('flip_card('+card+')');
+			emitter.emit('flip_card', card);
+			LeapController.lastGesture = Math.round(+new Date());
+		}
+	}
 
 	function getTranslationVariables(w, h) {
 	
@@ -83,7 +107,7 @@ $(function() {
 
 	function level_3_frame(frame) {
 		// Clear the canvas for redraw
-		LeapController.ctx.clearRect(0, 0, LeapController.ctx.canvas.width, LeapController.ctx.canvas.height);
+		LeapController.ctx.clearRect(0, 0, LeapController.ctx.canvas.clientWidth, LeapController.ctx.canvas.clientHeight);
 		
 		var hand = frame.hands[0];
 		
@@ -115,7 +139,7 @@ $(function() {
 	
 	function level_2_frame(frame) {
 		// Clear the canvas for redraw
-		LeapController.ctx.clearRect(0, 0, LeapController.ctx.canvas.width, LeapController.ctx.canvas.height);
+		LeapController.ctx.clearRect(0, 0, LeapController.ctx.canvas.clientWidth, LeapController.ctx.canvas.clientHeight);
 		
 		var hand = frame.hands[0];
 		
@@ -149,43 +173,10 @@ $(function() {
 
 	function level_1_frame(frame) {
 		// Clear the canvas for redraw
-		LeapController.ctx.clearRect(0, 0, LeapController.ctx.canvas.width, LeapController.ctx.canvas.height);
-
-
-		frame.gestures.forEach(function(gesture){
-			switch (gesture.type){
-			  case "circle":
-					console.log("Circle Gesture");
-					
-					if(gesture.id == window.lastgestureid) {
-						if(window.flipped == false && Math.floor(gesture.progress) == 2) {
-							console.log('flip');
-							window.flipped = true;
-						}
-					} else {
-						window.flipped = false;
-					}
-					
-					window.lastgestureid = gesture.id;
-					
-					
-				  break;
-			  case "keyTap":
-				  console.log("Key Tap Gesture");
-				  break;
-			  case "screenTap":
-				  console.log("Screen Tap Gesture");
-				  break;
-			  case "swipe":
-				  console.log("Swipe Gesture");
-				  break;
-			}
-		});
-
-  
+		LeapController.ctx.clearRect(0, 0, LeapController.ctx.canvas.clientWidth, LeapController.ctx.canvas.clientHeight);
   
 		var hand = frame.hands[0];
-		var distanceThreshold = 30;
+		var distanceThreshold = 60;
 		
 		// There is atleast one hand in view
 		if(hand === undefined) { return false; }
@@ -200,17 +191,11 @@ $(function() {
 		var indexFinger = { x: position[0], y: position[1]};	
 		
 		drawFinger(palm);
-		drawFinger(getScreenTranslatedXY([thumb.x, thumb.y]));
-		drawFinger(getScreenTranslatedXY([indexFinger.x, indexFinger.y]));
-		
-		var distance;
-		
-		if(hand.type == 'left') {
-			distance = thumb.x - indexFinger.x;
-		} else {
-			distance = indexFinger.x - thumb.x;
-		}
-		
+		//drawFinger(getScreenTranslatedXY([thumb.x, thumb.y]));
+		//drawFinger(getScreenTranslatedXY([indexFinger.x, indexFinger.y]));
+
+        var distance = Leap.vec3.distance(hand.thumb.stabilizedTipPosition, hand.indexFinger.stabilizedTipPosition);
+   
 		var x = palm.x;
 		var y = palm.y;
 		
@@ -221,15 +206,15 @@ $(function() {
 		}
 		
 		if(distance > distanceThreshold) {
-			mouseDown(x,y);
-		} else {
 			mouseUp(x,y);
+		} else {
+			mouseDown(x,y);
 		}
 	}
 
 	function level_1_frame_old(frame) {
 		// Clear the canvas for redraw
-		LeapController.ctx.clearRect(0, 0, LeapController.ctx.canvas.width, LeapController.ctx.canvas.height);
+		LeapController.ctx.clearRect(0, 0, LeapController.ctx.canvas.clientWidth, LeapController.ctx.canvas.clientHeight);
   
 		var hand = frame.hands[0];
 		var distanceThreshold = 27;
