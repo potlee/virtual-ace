@@ -1,73 +1,57 @@
-<!DOCTYPE HTML>
-<html>
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<head>
-	<meta charset="UTF-8" />
-    <title>Virtual Ace</title>
-	<!--[if IE]>
-		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-    <link rel="stylesheet" type="text/css" href="table.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="cards.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="jAlert-v2.css">
-    <!--[if lt IE 9]>
-        <link rel="stylesheet" type="text/css" href="cards-ie.css" media="screen" />
-    <![endif]-->
-    <!--[if IE 9]>
-        <link rel="stylesheet" type="text/css" href="cards-ie9.css" media="screen" />
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <!-- Place favicon.ico in the root directory -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="bundle.js"></script>
+        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-	<script src="bundle.js"></script>
-	<link href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
-	<script src="http://code.jquery.com/jquery-1.11.2.js"></script>
-	<script src="jquery-ui.js"></script>
-    <script src="http://js.leapmotion.com/leap-0.6.4.js"></script>
-    <script src="jquery.ui.touch-punch.js"></script>
-    <script src="jquery.simulate.js"></script>
-    <script src='jAlert-v2.js'></script>
-    <script src="leap.js"></script>
-    <script src="table.js"></script>
-	
-</head>
 
-<body>
-	<header><img id='grab' src='grab.gif'><img id='grabbing' src='grabbing.gif'></header>
-	<article id="bounds">
-	<section class='playingCards fourColours'>
-	<div id="table" class="droppable" data-location='table'>
-	<!--
-		<div data-card="2D" class="card rank-2 diams back"><span class="rank">2</span><span class="suit">&diams;</span></div>
-		<div data-card="3D" class="card rank-3 diams back"><span class="rank">3</span><span class="suit">&diams;</span></div>
-		<div data-card="4D" class="card rank-4 diams back"><span class="rank">4</span><span class="suit">&diams;</span></div>
-		<div data-card="5D" class="card rank-5 diams back"><span class="rank">5</span><span class="suit">&diams;</span></div>
-		<div data-card="6D" class="card rank-6 diams back"><span class="rank">6</span><span class="suit">&diams;</span></div>
-		<div data-card="7D" class="card rank-7 diams back"><span class="rank">7</span><span class="suit">&diams;</span></div>
-		<div data-card="8D" class="card rank-8 diams back"><span class="rank">8</span><span class="suit">&diams;</span></div>
-		<div data-card="9D" class="card rank-9 diams back"><span class="rank">9</span><span class="suit">&diams;</span></div>
-		<div data-card="10D" class="card rank-10 diams back"><span class="rank">10</span><span class="suit">&diams;</span></div>
-		<div data-card="JD" class="card rank-j diams back"><span class="rank">J</span><span class="suit">&diams;</span></div>
-		<div data-card="QD" class="card rank-q diams back"><span class="rank">Q</span><span class="suit">&diams;</span></div>
-		<div data-card="KD" class="card rank-k diams back"><span class="rank">K</span><span class="suit">&diams;</span></div>
-		<div data-card="AD" class="card rank-a diams back"><span class="rank">A</span><span class="suit">&diams;</span></div>
-		-->
-	</div>
-	<div id="hand">
-	<!--
-		<div data-card="10D" class="card rank-10 diams"><span class="rank">10</span><span class="suit">&diams;</span></div>
-		<div data-card="JD" class="card rank-j diams"><span class="rank">J</span><span class="suit">&diams;</span></div>
-		-->
-	</div>
-	</section>
-	<aside class='playingCards inText'>
-	<!--	<div style="height: 33%" data-location="Yahooize" class="droppable">Yahooize</div>
-		<div style="height: 33%" data-location="Vanilla mousse" class="droppable">Vanilla mousse</div>
-		<div style="height: 33%" data-location="Fat Idol" class="droppable">Fat Idol</div> 
-		-->
-	</aside>
-	</article>
-	<footer>
-	
-	<div class="button finish">Finish Game</div>
-	<div class="button next">Next Player</div>
-	</footer>
-</body>
+        <!-- Add your site or application content here -->
+        <div class="login-screen">
+            <div class="login-nav">
+                <a href="create-login.html">Create New Login</a>
+            </div>
+            <div class="login-content">
+                <p class="login-text">Log in</p>
+                <form id="login-form" action="lobby.html">
+                    <input class="username" type="text" placeholder="Username">
+                    <button class="go-button" type="submit">Go</button>
+                </form>
+                <div class="login-errors">
+                </div>
+            </div>
+        </div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+		<script src="http://js.leapmotion.com/leap-0.6.4.js"></script>
+		<script src="jquery.ui.touch-punch.js"></script>
+		<script src="jquery.simulate.js"></script>
+		<script src="leap.js"></script>
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+        </script>
+    </body>
 </html>

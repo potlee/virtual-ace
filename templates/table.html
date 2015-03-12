@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+    <title>Virtual Ace</title>
+	<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+    <link rel="stylesheet" type="text/css" href="table.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="cards.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="jAlert-v2.css">
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" type="text/css" href="cards-ie.css" media="screen" />
+    <![endif]-->
+    <!--[if IE 9]>
+        <link rel="stylesheet" type="text/css" href="cards-ie9.css" media="screen" />
+        <![endif]-->
+	<script src="bundle.js"></script>
+	<link href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
+	<script src="http://code.jquery.com/jquery-1.11.2.js"></script>
+	<script src="jquery-ui.js"></script>
+    <script src="http://js.leapmotion.com/leap-0.6.4.js"></script>
+    <script src="jquery.ui.touch-punch.js"></script>
+    <script src="jquery.simulate.js"></script>
+    <script src='jAlert-v2.js'></script>
+    <script src="leap.js"></script>
+    <script src="table.js"></script>
+	
+</head>
+
+<body>
+	<header><img id='grab' src='grab.gif'><img id='grabbing' src='grabbing.gif'></header>
+	<article id="bounds">
+	<section class='playingCards fourColours'>
+	<div id="table" class="droppable" data-location='table'>
+	<!--
+		<div data-card="2D" class="card rank-2 diams back"><span class="rank">2</span><span class="suit">&diams;</span></div>
+		<div data-card="3D" class="card rank-3 diams back"><span class="rank">3</span><span class="suit">&diams;</span></div>
+		<div data-card="4D" class="card rank-4 diams back"><span class="rank">4</span><span class="suit">&diams;</span></div>
+		<div data-card="5D" class="card rank-5 diams back"><span class="rank">5</span><span class="suit">&diams;</span></div>
+		<div data-card="6D" class="card rank-6 diams back"><span class="rank">6</span><span class="suit">&diams;</span></div>
+		<div data-card="7D" class="card rank-7 diams back"><span class="rank">7</span><span class="suit">&diams;</span></div>
+		<div data-card="8D" class="card rank-8 diams back"><span class="rank">8</span><span class="suit">&diams;</span></div>
+		<div data-card="9D" class="card rank-9 diams back"><span class="rank">9</span><span class="suit">&diams;</span></div>
+		<div data-card="10D" class="card rank-10 diams back"><span class="rank">10</span><span class="suit">&diams;</span></div>
+		<div data-card="JD" class="card rank-j diams back"><span class="rank">J</span><span class="suit">&diams;</span></div>
+		<div data-card="QD" class="card rank-q diams back"><span class="rank">Q</span><span class="suit">&diams;</span></div>
+		<div data-card="KD" class="card rank-k diams back"><span class="rank">K</span><span class="suit">&diams;</span></div>
+		<div data-card="AD" class="card rank-a diams back"><span class="rank">A</span><span class="suit">&diams;</span></div>
+		-->
+	</div>
+	<div id="hand">
+	<!--
+		<div data-card="10D" class="card rank-10 diams"><span class="rank">10</span><span class="suit">&diams;</span></div>
+		<div data-card="JD" class="card rank-j diams"><span class="rank">J</span><span class="suit">&diams;</span></div>
+		-->
+	</div>
+	</section>
+	<aside class='playingCards inText'>
+	<!--	<div style="height: 33%" data-location="Yahooize" class="droppable">Yahooize</div>
+		<div style="height: 33%" data-location="Vanilla mousse" class="droppable">Vanilla mousse</div>
+		<div style="height: 33%" data-location="Fat Idol" class="droppable">Fat Idol</div> 
+		-->
+	</aside>
+	</article>
+	<footer>
+	
+	<div class="button finish">Finish Game</div>
+	<div class="button next">Next Player</div>
+	</footer>
+</body>
+</html>
