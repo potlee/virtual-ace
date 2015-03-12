@@ -41,6 +41,11 @@
 .playingCards strong .card {
     bottom: 1em;
 }
+
+.playingCards .card:hover {
+	box-shadow: 0px 0px 0px 2px lime;
+}
+
 .playingCards label.card {
     cursor: pointer;
 }

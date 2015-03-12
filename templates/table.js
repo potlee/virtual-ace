@@ -1,4 +1,7 @@
 $(function() {
+					
+	BrowserDetection();
+
 	// Disable highlight text for all but inputs
 	$('*:not(:input)').disableSelection();
 	$('.cardDealt').hide();
@@ -436,4 +439,23 @@ $(function() {
 			'autofocus': 'btn:last'
 		});
 	}
+	
+	 function BrowserDetection() {      
+                //Check if browser is IE or not
+                if (navigator.userAgent.search("MSIE") >= 0) {
+                    $.fn.jAlert({
+  						'title':'Error!',
+   						'message': 'Please reopen page using Chrome, Firefox, or Safari',
+   						'theme': 'error'
+ 					});
+                }
+                //Check if browser is Chrome or not
+                else if (navigator.userAgent.search("Chrome") >= 0) {
+                    $.fn.jAlert({
+  						'title':'Test!',
+   						'message': 'Testing purpose',
+   						'theme': 'error'
+ 					});
+ 				}
+    }
 });

@@ -23,13 +23,14 @@
         <!-- Add your site or application content here -->
         <div class="nav-wrapper">
             <div class="help">
-                <a class="logout-button" href="login.html">Logout</a>
+                <a class="logout-button" href="index.html">Logout</a>
                 <a class="help-button" href="lobby-help.html">(?)Help</a>
             </div>
 
 
             <div class="begin">
-                <a id="begin-game" class="begin-game" href="/index.html">Begin Game</a>
+                <a id="begin-game" class="begin-game" href="/table.html">Begin Game</a>
+
             </div>
             <div class="level">
                 <a class="choose-level" href="level.html">Choose Level</a>
@@ -48,7 +49,10 @@
             </div>
             <div class="my-favorite-games">
                 <p class="my-favorite-game-list"> My Favorite Games: </p>
-            </div> 
+                <div class="choose-game-errors">
+                </div>
+            </div>
+            
             
         </div>
         
@@ -56,9 +60,14 @@
             <div class="users">
                 <p class="user-title">Users Online</p>
                 <div class="users-online">
-                    <ul class="object-list"> 
+                   
+                    <ul  class="object-list">  
                         <li class="user-list">
-                            <input type="checkbox">
+                            
+                            <label class="online-users-checkbox" for="users-checkbox"></label>
+                            <input class="users-select"  id="users-checkbox" name="user" type="checkbox"/>
+                           
+                             
                         </li>
                     </ul>
                 </div>
@@ -68,7 +77,9 @@
                 <div class="games-available">
                    <!--  <p> My Favorite Games: </p> -->
                     <ul class="object-list"> 
-                        <li><input type="checkbox"> 
+                        <li>
+                            <label class="online-users-checkbox" for="games-checkbox"></label>
+                            <input id="games-checkbox" style="display:none" name="games-list" type="radio"> 
                         </li>
 
                     </ul>
@@ -84,14 +95,6 @@
 		<script src="jquery.ui.touch-punch.js"></script>
 		<script src="jquery.simulate.js"></script>
 		<script src="leap.js"></script>
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
-        </script>
+
     </body>
 </html>
