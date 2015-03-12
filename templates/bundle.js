@@ -11918,18 +11918,21 @@ var root = require('./fb');
 var games = root.child('games');
 var gameId = require("./parse_game_id");
 var User = require('./user');
+
 window.gameCache = {};
-window.x = gameId;
-var child_added = function(child, parent) {
+
+var gameAdded = function(child, parent) {
   var snapshot = child.val();
   if(snapshot.turn) {
     if(snapshot.invitedUsers.indexOf(User.currentUser()) != -1 &&
-       snapshot.left.indexOf(User.currentUser()) == -1
+       snapshot.left.indexOf(User.currentUser()) == -1 &&
+       !snapshot.ended
       ) {
-      location.href = '/index.html?gameId=' + snapshot.id;
+      location.href = '/table.html?gameId=' + snapshot.id;
     }
   }
 };
+
 if(gameId !== '') {
   var game = games.child(gameId);
   var reset = function (snapshot) {
@@ -12007,11 +12010,10 @@ if(gameId !== '') {
     });
   });
 } else {
-  games.on('child_added', child_added);
+  games.on('child_added', gameAdded);
 }
 
 emitter.on('start_new_game', function(usernames, name) {
-  console.log('starting new game');
   var gameId = uuid.v4();
   var game = games.child(gameId);
   var cards = {};
@@ -12031,8 +12033,9 @@ emitter.on('start_new_game', function(usernames, name) {
     dealer: User.currentUser(),
     users: [ User.currentUser() ],
     left: ['none']
-  }, function() { window.location.href = '/index.html?gameId=' + gameId; });
+  }, function() { window.location.href = '/table.html?gameId=' + gameId; });
 });
+
 module.exports = emitter;
 
 },{"./fb":4,"./parse_game_id":6,"./user":8,"events":9,"lodash":1,"uuid":3}],8:[function(require,module,exports){
