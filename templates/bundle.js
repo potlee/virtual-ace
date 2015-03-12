@@ -12006,7 +12006,8 @@ if(gameId !== '') {
       }
     });
     game.update({cards: cards}, function() {
-      emitter.emit('render_game');
+      emitter.emit('cards_dealt');
+      //emitter.emit('render_game');
     });
   });
 } else {
@@ -12060,8 +12061,15 @@ users.on('child_removed', reset);
 users.on('child_changed', reset);
 users.on('value', reset);
 
+
+
 User = {
   onlineUsers: function() {
+    //var heartbeat = root.child('heartbeat')
+    //heartbeat.set('value', User.currentUser);
+    //heartbeat.on('child_changed', function() {
+      
+    //});
     return cache;
   },
 

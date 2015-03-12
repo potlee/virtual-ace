@@ -95,7 +95,8 @@ if(gameId !== '') {
       }
     });
     game.update({cards: cards}, function() {
-      emitter.emit('render_game');
+      emitter.emit('cards_dealt');
+      //emitter.emit('render_game');
     });
   });
 } else {
