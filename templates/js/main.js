@@ -1,8 +1,4 @@
-
-
-
 $(document).ready(function() {
-
 	// Update username
 	$("#login-form").submit(function(e) {
 		e.preventDefault();
@@ -145,4 +141,5 @@ $(document).ready(function() {
 		}
   };
   emitter.on('change_users', insertFavoriteGames);
+
 });

@@ -44,6 +44,12 @@
     -o-user-select: text;
     user-select: text;
 }
+
+.jError .jContent {
+	font-size: 23px;
+    color: black;
+}
+
 .jSuccess .jTitle > div, .jDark .jTitle > div, .jInfo .jTitle > div, .jError .jTitle > div{ color: white !important; }
 
 .jInfo .jTitle{
