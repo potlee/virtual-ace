@@ -159,6 +159,11 @@ a, button {
     padding-bottom: 2px;
 }
 
+.browser-error {
+    color: red;
+    font-size: 80px;
+}
+
 /*END LOGIN*/
 
 /*LOBBY*/
