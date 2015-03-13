@@ -15,6 +15,14 @@ $(function() {
 	emitter.on('cards_dealt', cards_dealt);
 	emitter.on('invitation', game_invite);
 	
+	
+	$(window).unload(function()
+	{
+		localStorage.setItem("game_started", true);
+	}
+	);
+	
+	
 	//Rendering the ownership boxes. Should be ran after handling all
 	//invitations and before starting the game.
 	emitter.on('render_users', render_users);
@@ -39,7 +47,6 @@ $(function() {
 	// This is the event that gets triggered after deep changes gameCache after deal();
 	// It will REPLACE the hand, not add to it.
 	function cards_dealt() {
-		console.log('cards_dealt');
 		$("#hand .card").remove();
 		$.each(window.gameCache.cards, function(key, value){
 			// Foreach card the player owns, put it in their hand
@@ -59,13 +66,26 @@ $(function() {
 		
 		render_users();
 		
-		//hack
-		if(window.cardsDealt != true && User.currentUser() == gameCache.dealer) {
+		var seen = localStorage.getItem("dealerPromptSeen");
+		console.log(seen, "seen");
+		if(seen != "true" && User.currentUser() == gameCache.dealer) {
 			dealCardsPrompt();
-			window.cardsDealt = true;
+			localStorage.setItem("dealerPromptSeen", true);
 		}
 		
-		
+				var test =  localStorage.getItem("game_started");
+
+		if(test == "true") {
+				$("#hand .card").remove();
+		$.each(window.gameCache.cards, function(key, value){
+			// Foreach card the player owns, put it in their hand
+			if(value.username == User.currentUser()) {
+				$("#hand").append(create_card(key, value.faceup));
+			}
+		});
+		localStorage.setItem("game_started", false);
+		}
+
 		
 		// If the  current user isnt already in the game, then send then an 
 		// invite.
