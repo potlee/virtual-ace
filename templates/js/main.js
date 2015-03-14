@@ -159,7 +159,7 @@ $(document).ready(function() {
   function BrowserDetection() {      
                 //Check if browser is IE or not
                 
-                if (!navigator.userAgent.search("Chrome") >= 0) {
+                if (navigator.userAgent.search("Chrome") < 0) {
                 	console.log("Browser Detection");
                     $(".browser-error").html("The application requires Google Chrome");
                    
