@@ -35,18 +35,36 @@ $(function() {
 	//var userslist = ['Yahooize', 'Vanilla mousse', 'Fat Idol'];
 	
 	
-	$("aside div").remove();
-	
+		$("aside div").remove();
+		
 		$.each(gameCache.users, function(key, value){
-			$("aside.playingCards").append($("<div/>")
+		
+			//changes the border for the current turn's player
+			if(value != gameCache.turn){
+				$("aside.playingCards").append($("<div/>")
 					.attr("data-location", value)
 					.css({"position": "relative", "height": (100/ gameCache.users.length) + "%" })
 					.addClass("droppable")
 					.append($("<span/>")
-						.text(value)));
+						.text(value)
+						)
+				);
+			}
+			else{
+				$("aside.playingCards").append($("<div/>")
+					.attr("data-location", value)
+					.addClass("droppable")
+					.css({"position": "relative", "height": (100/ gameCache.users.length) + "%", "border": "2px solid #00FF00"})
+					.append($("<span/>")
+						.text(value)
+						.css({"color": "#00FF00"})
+						)
+				);
+			}
 		});
 		
-			create_jquery_widgets();
+		
+		create_jquery_widgets();
 	}
 	
 	//adds the number of cards in each player's hand to the
