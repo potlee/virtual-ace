@@ -15,11 +15,15 @@ $(function() {
 	emitter.on('cards_dealt', cards_dealt);
 	emitter.on('invitation', game_invite);
 	
+	//The array to keep track of the number of cards in each hand
+	var hand_count = [];
 	
+	//Handles hand re-rendering after refreshing the page in
+	//render_game()
 	$(window).unload(function()
-	{
-		localStorage.setItem("game_started", true);
-	}
+		{
+			localStorage.setItem("game_started", true);
+		}
 	);
 	
 	
@@ -30,18 +34,31 @@ $(function() {
 	function render_users(){
 	//var userslist = ['Yahooize', 'Vanilla mousse', 'Fat Idol'];
 	
+	
 	$("aside div").remove();
 	
 		$.each(gameCache.users, function(key, value){
 			$("aside.playingCards").append($("<div/>")
 					.attr("data-location", value)
-					.css({"height": (100/ gameCache.users.length) + "%" })
+					.css({"position": "relative", "height": (100/ gameCache.users.length) + "%" })
 					.addClass("droppable")
-					.text(value)
-					);
+					.append($("<span/>")
+						.text(value)));
 		});
 		
 			create_jquery_widgets();
+	}
+	
+	//adds the number of cards in each player's hand to the
+	//ownership boxes.
+	function update_users(){
+		$("aside.playingCards div").each(function(){
+			$(this).append($("<span/>")
+				.attr("id", "hand_count")
+				.text("Cards: " + hand_count[$(this).attr("data-location")])
+			);
+		});
+		
 	}
 	
 	// This is the event that gets triggered after deep changes gameCache after deal();
@@ -66,6 +83,8 @@ $(function() {
 		
 		render_users();
 		
+		//triggers the dealer prompt only once if the dealer has
+		//already seen it.
 		var seen = localStorage.getItem("dealerPromptSeen");
 		console.log(seen, "seen");
 		if(seen != "true" && User.currentUser() == gameCache.dealer) {
@@ -73,19 +92,21 @@ $(function() {
 			localStorage.setItem("dealerPromptSeen", true);
 		}
 		
-				var test =  localStorage.getItem("game_started");
-
+		//Handles re-rendering the cards in the hand if the user
+		//leaves or refreshes the page. reads from local storage
+		var test =  localStorage.getItem("game_started");
+		
 		if(test == "true") {
-				$("#hand .card").remove();
-		$.each(window.gameCache.cards, function(key, value){
+			$("#hand .card").remove();
+			$.each(window.gameCache.cards, function(key, value){
 			// Foreach card the player owns, put it in their hand
-			if(value.username == User.currentUser()) {
-				$("#hand").append(create_card(key, value.faceup));
-			}
-		});
-		localStorage.setItem("game_started", false);
+				if(value.username == User.currentUser()) {
+					$("#hand").append(create_card(key, value.faceup));
+				}
+			});
+			localStorage.setItem("game_started", false);
 		}
-
+		
 		
 		// If the  current user isnt already in the game, then send then an 
 		// invite.
@@ -94,29 +115,25 @@ $(function() {
 		}
 		
 		
+		//set the card count of each player's hand to be zero
+		$.each(gameCache.users, function(key, value){
+			hand_count[value] = 0;
+		});
+		
 		
 		//removes all card divs
 		$(".card").not("#hand .card").remove();
 		
 		
-		
 		//go through each card and create them.
-				
-		//=== does not change data types of either side
-		//-- Currently only distinguishes between hand and table, ownership
-		//-- should be implemented later (create ownership id by username, then
-		//--(#'username').append( )etc.)
 		$.each(window.gameCache.cards, function(key, value){
 		//do checks for users/table or hand checks here.
-
-
+		//Since we do not render cards in hands, we only need to 
+		//add to the hand card count for cards owned by players
 			switch (value.username){
-				case User.currentUser():
-						//$("#hand").append(create_card(key, value.faceup));
-						break;
-					
 				case "table":			
-						$('.droppable[data-location=\''+value.location+'\']').append(create_card(key, value.faceup)
+						$('.droppable[data-location=\''+value.location+'\']')
+						.append(create_card(key, value.faceup)
 							.css({
 								"top" : value.position.y+'%',
 								"left" : value.position.x+'%', 
@@ -125,9 +142,8 @@ $(function() {
 						);
 						break;
 				default:
-						//The case where someone else owns the card, may have to
-						//consider ownership boxes later but right now don't render the card.
-						//keep count of cards in the users hands.
+						//The case where someone owns the card.
+						hand_count[value.username]++;
 			}
 			
 		});
@@ -135,7 +151,12 @@ $(function() {
 		//Prevent other players from moving cards when it is not their turn
 		if(User.currentUser() == window.gameCache.turn)
 			make_cards_draggable();
-		console.log('-------------- render_game()');		
+		console.log('-------------- render_game()');
+		
+		//Since the ownership boxes must be rendered before the cards
+		//are rendered, we have to update the player hand count after
+		//all the cards are rendered.
+		update_users();
 	}
 
 	
