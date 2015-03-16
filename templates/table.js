@@ -530,13 +530,5 @@ $(function() {
    						'theme': 'error'
  					});
                 }
-                //Check if browser is Chrome or not
-                else if (navigator.userAgent.search("Chrome") >= 0) {
-                    $.fn.jAlert({
-  						'title':'Test!',
-   						'message': 'Testing purpose',
-   						'theme': 'error'
- 					});
- 				}
     }
 });
