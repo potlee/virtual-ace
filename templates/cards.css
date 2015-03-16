@@ -437,7 +437,7 @@
 /*____________ smaller cards for use inside text ____________*/
 
 .playingCards.inText .card {
-    font-size: .4em;
+    font-size: .7em;
     vertical-align: middle;
 }
 .playingCards.inText .card span.rank,
