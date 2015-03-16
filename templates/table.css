@@ -104,6 +104,12 @@ footer {
     width: 100%;
 }
 
+#hand_count {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+
 .droppable {
 	 border: 1px dotted white;
 }

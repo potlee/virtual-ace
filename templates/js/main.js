@@ -1,3 +1,5 @@
+
+
 $(document).ready(function() {
 	// Update username
 	$("#login-form").submit(function(e) {
@@ -103,7 +105,7 @@ $(document).ready(function() {
 		localStorage.setItem("leapLevel", levelNumber);
 		
 	});
-  var refreshLobby = function(){
+  var refreshLobby = function() {
 		var $section = $(".users-online");
 		$section.html('');
     	Object.keys(User.onlineUsers()).forEach(function(username) {
@@ -118,14 +120,15 @@ $(document).ready(function() {
       		}
       		if (username != User.currentUser())
       		{
-      			$section.append(  '<li>' + '<input type="checkbox" style="display:none" id="' + username + '" class="user" name="' + username + '">' + '<label class="online-users-checkbox" for="' + username + '"></label> ' + 
-                      username + ": " + games + '</li> ');
+      			$section.append(  '<li>' + '<input type="checkbox" style="display:none" id="' + username + '" class="user" name="' + 
+      				username + '">' + '<label class="online-users-checkbox" for="' + username + '"></label> ' + 
+                    username + ": " + games + '</li> ');
 
       		}
-    	});
+    	})
 
 	};
-  emitter.on('change_users', refreshLobby);
+    emitter.on('change_users', refreshLobby);
 
 	var updateUsername = function()
 	{
@@ -153,5 +156,16 @@ $(document).ready(function() {
 		}
   };
   emitter.on('change_users', insertFavoriteGames);
+  function BrowserDetection() {      
+                //Check if browser is IE or not
+                
+                if (navigator.userAgent.search("Chrome") < 0) {
+                	console.log("Browser Detection");
+                    $(".browser-error").html("The application requires Google Chrome");
+                   
+                }
+
+    };
+    BrowserDetection();
 
 });
