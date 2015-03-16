@@ -43,7 +43,7 @@ $(function() {
 			if(value != gameCache.turn){
 				$("aside.playingCards").append($("<div/>")
 					.attr("data-location", value)
-					.css({"position": "relative", "height": (100/ gameCache.users.length) + "%" })
+					.css({"height": (100/ gameCache.users.length) + "%" })
 					.addClass("droppable")
 					.append($("<span/>")
 						.text(value)
@@ -54,7 +54,7 @@ $(function() {
 				$("aside.playingCards").append($("<div/>")
 					.attr("data-location", value)
 					.addClass("droppable")
-					.css({"position": "relative", "height": (100/ gameCache.users.length) + "%", "border": "2px solid #00FF00"})
+					.css({"height": (100/ gameCache.users.length) + "%", "border": "2px solid #00FF00"})
 					.append($("<span/>")
 						.text(value)
 						.css({"color": "#00FF00"})
@@ -70,10 +70,10 @@ $(function() {
 	//adds the number of cards in each player's hand to the
 	//ownership boxes.
 	function update_users(){
-		$("aside.playingCards div").each(function(){
+		$("aside.playingCards div").not(".card").each(function(){
 			$(this).append($("<span/>")
 				.attr("id", "hand_count")
-				.text("Cards: " + hand_count[$(this).attr("data-location")])
+				.text(" Cards: " + hand_count[$(this).attr("data-location")])
 			);
 		});
 		
