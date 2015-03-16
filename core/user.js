@@ -1,16 +1,17 @@
 var root = require('./fb');
 var users = root.child('users');
-var cache = {};
+window.cache = {};
 var currentUser = null;
 var _ = require('lodash');
+var uuid = require('uuid');
 
 var reset = function (snapshot) {
   users.on('value', function(snapshot) {
     if(!_.isEqual(snapshot.val(), cache)) {
       cache = snapshot.val();
+      emitter.emit('change_users');
     }
   });
-  emitter.emit('change_users');
 };
 
 users.on('child_added', reset);
@@ -18,23 +19,22 @@ users.on('child_removed', reset);
 users.on('child_changed', reset);
 users.on('value', reset);
 
-
-
-User = {
-  onlineUsers: function() {
-    //var heartbeat = root.child('heartbeat')
-    //heartbeat.set('value', User.currentUser);
-    //heartbeat.on('child_changed', function() {
-      
-    //});
-    return cache;
+window.User = {
+  onlineUsers: function(cb) {
+    var now = Date.parse(new Date());
+    var out = {};
+    Object.keys(cache).forEach(function(username) {
+      if((now - cache[username].lastSeen) < 14000)
+        out[username] = cache[username];
+    });
+    return out;
   },
 
   create: function(username, favoriteGames, cb) {
     if(cache[username])
       throw new Error('user already exists');
     var user = {};
-    user[username] = { name: username, favoriteGames: favoriteGames };
+    user[username] = { name: username, favoriteGames: favoriteGames, lastSeen: Date.parse(new Date()) };
     users.update(user, cb);
     this.login(username);
   },
@@ -62,6 +62,15 @@ emitter.on('add_favorite_game', function(name) {
   }
 });
 
-module.exports = User;
+var updateLastSeen = function() {
+  var user = User.currentUser();
+  if(user) {
+    users.child(user).update({ lastSeen: Date.parse(new Date()) }, function() {
+      setTimeout(updateLastSeen, 17000);
+    });
+  }
+};
 
-global.User = User;
+updateLastSeen();
+
+module.exports = User;
