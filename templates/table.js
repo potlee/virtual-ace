@@ -294,6 +294,7 @@ $(function() {
 			  var card = ui.item.data('card');
 			  console.log('move_card_to_hand(\''+card+'\')');
 			  emitter.emit('move_card_to_hand', card);
+			  ui.item.draggable('option', 'disabled', 'true');
 			},
 			beforeStop: function (event, ui) {
 				ui.item.css('position', 'relative');
