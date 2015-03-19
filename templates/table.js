@@ -18,6 +18,8 @@ $(function() {
 	//The array to keep track of the number of cards in each hand
 	var hand_count = [];
 	
+	var zIndexCounter = 0;
+	
 	//Handles hand re-rendering after refreshing the page in
 	//render_game()
 	$(window).unload(function()
@@ -43,7 +45,7 @@ $(function() {
 			if(value != gameCache.turn){
 				$("aside.playingCards").append($("<div/>")
 					.attr("data-location", value)
-					.css({"position": "relative", "height": (100/ gameCache.users.length) + "%" })
+					.css({"height": (100/ gameCache.users.length) + "%" })
 					.addClass("droppable")
 					.append($("<span/>")
 						.text(value)
@@ -54,7 +56,7 @@ $(function() {
 				$("aside.playingCards").append($("<div/>")
 					.attr("data-location", value)
 					.addClass("droppable")
-					.css({"position": "relative", "height": (100/ gameCache.users.length) + "%", "border": "2px solid #00FF00"})
+					.css({"height": (100/ gameCache.users.length) + "%", "border": "2px solid #00FF00"})
 					.append($("<span/>")
 						.text(value)
 						.css({"color": "#00FF00"})
@@ -70,10 +72,10 @@ $(function() {
 	//adds the number of cards in each player's hand to the
 	//ownership boxes.
 	function update_users(){
-		$("aside.playingCards div").each(function(){
+		$("aside.playingCards div").not(".card").each(function(){
 			$(this).append($("<span/>")
 				.attr("id", "hand_count")
-				.text("Cards: " + hand_count[$(this).attr("data-location")])
+				.text(" Cards: " + hand_count[$(this).attr("data-location")])
 			);
 		});
 		
@@ -158,7 +160,7 @@ $(function() {
 								"z-index" : value.position.z
 							})
 						);
-						break;
+\						break;
 				default:
 						//The case where someone owns the card.
 						hand_count[value.username]++;
@@ -280,8 +282,12 @@ $(function() {
 		$('.droppable .card').draggable({
 			connectToSortable: '#hand',
 			revert: 'invalid',
-			stack: 'div',
-			containment: '#bounds'
+			stack: false,
+			containment: '#bounds',
+			start : function(event, ui) {
+				zIndexCounter++
+				$(this).css("z-index",zIndexCounter);
+			}
 		});
 	}
 	
@@ -294,6 +300,7 @@ $(function() {
 			  var card = ui.item.data('card');
 			  console.log('move_card_to_hand(\''+card+'\')');
 			  emitter.emit('move_card_to_hand', card);
+			  ui.item.draggable('option', 'disabled', 'true');
 			},
 			beforeStop: function (event, ui) {
 				ui.item.css('position', 'relative');
@@ -530,13 +537,5 @@ $(function() {
    						'theme': 'error'
  					});
                 }
-                //Check if browser is Chrome or not
-                else if (navigator.userAgent.search("Chrome") >= 0) {
-                    $.fn.jAlert({
-  						'title':'Test!',
-   						'message': 'Testing purpose',
-   						'theme': 'error'
- 					});
- 				}
     }
 });
