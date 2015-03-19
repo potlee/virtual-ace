@@ -254,17 +254,20 @@ a.logout-button {
 }
 
 .nav-wrapper .username-holder {
-    vertical-align: middle;
+    max-width: 100px;
 }
 
 .nav-wrapper p.username-place-holder {
     color: white;
     font-size: 25px;
     margin-bottom: 0px;
-    margin-left: 170px;
+    margin-top: 20px;
+    margin-left: 15px;
     margin-right: 0px;
-    vertical-align: middle;
-    margin-top: 10px;
+    /*padding-top: 10px;*/
+
+    /*vertical-align: middle;*/
+    /*margin-top: 10px;*/
 
 }
 
@@ -280,7 +283,7 @@ button.add-favorite-game-button {
 .add-favorite-game {
     height: 30px;
     margin-right: 10px;
-    margin-top: 2px;
+   
 }
 
 .begin, .level, .favorite-game { 
@@ -396,9 +399,17 @@ input[type="radio"]:checked+label{
     color: #9CBA7F;
     margin-right: 0px;
     margin-left: 30px;
-    max-width: 500px;
+    max-width: 600px;
+    word-wrap: break-word;
+    margin-top: 0px;
+
 }
 
+.current-level {
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+}
 
 /*END LOBBY*/
 

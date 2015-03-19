@@ -2,7 +2,9 @@
 
 $(document).ready(function() {
 	// Update username
+
 	$("#login-form").submit(function(e) {
+		window.levelNumber = 1;
 		e.preventDefault();
 		var username = $(".username").val();
 		if (username.length > 0) {
@@ -72,15 +74,7 @@ $(document).ready(function() {
 				emitter.emit('add_favorite_game', gameName);
 			}
 		
-			// if (User.onlineUsers()[currentUser].favoriteGames)
-			// {
-
-			// }
-			// else 
-			// {
-   //    			emitter.emit('add_favorite_game', gameName);
-   //    		}
-			//User.currentUser.favoriteGames.push(gameName); //leave this code here for when the class is actually implemented
+			
 		}
 		else
 		{
@@ -130,12 +124,15 @@ $(document).ready(function() {
 		
 	});
   var refreshLobby = function() {
+  		var $section = $(".current-level");
+  		$section.html('');
+  		$section.append('<div class="current-level">Level ' + localStorage.getItem("leapLevel") + '</div>');
 		var $section = $(".users-online");
 		$section.html('');
     	Object.keys(User.onlineUsers()).forEach(function(username) {
      		 var games = '';
       		if(User.onlineUsers()[username].favoriteGames)
-       		 games = User.onlineUsers()[username].favoriteGames.join(',');
+       		 games = User.onlineUsers()[username].favoriteGames.join(', ');
       		if(games === '') games = "no favorite games :("
       		if (username === User.currentUser())
       		{
@@ -158,7 +155,7 @@ $(document).ready(function() {
 	{
 		var $section = $(".username-place-holder");
 		$section.html('');
-		$section.append("<p>" + User.currentUser() + "</p>");
+		$section.append('<p class="username-place-holder">' + User.currentUser() + "</p>");
 	};
 
   emitter.on('change_users', updateUsername);
