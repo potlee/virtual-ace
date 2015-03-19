@@ -18,6 +18,8 @@ $(function() {
 	//The array to keep track of the number of cards in each hand
 	var hand_count = [];
 	
+	var zIndexCounter = 0;
+	
 	//Handles hand re-rendering after refreshing the page in
 	//render_game()
 	$(window).unload(function()
@@ -158,7 +160,7 @@ $(function() {
 								"z-index" : value.position.z
 							})
 						);
-						break;
+\						break;
 				default:
 						//The case where someone owns the card.
 						hand_count[value.username]++;
@@ -280,8 +282,12 @@ $(function() {
 		$('.droppable .card').draggable({
 			connectToSortable: '#hand',
 			revert: 'invalid',
-			stack: 'div',
-			containment: '#bounds'
+			stack: false,
+			containment: '#bounds',
+			start : function(event, ui) {
+				zIndexCounter++
+				$(this).css("z-index",zIndexCounter);
+			}
 		});
 	}
 	
