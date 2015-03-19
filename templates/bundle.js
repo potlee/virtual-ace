@@ -11939,8 +11939,11 @@ if(gameId !== '') {
     game.on('value', function(snapshot) {
       if(!_.isEqual(snapshot.val(), gameCache)) {
         gameCache = snapshot.val();
-        if(gameCache.ended)
-          location.href = '/lobby.html';
+        if(gameCache.ended) {
+          game.remove(function() {
+            location.href = '/lobby.html';
+          });
+        }
         emitter.emit('render_game', gameCache);
       }
     });
@@ -12015,6 +12018,7 @@ if(gameId !== '') {
 }
 
 emitter.on('start_new_game', function(usernames, name) {
+  console.log(JSON.stringify(usernames));
   var gameId = uuid.v4();
   var game = games.child(gameId);
   var cards = {};
@@ -12040,7 +12044,7 @@ emitter.on('start_new_game', function(usernames, name) {
 module.exports = emitter;
 
 },{"./fb":4,"./parse_game_id":6,"./user":8,"events":9,"lodash":1,"uuid":3}],8:[function(require,module,exports){
-var root = require('./fb');
+window.root = require('./fb');
 var users = root.child('users');
 window.cache = {};
 var currentUser = null;
@@ -12066,19 +12070,25 @@ window.User = {
     var now = Date.parse(new Date());
     var out = {};
     Object.keys(cache).forEach(function(username) {
-      if((now - cache[username].lastSeen) < 14000)
+      if((now - cache[username].lastSeen) < 20000)
         out[username] = cache[username];
     });
     return out;
+    //return cache;
   },
 
   create: function(username, favoriteGames, cb) {
     if(cache[username])
       throw new Error('user already exists');
     var user = {};
-    user[username] = { name: username, favoriteGames: favoriteGames, lastSeen: Date.parse(new Date()) };
-    users.update(user, cb);
-    this.login(username);
+    users.child(username).set({
+      name: username,
+      favoriteGames: favoriteGames,
+      lastSeen: Date.parse(new Date())
+    }, function() {
+      this.login(username);
+      cb();
+    }.bind(this));
   },
 
   currentUser: function() {
@@ -12107,8 +12117,8 @@ emitter.on('add_favorite_game', function(name) {
 var updateLastSeen = function() {
   var user = User.currentUser();
   if(user) {
-    users.child(user).update({ lastSeen: Date.parse(new Date()) }, function() {
-      setTimeout(updateLastSeen, 17000);
+    users.child(user).update({ lastSeen: Date.parse(new Date()), name: user }, function() {
+      setTimeout(updateLastSeen, 15000);
     });
   }
 };

@@ -28,8 +28,11 @@ if(gameId !== '') {
     game.on('value', function(snapshot) {
       if(!_.isEqual(snapshot.val(), gameCache)) {
         gameCache = snapshot.val();
-        if(gameCache.ended)
-          location.href = '/lobby.html';
+        if(gameCache.ended) {
+          game.remove(function() {
+            location.href = '/lobby.html';
+          });
+        }
         emitter.emit('render_game', gameCache);
       }
     });
@@ -104,6 +107,7 @@ if(gameId !== '') {
 }
 
 emitter.on('start_new_game', function(usernames, name) {
+  console.log(JSON.stringify(usernames));
   var gameId = uuid.v4();
   var game = games.child(gameId);
   var cards = {};
