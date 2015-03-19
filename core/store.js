@@ -43,10 +43,10 @@ if(gameId !== '') {
   game.on('value', reset);
 
   emitter.once('accept_invite', function() {
-    game = games.child(gameId);
-    var users = gameCache.users;
-    users.push(User.currentUser());
-    game.update({users: users});
+    games.child(gameId).child('users').transaction(function(users) {
+      users.push(User.currentUser());
+      return users;
+    });
   });
 
   emitter.on('move_card', function(card, position, location) {
@@ -72,6 +72,14 @@ if(gameId !== '') {
       game.update({ ended: true }, function() {
         location.href = '/lobby.html';
       });
+    });
+  });
+  emitter.on('reject_invite', function() {
+    games.child(gameId).child('invitedUsers').transaction(function(users) {
+      users = users.filter(function(iuser) {
+        return iuser != User.currentUser();
+      });
+      return users;
     });
   });
   emitter.on('restart_game', function() {
