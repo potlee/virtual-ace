@@ -117,7 +117,7 @@ $(function() {
 		//already seen it.
 		var showDealerPrompt = localStorage.getItem("dealerPromptSeen"  + gameCache.id);
 		if(showDealerPrompt != "true" && User.currentUser() == gameCache.dealer) {
-			inviteNotifications();
+			
 			localStorage.setItem("dealerPromptSeen"  + gameCache.id, true);
 		}
 		
@@ -187,6 +187,12 @@ $(function() {
 			first_render_game();
 			localStorage.setItem("firstRender"  + gameCache.id, false);
 		}
+		
+		var allReplied =  localStorage.getItem("allInvitesReplied"  + gameCache.id);
+		if(allReplied != "false") {
+			inviteNotifications();
+		}
+		
 	}
 
 	
@@ -469,7 +475,7 @@ $(function() {
 				'label': 'Decline Invite',
 				'cssClass': 'green',
 				'onClick': function() {
-					console.log('accept_invite()');
+					console.log('decline_invite()');
 					emitter.emit('decline_invite');
 				}
 			}],
@@ -527,20 +533,21 @@ $(function() {
 	}
 
 	function inviteNotifications() {
-		// invited users
-		// accepted users
+		var total =  gameCache.invitedUsers.length+1;  // 4
+		var pending = gameCache.users.length;  //4-1 3
 		
 		$.fn.jAlert({
 			'title': 'Invitations',
-			'message': '1/' + gameCache.users.length,
+			'message': pending + '/' + total,
 			'theme': 'success',
 			'size': 'small',
 			'closeBtn': false,
 			'autofocus': 'btn:last',
 			'replace': true
 		});
-		
-		if(allReplied) {
+
+		if(pending == total) {
+			localStorage.setItem("allInvitesReplied"  + gameCache.id, true);
 			dealCardsPrompt();
 		}
 	}
