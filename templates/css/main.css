@@ -405,10 +405,11 @@ input[type="radio"]:checked+label{
 
 }
 
-.current-level {
+.nav-wrapper .current-level {
     color: white;
     font-size: 20px;
-    padding: 10px;
+    /*padding: 20px;
+    margin-left: 50px;*/
 }
 
 /*END LOBBY*/

@@ -3,6 +3,7 @@
 $(document).ready(function() {
 	// Update username
 
+	var checkedUsernames 
 	$("#login-form").submit(function(e) {
 		window.levelNumber = 1;
 		e.preventDefault();
@@ -102,7 +103,7 @@ $(document).ready(function() {
 		if(gameName)
 		{
 
-			//emitter.emit("start_new_game", inviteUsers, gameName);
+			emitter.emit("start_new_game", inviteUsers, gameName);
 		}
       	else 
       	{
