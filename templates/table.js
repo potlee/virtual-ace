@@ -3,7 +3,7 @@ $(function() {
 	BrowserDetection();
 
 	// set timeout duration
-	var duration = 5000;
+	var duration = 120000;
 	timeout = window.setTimeout(function(){
 		console.log('timeout');
 		emitter.emit('leave_game'); 
