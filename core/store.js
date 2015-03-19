@@ -77,9 +77,11 @@ if(gameId !== '') {
   emitter.on('reject_invite', function() {
     games.child(gameId).child('invitedUsers').transaction(function(users) {
       users = users.filter(function(iuser) {
-        return iuser != User.currentUser();
+        return user != User.currentUser();
       });
       return users;
+    }, function() {
+      location.href = '/lobby.html';
     });
   });
   emitter.on('restart_game', function() {
