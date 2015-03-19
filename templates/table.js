@@ -66,7 +66,7 @@ $(function() {
 	//ownership boxes.
 	function update_users(){
 		$("aside.playingCards div").not(".card").each(function(){
-			$(this).append($("<span/>")
+			$(this).append($("<div/>")
 				.attr("id", "hand_count")
 				.text(" Cards: " + hand_count[$(this).attr("data-location")])
 			);
