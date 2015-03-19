@@ -11940,9 +11940,9 @@ if(gameId !== '') {
       if(!_.isEqual(snapshot.val(), gameCache)) {
         gameCache = snapshot.val();
         if(gameCache.ended) {
-          game.remove(function() {
+          //game.remove(function() {
             location.href = '/lobby.html';
-          });
+          //});
         }
         emitter.emit('render_game', gameCache);
       }
@@ -12106,6 +12106,9 @@ window.User = {
     localStorage.username = null;
   }
 };
+
+emitter.on('logout', User.logout);
+
 emitter.on('add_favorite_game', function(name) {
   if(cache[User.currentUser()]) {
     games = cache[User.currentUser()].favoriteGames || [];
