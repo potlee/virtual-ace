@@ -29,9 +29,9 @@ if(gameId !== '') {
       if(!_.isEqual(snapshot.val(), gameCache)) {
         gameCache = snapshot.val();
         if(gameCache.ended) {
-          game.remove(function() {
+          //game.remove(function() {
             location.href = '/lobby.html';
-          });
+          //});
         }
         emitter.emit('render_game', gameCache);
       }

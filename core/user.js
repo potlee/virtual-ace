@@ -60,6 +60,9 @@ window.User = {
     localStorage.username = null;
   }
 };
+
+emitter.on('logout', User.logout);
+
 emitter.on('add_favorite_game', function(name) {
   if(cache[User.currentUser()]) {
     games = cache[User.currentUser()].favoriteGames || [];
