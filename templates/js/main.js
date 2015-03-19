@@ -54,8 +54,32 @@ $(document).ready(function() {
 	$("#favorite-game-form").submit(function(e) {
 		e.preventDefault();
 		var gameName = $(".add-favorite-game").val();
+		var doesntExist = true;
 		if(gameName.length > 0) {
-      emitter.emit('add_favorite_game', gameName);
+			(User.onlineUsers()[User.currentUser()].favoriteGames||[]).forEach(function(game) {
+				console.log(gameName);
+    				console.log(game);
+    			if (game === gameName)
+    			{
+    				
+    				$(".favorite-game-errors").html("Please enter a valid game name");
+    				doesntExist = false;
+    			}
+
+      		});
+			if (doesntExist === true)
+			{
+				emitter.emit('add_favorite_game', gameName);
+			}
+		
+			// if (User.onlineUsers()[currentUser].favoriteGames)
+			// {
+
+			// }
+			// else 
+			// {
+   //    			emitter.emit('add_favorite_game', gameName);
+   //    		}
 			//User.currentUser.favoriteGames.push(gameName); //leave this code here for when the class is actually implemented
 		}
 		else
