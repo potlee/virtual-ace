@@ -83,11 +83,13 @@ $(function() {
 	// This is the event that gets triggered after deep changes gameCache after deal();
 	// It will REPLACE the hand, not add to it.
 	function cards_dealt() {
+		console.log('card_dealt');
 		render_hand();
 		render_game();
 	}
 
 	function render_hand() {
+		console.log('render_hand');
 		$("#hand .card").remove();
 		$.each(window.gameCache.cards, function(key, value){
 			// Foreach card the player owns, put it in their hand
@@ -102,8 +104,10 @@ $(function() {
 		//leaves or refreshes the page. reads from local storage
 		var reEntered =  localStorage.getItem("reentered" + gameCache.id);
 		
+		render_hand();
+		
 		if(reEntered == "true") {
-			render_hand();
+			//render_hand();
 			zIndexCounter = getHighestZIndex($(".card").not("#hand .card"));
 			localStorage.setItem("reentered" + gameCache.id, false);
 			return;
@@ -113,7 +117,7 @@ $(function() {
 		//already seen it.
 		var showDealerPrompt = localStorage.getItem("dealerPromptSeen"  + gameCache.id);
 		if(showDealerPrompt != "true" && User.currentUser() == gameCache.dealer) {
-			dealCardsPrompt();
+			
 			localStorage.setItem("dealerPromptSeen"  + gameCache.id, true);
 		}
 		
@@ -121,7 +125,7 @@ $(function() {
 		// invite.
 		if($.inArray(User.currentUser(), gameCache.users) == -1) {
 			game_invite(gameCache.dealer, gameCache.id);
-		}						
+		}		
 	}
 	
 	
@@ -183,6 +187,12 @@ $(function() {
 			first_render_game();
 			localStorage.setItem("firstRender"  + gameCache.id, false);
 		}
+		
+		var allReplied =  localStorage.getItem("allInvitesReplied"  + gameCache.id);
+		if(allReplied != "false") {
+			inviteNotifications();
+		}
+		
 	}
 
 	
@@ -465,8 +475,8 @@ $(function() {
 				'label': 'Decline Invite',
 				'cssClass': 'green',
 				'onClick': function() {
-					console.log('leave_game()');
-					emitter.emit('leave_game'); 
+					console.log('decline_invite()');
+					emitter.emit('decline_invite');
 				}
 			}],
 			'closeBtn': false,
@@ -521,7 +531,26 @@ $(function() {
 			'autofocus': 'btn:last'
 		});
 	}
-	
+
+	function inviteNotifications() {
+		var total =  gameCache.invitedUsers.length+1;  // 4
+		var pending = gameCache.users.length;  //4-1 3
+		
+		$.fn.jAlert({
+			'title': 'Invitations',
+			'message': pending + '/' + total,
+			'theme': 'success',
+			'size': 'small',
+			'closeBtn': false,
+			'autofocus': 'btn:last',
+			'replace': true
+		});
+
+		if(pending == total) {
+			localStorage.setItem("allInvitesReplied"  + gameCache.id, true);
+			dealCardsPrompt();
+		}
+	}
 	
 	function dealCardsPrompt() {
 		$.fn.jAlert({
@@ -548,7 +577,8 @@ $(function() {
 				}
 			}],
 			'closeBtn': false,
-			'autofocus': 'btn:last'
+			'autofocus': 'btn:last',
+			'replace' : true
 		});
 	}
 	

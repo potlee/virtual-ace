@@ -1,6 +1,7 @@
 $(function() {
-	var LeapController = new Leap.Controller({enableGestures: false});
-	
+	var LeapController = new Leap.Controller({enableGestures: true});
+
+
 
 	LeapController.on('connect', function() {
 		console.log("Successfully connected.");
@@ -9,7 +10,9 @@ $(function() {
 	LeapController.on('deviceStreaming', function() {
 		console.log("A Leap device has been connected.");
 		createCanvas();
-		
+
+		console.log(LeapController.config);
+
 		var level = localStorage.getItem('leapLevel');
 		
 		console.log('level is: ' + level);
@@ -58,27 +61,53 @@ $(function() {
 
 	function onGesture(gesture,frame) {
 		var msElapsed = Math.round(+new Date()) - LeapController.lastGesture;
-		if(gesture.type == "keyTap" && msElapsed > 200) {
+			
+			
+			if(gesture.type == "swipe") {
+          //Classify swipe as either horizontal or vertical
+          var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
+          //Classify as right-left or up-down
+          if(isHorizontal){
+              if(gesture.direction[0] > 0){
+                  swipeDirection = "right";
+              } else {
+                  swipeDirection = "left";
+              }
+          } else { //vertical
+              if(gesture.direction[1] > 0){
+                  swipeDirection = "up";
+              } else {
+                  swipeDirection = "down";
+              }                  
+          }
+          
+          if(gesture.id != LeapController.oldGesture) {
+			console.log(gesture.id);
+			console.log(swipeDirection);
+			LeapController.oldGesture = gesture.id;
+			
+          }
+          
+       }
+
+		
+		if(gesture.type == "keyTap") {
 			if(LeapController.hCard == null || LeapController.hCard === undefined) return;
-
-			/*
-			var pointableIds = gesture.pointableIds;
-			pointableIds.forEach(function(pointableId){
-				if(pointableId == frame.hands[0].middleFinger.id) {
-					$(LeapController.hCard).toggleClass("back");
-					var card = $(LeapController.hCard).data('card');
-					console.log('flip_card('+card+')');
-					emitter.emit('flip_card', card);
-					LeapController.lastGesture = Math.round(+new Date());
-				}
-			});
-			*/
-
+			
+			console.log(msElapsed);
+			if(msElapsed >= 1000) {
+				LeapController.lastGesture = Math.round(+new Date());
+				console.log('first click');
+				return;
+			}
+			
+			
+			console.log('second click');
 			$(LeapController.hCard).toggleClass("back");
 			var card = $(LeapController.hCard).data('card');
 			console.log('flip_card('+card+')');
 			emitter.emit('flip_card', card);
-			LeapController.lastGesture = Math.round(+new Date());
+			LeapController.lastGesture = Math.round(+new Date())-10000;
 					
 		}
 	}
@@ -217,60 +246,6 @@ $(function() {
 			mouseUp(x,y);
 		} else {
 			mouseDown(x,y);
-		}
-	}
-
-	function level_1_frame_old(frame) {
-		// Clear the canvas for redraw
-		LeapController.ctx.clearRect(0, 0, LeapController.ctx.canvas.clientWidth, LeapController.ctx.canvas.clientHeight);
-  
-		var hand = frame.hands[0];
-		var distanceThreshold = 27;
-		
-		// There is atleast one hand in view
-		if(hand === undefined) { return false; }
-		
-		
-		var palmAdjustment = { x: -15, y: -30 };
-		if(hand.type == 'left') {
-			palmAdjustment.x = -palmAdjustment.x;
-		}
-		
-		var position = hand.indexFinger.stabilizedTipPosition;
-		var indexFinger = getScreenTranslatedXY(position);
-		
-		var position = hand.thumb.stabilizedTipPosition;
-		var thumb = { x: position[0], y: position[1]};	
-
-		var position = hand.stabilizedPalmPosition;
-		var palm = { x: position[0] + palmAdjustment.x, y: position[1] +  palmAdjustment.y};
-	
-		
-		drawFinger(indexFinger);
-		drawFinger(getScreenTranslatedXY([thumb.x, thumb.y]));
-		drawFinger(getScreenTranslatedXY([palm.x, palm.y]));
-		
-		var distance;
-		
-		if(hand.type == 'left') {
-			distance = thumb.x - palm.x;
-		} else {
-			distance = palm.x - thumb.x;
-		}
-		
-		var x = indexFinger.x;
-		var y = indexFinger.y;
-		
-		if(LeapController.mousedown) {
-			$(document).simulate("mousemove", {clientX: x, clientY: y});
-		} else {
-			handleMouseOver(x,y);
-		}
-		
-		if(distance > distanceThreshold) {
-			mouseDown(x,y);
-		} else {
-			mouseUp(x,y);
 		}
 	}
 
