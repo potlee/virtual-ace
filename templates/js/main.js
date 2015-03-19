@@ -88,8 +88,9 @@ $(document).ready(function() {
 		var gameName;
 		[].forEach.call(document.querySelectorAll('.user'), function(user) {
 			if(user.checked) {
-				inviteUsers.push(user.getAttribute('username'));
-				console.log(user.getAttribute('username'));
+				inviteUsers.push(user.getAttribute('name'));
+
+				console.log(user.getAttribute('name'));
 			}
 		});
 		[].forEach.call(document.querySelectorAll('.game-name'), function(user) {
@@ -97,9 +98,11 @@ $(document).ready(function() {
 				gameName = user.getAttribute('game-name');
 			}
 		});
+		//console.log(inviteUsers);
 		if(gameName)
 		{
-			emitter.emit("start_new_game", inviteUsers, gameName);
+
+			//emitter.emit("start_new_game", inviteUsers, gameName);
 		}
       	else 
       	{
