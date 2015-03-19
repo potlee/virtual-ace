@@ -5,8 +5,6 @@ $(function() {
 	// Disable highlight text for all but inputs
 	$('*:not(:input)').disableSelection();
 	$('.cardDealt').hide();
-
-	//emitter.emit('start_game', ["deep"]);
 	
 	create_events();
 	create_jquery_widgets();
@@ -14,29 +12,25 @@ $(function() {
 	emitter.on('render_game', render_game);
 	emitter.on('cards_dealt', cards_dealt);
 	emitter.on('invitation', game_invite);
-	
-	//The array to keep track of the number of cards in each hand
-	var hand_count = [];
-	
-	var zIndexCounter = 0;
-	
-	//Handles hand re-rendering after refreshing the page in
-	//render_game()
-	$(window).unload(function()
-		{
-			localStorage.setItem("game_started", true);
-		}
-	);
-	
-	
+
 	//Rendering the ownership boxes. Should be ran after handling all
 	//invitations and before starting the game.
 	emitter.on('render_users', render_users);
 	
+		
+	//The array to keep track of the number of cards in each hand
+	var hand_count = [];
+	
+	var zIndexCounter = 0;
+
+	//Handles hand re-rendering after refreshing the page in
+	//render_game()
+	$(window).unload(function(){
+		localStorage.setItem("reentered"  + gameCache.id, true);
+		localStorage.setItem("firstRender"  + gameCache.id, true);
+	});
+	
 	function render_users(){
-	//var userslist = ['Yahooize', 'Vanilla mousse', 'Fat Idol'];
-	
-	
 		$("aside div").remove();
 		
 		$.each(gameCache.users, function(key, value){
@@ -51,8 +45,7 @@ $(function() {
 						.text(value)
 						)
 				);
-			}
-			else{
+			} else {
 				$("aside.playingCards").append($("<div/>")
 					.attr("data-location", value)
 					.addClass("droppable")
@@ -73,17 +66,21 @@ $(function() {
 	//ownership boxes.
 	function update_users(){
 		$("aside.playingCards div").not(".card").each(function(){
-			$(this).append($("<span/>")
+			$(this).append($("<div/>")
 				.attr("id", "hand_count")
 				.text(" Cards: " + hand_count[$(this).attr("data-location")])
 			);
 		});
-		
 	}
 	
 	// This is the event that gets triggered after deep changes gameCache after deal();
 	// It will REPLACE the hand, not add to it.
 	function cards_dealt() {
+		render_hand();
+		render_game();
+	}
+
+	function render_hand() {
 		$("#hand .card").remove();
 		$.each(window.gameCache.cards, function(key, value){
 			// Foreach card the player owns, put it in their hand
@@ -91,55 +88,43 @@ $(function() {
 				$("#hand").append(create_card(key, value.faceup));
 			}
 		});
-		render_game();
 	}
 	
-	// This is the event that gets triggered after deeps 
-	function show_deal_prompt() {
-	
-	}
-	
-	function render_game(){
-		
-		render_users();
-		
-		//triggers the dealer prompt only once if the dealer has
-		//already seen it.
-		var seen = localStorage.getItem("dealerPromptSeen");
-		console.log(seen, "seen");
-		if(seen != "true" && User.currentUser() == gameCache.dealer) {
-			dealCardsPrompt();
-			localStorage.setItem("dealerPromptSeen", true);
-		}
-		
+	function first_render_game() {
 		//Handles re-rendering the cards in the hand if the user
 		//leaves or refreshes the page. reads from local storage
-		var test =  localStorage.getItem("game_started");
+		var reEntered =  localStorage.getItem("reentered" + gameCache.id);
 		
-		if(test == "true") {
-			$("#hand .card").remove();
-			$.each(window.gameCache.cards, function(key, value){
-			// Foreach card the player owns, put it in their hand
-				if(value.username == User.currentUser()) {
-					$("#hand").append(create_card(key, value.faceup));
-				}
-			});
-			localStorage.setItem("game_started", false);
+		if(reEntered == "true") {
+			render_hand();
+			zIndexCounter = getHighestZIndex($(".card").not("#hand .card"));
+			localStorage.setItem("reentered" + gameCache.id, false);
+			return;
 		}
-		
+	
+		//triggers the dealer prompt only once if the dealer has
+		//already seen it.
+		var showDealerPrompt = localStorage.getItem("dealerPromptSeen"  + gameCache.id);
+		if(showDealerPrompt != "true" && User.currentUser() == gameCache.dealer) {
+			dealCardsPrompt();
+			localStorage.setItem("dealerPromptSeen"  + gameCache.id, true);
+		}
 		
 		// If the  current user isnt already in the game, then send then an 
 		// invite.
 		if($.inArray(User.currentUser(), gameCache.users) == -1) {
 			game_invite(gameCache.dealer, gameCache.id);
-		}
-		
+		}						
+	}
+	
+	
+	function render_game(){
+		render_users();
 		
 		//set the card count of each player's hand to be zero
 		$.each(gameCache.users, function(key, value){
 			hand_count[value] = 0;
 		});
-		
 		
 		//removes all card divs
 		$(".card").not("#hand .card").remove();
@@ -160,7 +145,11 @@ $(function() {
 								"z-index" : value.position.z
 							})
 						);
-\						break;
+						var zindex = parseInt(value.position.z, 10);
+						if(zindex > zIndexCounter) {
+							zIndexCounter = zindex;
+						}
+						break;
 				default:
 						//The case where someone owns the card.
 						hand_count[value.username]++;
@@ -169,14 +158,24 @@ $(function() {
 		});
 		
 		//Prevent other players from moving cards when it is not their turn
-		if(User.currentUser() == window.gameCache.turn)
+		if(User.currentUser() == window.gameCache.turn) {
 			make_cards_draggable();
+		}
+			
 		console.log('-------------- render_game()');
 		
 		//Since the ownership boxes must be rendered before the cards
 		//are rendered, we have to update the player hand count after
 		//all the cards are rendered.
 		update_users();
+
+
+		var firstRender =  localStorage.getItem("firstRender"  + gameCache.id);
+		
+		if(firstRender != "false") {
+			first_render_game();
+			localStorage.setItem("firstRender"  + gameCache.id, false);
+		}
 	}
 
 	
@@ -322,9 +321,12 @@ $(function() {
 					var clone = ui.draggable.clone();
 					ui.draggable.remove();
 					
+					zIndexCounter++;
+					
 					$(clone).css({
 						width: '',
-						height: ''
+						height: '',
+						'z-index' : zIndexCounter
 					});
 					
 					$(this).append(clone);
@@ -332,9 +334,14 @@ $(function() {
 					$(clone).draggable({
 						connectToSortable: '#hand',
 						revert: 'invalid',
-						stack: 'div',
-						containment: '#bounds'
+						stack: false,
+						containment: '#bounds',
+						start : function(event, ui) {
+							zIndexCounter++;
+							$(this).css("z-index",zIndexCounter);
+						}
 					});
+					
 					
 					ui.draggable = clone;
 				}
@@ -537,5 +544,17 @@ $(function() {
    						'theme': 'error'
  					});
                 }
+    }
+    
+    function getHighestZIndex(q) {
+		var highest = 0;
+		q.each(function() {
+			var index_current = parseInt($(this).css("zIndex"), 10);
+			if(index_current > highest) {
+				highest = index_current;
+			}
+		});
+		console.log("Highest z index was: " + highest);
+		return highest;
     }
 });
