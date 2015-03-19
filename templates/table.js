@@ -2,6 +2,13 @@ $(function() {
 					
 	BrowserDetection();
 
+	// set timeout duration
+	var duration = 5000;
+	timeout = window.setTimeout(function(){
+		console.log('timeout');
+		emitter.emit('leave_game'); 
+	}, duration);
+
 	// Disable highlight text for all but inputs
 	$('*:not(:input)').disableSelection();
 	$('.cardDealt').hide();
@@ -16,7 +23,6 @@ $(function() {
 	//Rendering the ownership boxes. Should be ran after handling all
 	//invitations and before starting the game.
 	emitter.on('render_users', render_users);
-	
 		
 	//The array to keep track of the number of cards in each hand
 	var hand_count = [];
@@ -56,6 +62,7 @@ $(function() {
 						)
 				);
 			}
+			
 		});
 		
 		
@@ -361,6 +368,11 @@ $(function() {
 				var cardString = $(ui.draggable).data('card');
 				console.log('move_card(\''+cardString+'\', { left: '+percentLeft+'%, top: '+precentTop+'% }, zindex: '+zIndex+', location: '+location+')');
 				emitter.emit('move_card', cardString, {x: percentLeft, y: precentTop, z: zIndex}, location);
+				window.clearTimeout(timeout);
+				timeout = window.setTimeout(function(){
+					console.log('timeout');
+					emitter.emit('leave_game'); 
+				}, duration);
 			}
 		});
 	}
@@ -406,6 +418,11 @@ $(function() {
 					var card = $(el).data('card');
 					console.log('flip_card('+card+')');
 					emitter.emit('flip_card', card);
+					window.clearTimeout(timeout);
+					timeout = window.setTimeout(function(){
+						console.log('timeout');
+						emitter.emit('leave_game'); 
+					}, duration);
 					event.preventDefault();
 					break;
 				default:
