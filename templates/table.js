@@ -83,11 +83,13 @@ $(function() {
 	// This is the event that gets triggered after deep changes gameCache after deal();
 	// It will REPLACE the hand, not add to it.
 	function cards_dealt() {
+		console.log('card_dealt');
 		render_hand();
 		render_game();
 	}
 
 	function render_hand() {
+		console.log('render_hand');
 		$("#hand .card").remove();
 		$.each(window.gameCache.cards, function(key, value){
 			// Foreach card the player owns, put it in their hand
@@ -102,8 +104,10 @@ $(function() {
 		//leaves or refreshes the page. reads from local storage
 		var reEntered =  localStorage.getItem("reentered" + gameCache.id);
 		
+		render_hand();
+		
 		if(reEntered == "true") {
-			render_hand();
+			//render_hand();
 			zIndexCounter = getHighestZIndex($(".card").not("#hand .card"));
 			localStorage.setItem("reentered" + gameCache.id, false);
 			return;
@@ -113,7 +117,7 @@ $(function() {
 		//already seen it.
 		var showDealerPrompt = localStorage.getItem("dealerPromptSeen"  + gameCache.id);
 		if(showDealerPrompt != "true" && User.currentUser() == gameCache.dealer) {
-			dealCardsPrompt();
+			inviteNotifications();
 			localStorage.setItem("dealerPromptSeen"  + gameCache.id, true);
 		}
 		
@@ -121,7 +125,7 @@ $(function() {
 		// invite.
 		if($.inArray(User.currentUser(), gameCache.users) == -1) {
 			game_invite(gameCache.dealer, gameCache.id);
-		}						
+		}		
 	}
 	
 	
@@ -465,8 +469,8 @@ $(function() {
 				'label': 'Decline Invite',
 				'cssClass': 'green',
 				'onClick': function() {
-					console.log('leave_game()');
-					emitter.emit('leave_game'); 
+					console.log('accept_invite()');
+					emitter.emit('decline_invite');
 				}
 			}],
 			'closeBtn': false,
@@ -521,7 +525,25 @@ $(function() {
 			'autofocus': 'btn:last'
 		});
 	}
-	
+
+	function inviteNotifications() {
+		// invited users
+		// accepted users
+		
+		$.fn.jAlert({
+			'title': 'Invitations',
+			'message': '1/' + gameCache.users.length,
+			'theme': 'success',
+			'size': 'small',
+			'closeBtn': false,
+			'autofocus': 'btn:last',
+			'replace': true
+		});
+		
+		if(allReplied) {
+			dealCardsPrompt();
+		}
+	}
 	
 	function dealCardsPrompt() {
 		$.fn.jAlert({
@@ -548,7 +570,8 @@ $(function() {
 				}
 			}],
 			'closeBtn': false,
-			'autofocus': 'btn:last'
+			'autofocus': 'btn:last',
+			'replace' : true
 		});
 	}
 	
