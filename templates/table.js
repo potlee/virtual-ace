@@ -501,9 +501,6 @@ $(function() {
 	
 	
 	function gameComplete() {
-		//if(User.currentUser() != window.gameCache.turn) {
-		//	return;
-		//}
 		
 		$.fn.jAlert({
 			'title': 'Game Complete',
@@ -589,33 +586,60 @@ $(function() {
 	}
 	
 	function dealCardsPrompt() {
-		$.fn.jAlert({
-			'title': 'Begin Game',
-			'message': '#cards to be dealt',
-			'theme': 'success',
-			'size': 'small',
-			'btn': [{
-				'label': 'Shuffle and Deal',
-				'cssClass': 'green',
-				'onClick': function() {
-					prompt("Deal and Shuffle", "Number of Cards to be Dealt", "deal");
-				}
-			}, {
-				'label': 'Deal',
-				'cssClass': 'green',
-				'onClick': function() {
-					prompt("Deal", "Number of Cards to be Dealt", "deal");
-				}
-			}, {
-				'label': 'Skip',
-				'onClick': function() {
-					console.log('start_game()???');
-				}
-			}],
-			'closeBtn': false,
-			'autofocus': 'btn:last',
-			'replace' : true
-		});
+		console.log(gameCache.users.length);
+		if(gameCache.users.length <= 1) {
+			$.fn.jAlert({
+				'title': 'Begin Game',
+				'message': ' ',
+				'theme': 'success',
+				'size': 'small',
+				'btn': [{
+					'label': 'Shuffle and Deal',
+					'cssClass': 'green',
+					'onClick': function() {
+						prompt("Deal and Shuffle", "Number of Cards to be Dealt", "deal");
+					}
+				}, {
+					'label': 'Deal',
+					'cssClass': 'green',
+					'onClick': function() {
+						prompt("Deal", "Number of Cards to be Dealt", "deal");
+					}
+				},{
+					'label': 'Skip',
+					'onClick': function() {
+						console.log('start_game()???');
+					}
+				}],
+				'closeBtn': false,
+				'autofocus': 'btn:last',
+				'replace' : true
+			});
+		} else {
+			$.fn.jAlert({
+				'title': 'Begin Game',
+				'message': ' ',
+				'theme': 'success',
+				'size': 'small',
+				'btn': [{
+					'label': 'Shuffle and Deal',
+					'cssClass': 'green',
+					'onClick': function() {
+						prompt("Deal and Shuffle", "Number of Cards to be Dealt", "deal");
+					}
+				}, {
+					'label': 'Deal',
+					'cssClass': 'green',
+					'onClick': function() {
+						prompt("Deal", "Number of Cards to be Dealt", "deal");
+					}
+				}],
+				'closeBtn': false,
+				'autofocus': 'btn:last',
+				'replace' : true
+			});
+		}
+
 	}
 	
 	 function BrowserDetection() {      
