@@ -3,9 +3,8 @@
 $(document).ready(function() {
 	// Update username
 
-	var checkedUsernames 
+	
 	$("#login-form").submit(function(e) {
-		window.levelNumber = 1;
 		e.preventDefault();
 		var username = $(".username").val();
 		if (username.length > 0) {
@@ -27,6 +26,13 @@ $(document).ready(function() {
 		}
 
 
+	});
+
+	$("#logout-id").click(function(e) {
+		e.preventDefault();
+		console.log("Logout");
+		emitter.emit("logout");
+		window.location.href=$(this).attr("action");
 	});
 
 	//document.querySelector('.begin-game').onclick = function() {
@@ -130,7 +136,17 @@ $(document).ready(function() {
   var refreshLobby = function() {
   		var $section = $(".current-level");
   		$section.html('');
-  		$section.append('<div class="current-level">Level ' + localStorage.getItem("leapLevel") + '</div>');
+
+  		if (localStorage.getItem("leapLevel") != "undefined")
+  		{
+  			$section.append('<div class="current-level">Level ' + localStorage.getItem("leapLevel") + '</div>');
+  		}
+  		else 
+  		{
+  			$section.append('<div class="current-level">Level ' + 1 + '</div>');
+  			localStorage.leapLevel = 1;
+
+  		}
 		var $section = $(".users-online");
 		$section.html('');
     	Object.keys(User.onlineUsers()).forEach(function(username) {
