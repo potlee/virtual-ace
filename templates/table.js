@@ -28,7 +28,8 @@ $(function() {
 	var hand_count = [];
 	
 	var zIndexCounter = 0;
-
+	var prevJAlert = null;
+	
 	//Handles hand re-rendering after refreshing the page in
 	//render_game()
 	$(window).unload(function(){
@@ -83,7 +84,11 @@ $(function() {
 	// This is the event that gets triggered after deep changes gameCache after deal();
 	// It will REPLACE the hand, not add to it.
 	function cards_dealt() {
-		console.log('card_dealt');
+		console.log('cards_dealt');
+		if(prevJAlert != null) {
+			prevJAlert.closeAlert(true);
+		}
+		
 		render_hand();
 		render_game();
 	}
@@ -104,10 +109,8 @@ $(function() {
 		//leaves or refreshes the page. reads from local storage
 		var reEntered =  localStorage.getItem("reentered" + gameCache.id);
 		
-		render_hand();
-		
 		if(reEntered == "true") {
-			//render_hand();
+			render_hand();
 			zIndexCounter = getHighestZIndex($(".card").not("#hand .card"));
 			localStorage.setItem("reentered" + gameCache.id, false);
 			return;
@@ -124,7 +127,14 @@ $(function() {
 	
 	function render_game(){
 		render_users();
+
+		var beginHandCount = 0;
+		//set the card count of each player's hand to be zero
+		$.each(gameCache.users, function(key, value){
+			beginHandCount += hand_count[value];
+		});
 		
+			
 		//set the card count of each player's hand to be zero
 		$.each(gameCache.users, function(key, value){
 			hand_count[value] = 0;
@@ -155,11 +165,11 @@ $(function() {
 						}
 						break;
 				default:
-						//The case where someone owns the card.
 						hand_count[value.username]++;
 			}
 			
 		});
+		
 		
 		//Prevent other players from moving cards when it is not their turn
 		if(User.currentUser() == window.gameCache.turn) {
@@ -174,23 +184,27 @@ $(function() {
 		update_users();
 
 
-		var firstRender =  localStorage.getItem("firstRender"  + gameCache.id);
-		
-		if(firstRender != "false") {
-			first_render_game();
-			localStorage.setItem("firstRender"  + gameCache.id, false);
-		}
+		oneTimeRun('firstRender', first_render_game);
 		
 		
 		var allReplied =  localStorage.getItem("allInvitesReplied"  + gameCache.id);
 		var IReplied = localStorage.getItem("IReplied" + gameCache.id);
-		
-		console.log(allReplied);
-		
-		if(User.currentUser() == gameCache.dealer && allReplied != "false") {
+				
+		var accepted = (User.currentUser() == gameCache.dealer || IReplied == "true");
+		if(accepted && allReplied != "true") {
 			inviteNotifications();
 		}
 		
+		
+		if(beginHandCount == 0) {	
+			$.each(gameCache.users, function(key, value){
+					// Someone got a card, set dealt flag
+					if(hand_count[value] > 0) {
+						oneTimeRun('cardsDealt', cards_dealt);
+						return false; // break out of $.each
+ 					}
+			});
+		}
 	}
 
 	
@@ -231,8 +245,7 @@ $(function() {
 	function parse_rank(data_card){
 		if(data_card.length == 3){
 			return data_card.charAt(0) + data_card.charAt(1);
-		}
-		else{
+		} else {
 			return data_card.charAt(0);
 		}
 	};
@@ -461,7 +474,8 @@ $(function() {
 		$.fn.jAlert({
 			'title': 'Invitation sent by ' + dealer,
 			'theme': 'success',
-			'size': 'small',
+			'message': ' ',
+			'size': 'medium',
 			'btn': [{
 				'label': 'Accept Invite',
 				'cssClass': 'green',
@@ -469,6 +483,7 @@ $(function() {
 					console.log('accept_invite()');
 					emitter.emit('accept_invite'); 
 					localStorage.setItem("IReplied"  + gameCache.id, true);
+					inviteNotifications();
 				}
 			},{
 				'label': 'Decline Invite',
@@ -481,6 +496,7 @@ $(function() {
 			'closeBtn': false,
 			'autofocus': 'btn:last'
 		}); //$.fn.jAlert
+		
 	}
 	
 	
@@ -538,10 +554,30 @@ $(function() {
 		} else {
 			var invitedUsersLen = gameCache.invitedUsers.length;
 		}
+		
 		var total =  invitedUsersLen+1;  // 4
 		var pending = gameCache.users.length;  //4-1 3
-		
-		$.fn.jAlert({
+
+		if(pending == total) {
+			localStorage.setItem("allInvitesReplied"  + gameCache.id, true);
+			
+			if(User.currentUser() == gameCache.dealer) {
+				dealCardsPrompt();
+			} else {
+				 prevJAlert = $.fn.jAlert({
+					'title': 'Waiting',
+					'message': 'Waiting to be dealt',
+					'theme': 'success',
+					'size': 'small',
+					'closeBtn': false,
+					'autofocus': 'btn:last',
+					'replace': true
+				});
+			}
+			return;
+		}
+				
+		 prevJAlert = $.fn.jAlert({
 			'title': 'Invitations',
 			'message': pending + '/' + total,
 			'theme': 'success',
@@ -550,13 +586,6 @@ $(function() {
 			'autofocus': 'btn:last',
 			'replace': true
 		});
-
-
-
-		if(pending == total) {
-			localStorage.setItem("allInvitesReplied"  + gameCache.id, true);
-			dealCardsPrompt();
-		}
 	}
 	
 	function dealCardsPrompt() {
@@ -590,14 +619,14 @@ $(function() {
 	}
 	
 	 function BrowserDetection() {      
-                //Check if browser is IE or not
-                if (navigator.userAgent.search("MSIE") >= 0) {
-                    $.fn.jAlert({
-  						'title':'Error!',
-   						'message': 'Please reopen page using Chrome, Firefox, or Safari',
-   						'theme': 'error'
- 					});
-                }
+		//Check if browser is IE or not
+		if (navigator.userAgent.search("MSIE") >= 0) {
+			$.fn.jAlert({
+				'title':'Error!',
+				'message': 'Please reopen page using Chrome, Firefox, or Safari',
+				'theme': 'error'
+			});
+		}
     }
     
     function getHighestZIndex(q) {
@@ -610,5 +639,15 @@ $(function() {
 		});
 		console.log("Highest z index was: " + highest);
 		return highest;
+    }
+    
+    function oneTimeRun(name, func) {
+		console.log('oneTimeRun('+name+', '+func+')');
+		var hasItRan = localStorage.getItem(name + gameCache.id);
+		console.log(hasItRan);
+		if(hasItRan != "true") {
+			func();
+			localStorage.setItem(name + gameCache.id, true);
+		}
     }
 });
