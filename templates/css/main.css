@@ -276,7 +276,7 @@ a.logout-button {
 
 }
 
-button.add-favorite-game-button {
+a.add-favorite-game-button {
     float: right;
     margin-left: 2px;
     margin-top: 0px;
@@ -348,7 +348,7 @@ li {
 .bootstrap-tagsinput  {
     background-color: #CFDBC5;
     width: auto;
-    
+
     border: 2px solid black;
 
 

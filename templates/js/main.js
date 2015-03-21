@@ -35,10 +35,6 @@ $(document).ready(function() {
 		window.location.href=$(this).attr("action");
 	});
 
-	//document.querySelector('.begin-game').onclick = function() {
-
-	//}
-
 	$("#create-login-form").submit(function(e) {
 		e.preventDefault();
 		var username = $(".username").val();
@@ -60,34 +56,34 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#favorite-game-form").submit(function(e) {
-		e.preventDefault();
-		var gameName = $(".add-favorite-game").val();
-		var doesntExist = true;
-		if(gameName.length > 0) {
-			(User.onlineUsers()[User.currentUser()].favoriteGames||[]).forEach(function(game) {
-				console.log(gameName);
-    				console.log(game);
-    			if (game === gameName)
-    			{
+	// $("#favorite-game-form").submit(function(e) {
+	// 	e.preventDefault();
+	// 	var gameName = $(".add-favorite-game").val();
+	// 	var doesntExist = true;
+	// 	if(gameName.length > 0) {
+	// 		(User.onlineUsers()[User.currentUser()].favoriteGames||[]).forEach(function(game) {
+	// 			console.log(gameName);
+ //    				console.log(game);
+ //    			if (game === gameName)
+ //    			{
     				
-    				$(".favorite-game-errors").html("Please enter a valid game name");
-    				doesntExist = false;
-    			}
+ //    				$(".favorite-game-errors").html("Please enter a valid game name");
+ //    				doesntExist = false;
+ //    			}
 
-      		});
-			if (doesntExist === true)
-			{
-				emitter.emit('add_favorite_game', gameName);
-			}
+ //      		});
+	// 		if (doesntExist === true)
+	// 		{
+	// 			emitter.emit('add_favorite_game', gameName);
+	// 		}
 		
 			
-		}
-		else
-		{
-			$(".favorite-game-errors").html("Please enter a valid game name");
-		}
-	});
+	// 	}
+	// 	else
+	// 	{
+	// 		$(".favorite-game-errors").html("Please enter a valid game name");
+	// 	}
+	// });
 
 	$("#begin-game").click(function(e) {
 		e.preventDefault();
