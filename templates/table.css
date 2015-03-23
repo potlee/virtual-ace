@@ -153,3 +153,9 @@ footer {
 .jContent {
 	color: black;
 }
+
+.updownswipeable {
+	font-size: 30px;
+	text-align: center;
+	width: 50px;
+}

@@ -1,6 +1,8 @@
-$(function() {
-	var LeapController = new Leap.Controller({enableGestures: true});
+var LeapController = null;
 
+$(function() {
+	LeapController = new Leap.Controller({enableGestures: true});
+	LeapController.streaming = false;
 
 
 	LeapController.on('connect', function() {
@@ -8,10 +10,9 @@ $(function() {
 	});
 
 	LeapController.on('deviceStreaming', function() {
+		LeapController.streaming = true;
 		console.log("A Leap device has been connected.");
 		createCanvas();
-
-		console.log(LeapController.config);
 
 		var level = localStorage.getItem('leapLevel');
 		
@@ -48,70 +49,72 @@ $(function() {
 		LeapController.hCard = null;
 		LeapController.hEle = null;
 		LeapController.color = 'red';
-		LeapController.lastGesture = 0;
+		LeapController.lastKeyTap = 0;
+		LeapController.lastSwipe = 0;
 		LeapController.grabIcon = document.getElementById("grab");
 		LeapController.grabbingIcon = document.getElementById("grabbing");
 	});
 
 	LeapController.on('deviceStopped', function() {
 		console.log("A Leap device has been disconnected.");
+		LeapController.streaming = false;
 	});
 
 	LeapController.connect();
 
 	function onGesture(gesture,frame) {
-		var msElapsed = Math.round(+new Date()) - LeapController.lastGesture;
+		if(gesture.type == "swipe" && gesture.state == "stop") {
+			var msElapsed = Math.round(+new Date()) - LeapController.lastSwipe;
 			
-			
-			if(gesture.type == "swipe") {
-          //Classify swipe as either horizontal or vertical
-          var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
-          //Classify as right-left or up-down
-          if(isHorizontal){
-              if(gesture.direction[0] > 0){
-                  swipeDirection = "right";
-              } else {
-                  swipeDirection = "left";
-              }
-          } else { //vertical
-              if(gesture.direction[1] > 0){
-                  swipeDirection = "up";
-              } else {
-                  swipeDirection = "down";
-              }                  
-          }
-          
-          if(gesture.id != LeapController.oldGesture) {
-			console.log(gesture.id);
-			console.log(swipeDirection);
-			LeapController.oldGesture = gesture.id;
-			
-          }
-          
-       }
-
-		
-		if(gesture.type == "keyTap") {
+			var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
+			if(msElapsed >= 1000) {
+				LeapController.lastSwipe = Math.round(+new Date());
+				//Classify as right-left or up-down
+				if(isHorizontal){
+					if(gesture.direction[0] > 0){
+						swipeDirection = "right";
+					} else {
+						swipeDirection = "left";
+					}
+				} else { //vertical
+					if(gesture.direction[1] > 0){
+						handleVerticleSwipe("up");
+					} else {
+						handleVerticleSwipe("down");
+					}                  
+				}
+				//console.log(swipeDirection);
+			}
+       } else if(gesture.type == "keyTap") {
 			if(LeapController.hCard == null || LeapController.hCard === undefined) return;
 			
-			console.log(msElapsed);
+			var msElapsed = Math.round(+new Date()) - LeapController.lastKeyTap;
 			if(msElapsed >= 1000) {
-				LeapController.lastGesture = Math.round(+new Date());
-				console.log('first click');
+				LeapController.lastKeyTap = Math.round(+new Date());
+				// console.log('first click');
 				return;
+			} else if (msElapsed >= 100) { 
+				// This is the 2nd keytap in less than 1 second
+				// console.log('second click');
+				flip_card(LeapController.hCard); //located in table.js
+				LeapController.lastKeyTap = Math.round(+new Date())-10000;
 			}
-			
-			
-			console.log('second click');
-			$(LeapController.hCard).toggleClass("back");
-			var card = $(LeapController.hCard).data('card');
-			console.log('flip_card('+card+')');
-			emitter.emit('flip_card', card);
-			LeapController.lastGesture = Math.round(+new Date())-10000;
-					
 		}
 	}
-
+	
+	function handleVerticleSwipe(direction) {
+		if(!LeapController.updownswipeable) return;
+		
+		var input = $('.updownswipeable');
+		var current_value = parseInt(input.val(),10);
+		if(direction == "up") {
+			input.val(current_value + 1);
+		} else if (direction == "down") {
+			input.val(current_value - 1);
+		}
+	}
+	
+	
 	function getTranslationVariables(w, h) {
 	
 		var factor_x = 1 + 0.007 * LeapController.options.sensitivity.x;

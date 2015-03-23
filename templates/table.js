@@ -1,3 +1,6 @@
+//Globals
+var flip_card = function() { console.log("Not yet loaded") };
+
 $(function() {
 					
 	BrowserDetection();
@@ -398,6 +401,22 @@ $(function() {
 		});
 	}
 
+
+	flip_card = function(card) {
+		var card_val = $(card).data('card');
+		$(card).toggleClass("back");
+		
+		console.log('flip_card('+card_val+')');
+		emitter.emit('flip_card', card_val);
+		
+		window.clearTimeout(timeout);
+		timeout = window.setTimeout(function(){
+			console.log('timeout');
+			emitter.emit('leave_game'); 
+		}, duration);
+	}
+	
+	
 	function create_events() {
 
 		$('body').bind('contextmenu', function(){ return false });
@@ -405,7 +424,6 @@ $(function() {
 		$("body").mousedown(function(event) {
 			//Prevent other players from flipping cards when it is not their turn
 			if(User.currentUser() != window.gameCache.turn) {
-				
 				return;
 			}
 			
@@ -435,15 +453,8 @@ $(function() {
 					break;
 				case 3:
 					//alert('Right Mouse button pressed.');
-					$(el).toggleClass("back");
-					var card = $(el).data('card');
-					console.log('flip_card('+card+')');
-					emitter.emit('flip_card', card);
-					window.clearTimeout(timeout);
-					timeout = window.setTimeout(function(){
-						console.log('timeout');
-						emitter.emit('leave_game'); 
-					}, duration);
+					flip_card(el);
+					console.log(el);
 					event.preventDefault();
 					break;
 				default:
@@ -451,7 +462,7 @@ $(function() {
 			}
 		});
 
-					
+		
 
 		// buttons
 		$( '.next' ).click(function() {
@@ -526,9 +537,14 @@ $(function() {
 	}
 
 	function prompt(title, message, call) {
+		LeapController.updownswipeable = true;
 		$.fn.jAlert({
 			'title': title,
-			'message': message+'<br><form style="text-align:center"><input type="text" size=2 value="0"></form>',
+			'message': message +
+						'<br>'+
+						'<form style="text-align:center">'+
+							'<input class="updownswipeable" type="number" size="2" step="1" min="0" max="52" value="0">'+
+						'</form>',
 			'theme': 'success',
 			'size': 'small',
 			'btn': [{
@@ -536,6 +552,7 @@ $(function() {
 				'onClick': function() {
 					var value = $('.jContent > form :input').val();
 					console.log(''+call+'(' + value + ')');
+					LeapController.updownswipeable = false;
 					emitter.emit(call, value);
 				}
 			}],
@@ -666,9 +683,8 @@ $(function() {
     }
     
     function oneTimeRun(name, func) {
-		console.log('oneTimeRun('+name+', '+func+')');
+		//console.log('oneTimeRun('+name+', '+func+')');
 		var hasItRan = localStorage.getItem(name + gameCache.id);
-		console.log(hasItRan);
 		if(hasItRan != "true") {
 			func();
 			localStorage.setItem(name + gameCache.id, true);
