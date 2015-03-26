@@ -487,6 +487,9 @@ $(function() {
 			'theme': 'success',
 			'message': ' ',
 			'size': 'medium',
+			'closeBtn': false,
+			'clickAnywhere': false,
+			'hideOnEsc': false,
 			'btn': [{
 				'label': 'Accept Invite',
 				'cssClass': 'green',
@@ -504,7 +507,7 @@ $(function() {
 					emitter.emit('reject_invite');
 				}
 			}],
-			'closeBtn': false,
+			
 			'autofocus': 'btn:last'
 		}); //$.fn.jAlert
 		
@@ -517,6 +520,9 @@ $(function() {
 			'title': 'Game Complete',
 			'theme': 'success',
 			'size': 'small',
+			'closeBtn': true,
+			'clickAnywhere': false,
+			'hideOnEsc': true,
 			'btn': [{
 				'label': 'Begin New Game',
 				'cssClass': 'green',
@@ -531,9 +537,14 @@ $(function() {
 					emitter.emit('leave_game'); 
 				}
 			}],
-			'closeBtn': false,
+			'onClose': function(){
+				emitter.emit('leave_game'); 
+			},
 			'autofocus': 'btn:last'
 		}); //$.fn.jAlert
+		
+		
+		// brian
 	}
 
 	function prompt(title, message, call) {
@@ -547,6 +558,9 @@ $(function() {
 						'</form>',
 			'theme': 'success',
 			'size': 'small',
+			'closeBtn': false,
+			'clickAnywhere': false,
+			'hideOnEsc': false,
 			'btn': [{
 				'label': 'Deal',
 				'onClick': function() {
@@ -556,7 +570,7 @@ $(function() {
 					emitter.emit(call, value);
 				}
 			}],
-			'closeBtn': false,
+			
 			'autofocus': 'btn:last'
 		});
 	}
@@ -583,7 +597,9 @@ $(function() {
 					'message': 'Waiting to be dealt',
 					'theme': 'success',
 					'size': 'small',
-					'closeBtn': false,
+					'closeBtn': true,
+					'clickAnywhere': true,
+					'hideOnEsc': true,
 					'autofocus': 'btn:last',
 					'replace': true
 				});
@@ -596,48 +612,26 @@ $(function() {
 			'message': pending + '/' + total,
 			'theme': 'success',
 			'size': 'small',
-			'closeBtn': false,
+			'closeBtn': true,
+			'clickAnywhere': true,
+			'hideOnEsc': true,
 			'autofocus': 'btn:last',
 			'replace': true
 		});
 	}
 	
 	function dealCardsPrompt() {
-		console.log(gameCache.users.length);
 		if(gameCache.users.length <= 1) {
-			$.fn.jAlert({
-				'title': 'Begin Game',
-				'message': ' ',
-				'theme': 'success',
-				'size': 'small',
-				'btn': [{
-					'label': 'Shuffle and Deal',
-					'cssClass': 'green',
-					'onClick': function() {
-						prompt("Deal and Shuffle", "Number of Cards to be Dealt", "deal");
-					}
-				}, {
-					'label': 'Deal',
-					'cssClass': 'green',
-					'onClick': function() {
-						prompt("Deal", "Number of Cards to be Dealt", "deal");
-					}
-				},{
-					'label': 'Skip',
-					'onClick': function() {
-						console.log('start_game()???');
-					}
-				}],
-				'closeBtn': false,
-				'autofocus': 'btn:last',
-				'replace' : true
-			});
+			emitter.emit('deal', 0);
 		} else {
 			$.fn.jAlert({
 				'title': 'Begin Game',
 				'message': ' ',
 				'theme': 'success',
 				'size': 'small',
+				'closeBtn': false,
+				'clickAnywhere': false,
+				'hideOnEsc': false,
 				'btn': [{
 					'label': 'Shuffle and Deal',
 					'cssClass': 'green',
@@ -651,7 +645,6 @@ $(function() {
 						prompt("Deal", "Number of Cards to be Dealt", "deal");
 					}
 				}],
-				'closeBtn': false,
 				'autofocus': 'btn:last',
 				'replace' : true
 			});

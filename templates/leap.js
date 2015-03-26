@@ -13,7 +13,7 @@ $(function() {
 		LeapController.streaming = true;
 		console.log("A Leap device has been connected.");
 		createCanvas();
-
+		createHands();
 		var level = localStorage.getItem('leapLevel');
 		
 		console.log('level is: ' + level);
@@ -51,8 +51,6 @@ $(function() {
 		LeapController.color = 'red';
 		LeapController.lastKeyTap = 0;
 		LeapController.lastSwipe = 0;
-		LeapController.grabIcon = document.getElementById("grab");
-		LeapController.grabbingIcon = document.getElementById("grabbing");
 	});
 
 	LeapController.on('deviceStopped', function() {
@@ -284,13 +282,32 @@ $(function() {
 		LeapController.ctx.fill();
 	}
 
+	function createHands() {		
+		var i = document.createElement('img');
+		document.body.appendChild(i);
+		i.src='grab.gif';
+		i.id = 'grabIcon';
+		i.style.display = 'none';
+
+		var i2 = document.createElement('img');
+		document.body.appendChild(i2);
+		i2.src='grabbing.gif';
+		i2.id = 'grabIcon';
+		i2.style.display = 'none';
+
+		LeapController.grabIcon = i;
+		LeapController.grabbingIcon = i2;
+	}
+	
+	
+	
 	function createCanvas() {
 		var c = document.createElement('canvas');
 		document.body.appendChild(c);
 		c.style.position = 'absolute';
 		c.style.left = "0px";
 		c.style.top = "0px";
-		c.style.zIndex = "1000000";
+		c.style.zIndex = "100000000";
 		c.style.width = "100%";
 		c.style.height = "100%";
 		c.style.pointerEvents = "none";
