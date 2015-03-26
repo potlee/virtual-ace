@@ -1,17 +1,14 @@
 //Globals
 var flip_card = function() { console.log("Not yet loaded") };
+var duration = 300000;
 
 $(function() {
 					
 	BrowserDetection();
 
 	// set timeout duration
-	var duration = 120000;
-	timeout = window.setTimeout(function(){
-		console.log('timeout');
-		emitter.emit('leave_game'); 
-	}, duration);
-
+	
+	timeout = setTimeout();
 	// Disable highlight text for all but inputs
 	$('*:not(:input)').disableSelection();
 	$('.cardDealt').hide();
@@ -393,10 +390,7 @@ $(function() {
 				console.log('move_card(\''+cardString+'\', { left: '+percentLeft+'%, top: '+precentTop+'% }, zindex: '+zIndex+', location: '+location+')');
 				emitter.emit('move_card', cardString, {x: percentLeft, y: precentTop, z: zIndex}, location);
 				window.clearTimeout(timeout);
-				timeout = window.setTimeout(function(){
-					console.log('timeout');
-					emitter.emit('leave_game'); 
-				}, duration);
+				timeout = setTimeout();
 			}
 		});
 	}
@@ -410,10 +404,7 @@ $(function() {
 		emitter.emit('flip_card', card_val);
 		
 		window.clearTimeout(timeout);
-		timeout = window.setTimeout(function(){
-			console.log('timeout');
-			emitter.emit('leave_game'); 
-		}, duration);
+		timeout = setTimeout();
 	}
 	
 	
@@ -683,4 +674,13 @@ $(function() {
 			localStorage.setItem(name + gameCache.id, true);
 		}
     }
+    
+    function setTimeout() {
+    	var timeout = window.setTimeout(function(){
+			console.log('timeout');
+			emitter.emit('leave_game'); 
+		}, duration);
+		return timeout;
+    }
+    
 });

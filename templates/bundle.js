@@ -11987,7 +11987,7 @@ if(gameId !== '') {
   });
   emitter.on('reject_invite', function() {
     games.child(gameId).child('invitedUsers').transaction(function(users) {
-      users = users.filter(function(iuser) {
+      users = users.filter(function(user) {
         return user != User.currentUser();
       });
       return users;
