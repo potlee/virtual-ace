@@ -3,9 +3,8 @@
 $(document).ready(function() {
 	// Update username
 
-	var checkedUsernames 
+	
 	$("#login-form").submit(function(e) {
-		window.levelNumber = 1;
 		e.preventDefault();
 		var username = $(".username").val();
 		if (username.length > 0) {
@@ -29,9 +28,12 @@ $(document).ready(function() {
 
 	});
 
-	//document.querySelector('.begin-game').onclick = function() {
-
-	//}
+	$("#logout-id").click(function(e) {
+		e.preventDefault();
+		console.log("Logout");
+		emitter.emit("logout");
+		window.location.href=$(this).attr("action");
+	});
 
 	$("#create-login-form").submit(function(e) {
 		e.preventDefault();
@@ -54,34 +56,34 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#favorite-game-form").submit(function(e) {
-		e.preventDefault();
-		var gameName = $(".add-favorite-game").val();
-		var doesntExist = true;
-		if(gameName.length > 0) {
-			(User.onlineUsers()[User.currentUser()].favoriteGames||[]).forEach(function(game) {
-				console.log(gameName);
-    				console.log(game);
-    			if (game === gameName)
-    			{
+	// $("#favorite-game-form").submit(function(e) {
+	// 	e.preventDefault();
+	// 	var gameName = $(".add-favorite-game").val();
+	// 	var doesntExist = true;
+	// 	if(gameName.length > 0) {
+	// 		(User.onlineUsers()[User.currentUser()].favoriteGames||[]).forEach(function(game) {
+	// 			console.log(gameName);
+ //    				console.log(game);
+ //    			if (game === gameName)
+ //    			{
     				
-    				$(".favorite-game-errors").html("Please enter a valid game name");
-    				doesntExist = false;
-    			}
+ //    				$(".favorite-game-errors").html("Please enter a valid game name");
+ //    				doesntExist = false;
+ //    			}
 
-      		});
-			if (doesntExist === true)
-			{
-				emitter.emit('add_favorite_game', gameName);
-			}
+ //      		});
+	// 		if (doesntExist === true)
+	// 		{
+	// 			emitter.emit('add_favorite_game', gameName);
+	// 		}
 		
 			
-		}
-		else
-		{
-			$(".favorite-game-errors").html("Please enter a valid game name");
-		}
-	});
+	// 	}
+	// 	else
+	// 	{
+	// 		$(".favorite-game-errors").html("Please enter a valid game name");
+	// 	}
+	// });
 
 	$("#begin-game").click(function(e) {
 		e.preventDefault();
@@ -130,7 +132,17 @@ $(document).ready(function() {
   var refreshLobby = function() {
   		var $section = $(".current-level");
   		$section.html('');
-  		$section.append('<div class="current-level">Level ' + localStorage.getItem("leapLevel") + '</div>');
+
+  		if (localStorage.getItem("leapLevel") != "undefined")
+  		{
+  			$section.append('<div class="current-level">Level ' + localStorage.getItem("leapLevel") + '</div>');
+  		}
+  		else 
+  		{
+  			$section.append('<div class="current-level">Level ' + 1 + '</div>');
+  			localStorage.leapLevel = 1;
+
+  		}
 		var $section = $(".users-online");
 		$section.html('');
     	Object.keys(User.onlineUsers()).forEach(function(username) {

@@ -236,14 +236,17 @@ body.lobby {
 }
 
 .help {
-    margin-top: 10px;
-    margin-left: 10px;
+    
     float: left;
+    min-height: 10px;
 }
-a.help-button {
+
+
+.help a.help-button {
     background-color: white;
     color: #005a00;
     border: black solid 2px;
+    margin: 10px;
 
 }
 
@@ -251,6 +254,8 @@ a.logout-button {
     background-color: white;
     color: #005a00;
     border: black solid 2px;
+    margin: 10px;
+    cursor: pointer;
 }
 
 .nav-wrapper .username-holder {
@@ -271,7 +276,7 @@ a.logout-button {
 
 }
 
-button.add-favorite-game-button {
+a.add-favorite-game-button {
     float: right;
     margin-left: 2px;
     margin-top: 0px;
@@ -338,6 +343,28 @@ li {
     margin: 5px;
     word-wrap: break-word;
 
+}
+
+.bootstrap-tagsinput  {
+    background-color: #CFDBC5;
+    width: auto;
+
+    border: 2px solid black;
+
+
+}
+
+.tagsinput-primary .tag {
+    background-color: #004b00;
+    color: #CFDBC5;
+    font-size: 20px;
+    vertical-align: middle;
+
+
+}
+
+.tagsinput-primary .bootstrap-tagsinput {
+  border-color: black;
 }
 
 /*input[type = 'checkbox']:checked+label {

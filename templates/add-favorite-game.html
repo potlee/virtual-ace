@@ -31,19 +31,24 @@
             <form id="add-game-form" action="lobby.html">
                 <div class="game-description-box">
                    <p class="game-name">
-                       Game Name: <input type="text" class="input-game" placeholder="Favorite Game"> 
+                       My Favorite Games: 
                    </p>
-                   <p class="game-description-name"> Game Description: </p>
-                  <textarea class="placeholder-description"> Type Description Here... </textarea>
+                   <ul class="object-list"> 
+                        <li>
+                            <label class="online-users-checkbox" for="games-checkbox">yay</label>
+                            <input id="games-checkbox" style="display:none" name="games-list" type="radio"> 
+                        </li>
+
+                    </ul>
                 </div>
                 <div class="okay-cancel">
                     <div class="okay">
-                        <button class="okay-button" type="submit">Okay</button>
+                        <button class="okay-button" type="submit">Back to Lobby</button>
                         
                     </div>
-                    <div class="cancel">
+                   <!--  <div class="cancel">
                         <a class="cancel-button" href="lobby.html">Cancel</a>
-                    </div>
+                    </div> -->
                 </div>
             </form>
         </div>
