@@ -16,6 +16,8 @@ $(function() {
 	create_events();
 	create_jquery_widgets();
 	
+
+	
 	emitter.on('render_game', render_game);
 	emitter.on('cards_dealt', cards_dealt);
 	emitter.on('invitation', game_invite);
@@ -29,6 +31,7 @@ $(function() {
 	
 	var zIndexCounter = 0;
 	var prevJAlert = null;
+	
 	
 	//Handles hand re-rendering after refreshing the page in
 	//render_game()
@@ -102,6 +105,8 @@ $(function() {
 				$("#hand").append(create_card(key, value.faceup));
 			}
 		});
+		
+		
 	}
 	
 	function first_render_game() {
@@ -109,23 +114,28 @@ $(function() {
 		//leaves or refreshes the page. reads from local storage
 		var reEntered =  localStorage.getItem("reentered" + gameCache.id);
 		
+		
 		if(reEntered == "true") {
 			render_hand();
 			zIndexCounter = getHighestZIndex($(".card").not("#hand .card"));
 			localStorage.setItem("reentered" + gameCache.id, false);
 			return;
 		}
-	
-
+		
+		
 		// If the  current user isnt already in the game, then send then an 
 		// invite.
 		if($.inArray(User.currentUser(), gameCache.users) == -1) {
 			game_invite(gameCache.dealer, gameCache.id);
-		}		
+		}
 	}
 	
 	
 	function render_game(){
+		
+		//Display the game's name in the footer.
+		$("#gameName").text(gameCache.name);
+		
 		render_users();
 
 		var beginHandCount = 0;
