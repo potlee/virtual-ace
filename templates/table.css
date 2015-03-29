@@ -104,6 +104,18 @@ footer {
     width: 100%;
 }
 
+#owner {
+    height: calc(100% - 120px);
+	margin-bottom: 10px;
+
+}
+
+#dhand {
+    height: 120px;
+    width: 100%;
+	 border: 1px solid white;
+
+}
 
 .droppable {
 	 border: 1px dotted white;

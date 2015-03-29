@@ -38,13 +38,13 @@ $(function() {
 	});
 	
 	function render_users(){
-		$("aside div").remove();
+		$("aside #owner div").remove();
 		
 		$.each(gameCache.users, function(key, value){
 		
 			//changes the border for the current turn's player
 			if(value != gameCache.turn){
-				$("aside.playingCards").append($("<div/>")
+				$("aside.playingCards #owner").append($("<div/>")
 					.attr("data-location", value)
 					.css({"height": (100/ gameCache.users.length) + "%" })
 					.addClass("droppable")
@@ -53,7 +53,7 @@ $(function() {
 						)
 				);
 			} else {
-				$("aside.playingCards").append($("<div/>")
+				$("aside.playingCards #owner").append($("<div/>")
 					.attr("data-location", value)
 					.addClass("droppable")
 					.css({"height": (100/ gameCache.users.length) + "%", "border": "2px solid #00FF00"})
@@ -73,7 +73,7 @@ $(function() {
 	//adds the number of cards in each player's hand to the
 	//ownership boxes.
 	function update_users(){
-		$("aside.playingCards div").not(".card").each(function(){
+		$("aside.playingCards #owner div").not(".card").each(function(){
 			$(this).append($("<div/>")
 				.attr("id", "hand_count")
 				.text(" Cards: " + hand_count[$(this).attr("data-location")])
