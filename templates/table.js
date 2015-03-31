@@ -38,6 +38,7 @@ $(function() {
 	$(window).unload(function(){
 		localStorage.setItem("reentered"  + gameCache.id, true);
 		localStorage.setItem("firstRender"  + gameCache.id, true);
+		localStorage.setItem("cardsDealt"  + gameCache.id, false);
 	});
 	
 	function render_users(){
@@ -132,7 +133,7 @@ $(function() {
 	
 	
 	function render_game(){
-		
+		console.log('render_game BRIANNNNNNNNNNN');
 		//Display the game's name in the footer.
 		$("#gameName").text(gameCache.name);
 		
@@ -140,8 +141,10 @@ $(function() {
 
 		var beginHandCount = 0;
 		//set the card count of each player's hand to be zero
-		$.each(gameCache.users, function(key, value){
-			beginHandCount += hand_count[value];
+		$.each(gameCache.users, function(key, value){			
+			if(hand_count[value]) {
+				beginHandCount += hand_count[value];
+			}
 		});
 		
 			
@@ -196,7 +199,6 @@ $(function() {
 
 		oneTimeRun('firstRender', first_render_game);
 		
-		
 		var allReplied =  localStorage.getItem("allInvitesReplied"  + gameCache.id);
 		var IReplied = localStorage.getItem("IReplied" + gameCache.id);
 				
@@ -205,11 +207,12 @@ $(function() {
 			inviteNotifications();
 		}
 		
-		
 		if(beginHandCount == 0) {	
 			$.each(gameCache.users, function(key, value){
 					// Someone got a card, set dealt flag
+					console.log(key, value, hand_count[value]);
 					if(hand_count[value] > 0) {
+						console.log('cards_dealt should be run');
 						oneTimeRun('cardsDealt', cards_dealt);
 						return false; // break out of $.each
  					}

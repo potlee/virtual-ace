@@ -11933,12 +11933,19 @@ var gameAdded = function(child, parent) {
   }
 };
 
+//console.log('gameId', gameId);
 if(gameId !== '') {
   var game = games.child(gameId);
+  //console.log('game', game);
   var reset = function (snapshot) {
     game.on('value', function(snapshot) {
+		//console.log('snapshot', snapshot);
+		//console.log('snapshot.val()', snapshot.val());
+		//console.log('gameCache)', gameCache);
+		//console.log('!_.isEqual(snapshot.val(), gameCache)', !_.isEqual(snapshot.val(), gameCache));
       if(!_.isEqual(snapshot.val(), gameCache)) {
         gameCache = snapshot.val();
+		//console.log('gameCache)', gameCache);
         if(gameCache.ended) {
           //game.remove(function() {
             location.href = '/lobby.html';
