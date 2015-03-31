@@ -12,6 +12,7 @@
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <script src="bundle.js"></script>
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     </head>
     <body class="lobby">
@@ -24,31 +25,29 @@
             <div class="help">
                 <a class="help-button" href="help.html">(?)Help</a>
             </div>
-          
         </div>
         <div class="favorite-game-screen">
-            <p>Add Favorite Game</p>
-            <form id="add-game-form" action="lobby.html">
+            <p>Manage Favorite Games</p>
+            <form id="add-game-form" >
                 <div class="game-description-box">
                    <p class="game-name">
-                       My Favorite Games: 
+                       Add Favorite Games: 
+                       <input class="add-name" type="text" placeholder="Favorite Game">
+                       <button class="favorite-game-button" type="submit">Add</button>
                    </p>
-                   <ul class="object-list"> 
+                   <p class="my-game-list"> Delete Favorite Games: </p>
+                   <ul class="my-favorite-games-list"> 
                         <li>
-                            <label class="online-users-checkbox" for="games-checkbox">yay</label>
-                            <input id="games-checkbox" style="display:none" name="games-list" type="radio"> 
+                            <label class="favorite-game-checkbox" for="favorite-checkbox"></label>
+                            <input id="favorite-game-checkbox" style="display:none" name="favorite-games-list" type="checkbox"> 
                         </li>
-
                     </ul>
                 </div>
                 <div class="okay-cancel">
                     <div class="okay">
-                        <button class="okay-button" type="submit">Back to Lobby</button>
+                        <a class="okay-button" href="lobby.html" type="submit">Back to Lobby</a>
                         
                     </div>
-                   <!--  <div class="cancel">
-                        <a class="cancel-button" href="lobby.html">Cancel</a>
-                    </div> -->
                 </div>
             </form>
         </div>
@@ -56,18 +55,11 @@
         
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
-
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
-        </script>
+        <script src="http://js.leapmotion.com/leap-0.6.4.js"></script>
+        <script src="jquery.ui.touch-punch.js"></script>
+        <script src="jquery.simulate.js"></script>
+        <script src="leap.js"></script>
     </body>
 </html>

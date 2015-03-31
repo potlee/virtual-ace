@@ -1,208 +1,221 @@
 
 
 $(document).ready(function() {
-	// Update username
 
-	
-	$("#login-form").submit(function(e) {
-		e.preventDefault();
-		var username = $(".username").val();
-		if (username.length > 0) {
-			try {
-      			User.login(username);
-      			window.location.href=$(this).attr("action");
-      		}
-      		catch (err)
-      		{
-      			$(".login-errors").html("This username does not exist");
-      		}
-		
-			
+  $("#login-form").submit(function(e) {
+    e.preventDefault();
+    var username = $(".username").val();
+    if (username.length > 0) {
+      try  {
+        User.login(username);
+        window.location.href=$(this).attr("action");
+      }
+      catch (err)  {
+        $(".login-errors").html("This username does not exist");
+      }
+    }
+    else  {
+      $(".login-errors").html("Please enter a valid username");
+    }
+  });
 
-		}
-		else
-		{
+
+  $("#logout-id").click(function(e) {
+    e.preventDefault();
+    emitter.emit("logout");
+    window.location.href=$(this).attr("action");
+  });
+
+
+  $("#create-login-form").submit(function(e) {
+    e.preventDefault();
+    var username = $(".username").val();
+    if (username.length > 0)  {
+      try {
+        User.create(username, [], function() {
+          window.location.href= '/lobby.html';
+        });
+      }
+      catch (err)  {
+        $(".login-errors").html("This username already exists");
+      }
+    }
+    else  {
 			$(".login-errors").html("Please enter a valid username");
-		}
+    }
+  });
 
 
-	});
+  $("#add-game-form").submit(function(e) {
+    e.preventDefault();
+    var gameName = $(".add-name").val().split(" ").join("_");
+    var doesntExist = true;
+    if(gameName.length > 0) {
+      (User.onlineUsers()[User.currentUser()].favoriteGames||[]).forEach(function(game) {
+        if (game === gameName)  {
+          $(".favorite-game-errors").html("Please enter a valid game name");
+          doesntExist = false;
+        }
+      });
+      if (doesntExist === true)  {
+        emitter.emit('add_favorite_game', gameName);
+      }
+    }
+    else  {
+      $(".favorite-game-errors").html("Please enter a valid game name");
+    }
+    renderFavoriteGamesPage();
+  });
 
-	$("#logout-id").click(function(e) {
-		e.preventDefault();
-		console.log("Logout");
-		emitter.emit("logout");
-		window.location.href=$(this).attr("action");
-	});
 
-	$("#create-login-form").submit(function(e) {
-		e.preventDefault();
-		var username = $(".username").val();
-		if (username.length > 0) {
-			try {
-      			User.create(username, [], function() {
-       	 			window.location.href= '/lobby.html';
-      			});
-      		}
-      		catch (err)
-      		{
-      			$(".login-errors").html("This username already exists");
-      		}
+  $("#begin-game").click(function(e) {
+    e.preventDefault();
+    var inviteUsers = [];
+    var gameName;
+    [].forEach.call(document.querySelectorAll('.user'), function(user) {
+      if(user.checked) {
+        inviteUsers.push(user.getAttribute('name'));
+      }
+    });
+    [].forEach.call(document.querySelectorAll('.game-name'), function(user) {
+      if(user.checked) {
+        gameName = user.getAttribute('game-name');
+      }
+    });
+    if(gameName)  {
+      emitter.emit("start_new_game", inviteUsers, gameName);
+    }
+    else  {
+      $(".choose-game-errors").html("Please choose a game");
+    }	
+  });
 
-		}
-		else
-		{
-			$(".login-errors").html("Please enter a valid username");
-		}
-	});
 
-	// $("#favorite-game-form").submit(function(e) {
-	// 	e.preventDefault();
-	// 	var gameName = $(".add-favorite-game").val();
-	// 	var doesntExist = true;
-	// 	if(gameName.length > 0) {
-	// 		(User.onlineUsers()[User.currentUser()].favoriteGames||[]).forEach(function(game) {
-	// 			console.log(gameName);
- //    				console.log(game);
- //    			if (game === gameName)
- //    			{
-    				
- //    				$(".favorite-game-errors").html("Please enter a valid game name");
- //    				doesntExist = false;
- //    			}
-
- //      		});
-	// 		if (doesntExist === true)
-	// 		{
-	// 			emitter.emit('add_favorite_game', gameName);
-	// 		}
+  $("#level-form").submit(function(e) {
+    e.preventDefault();
+    if ($('input[name=level-name]:checked').length > 0)  {
+      window.levelNumber = $('input[name=level-name]:checked').val();
+    }
+    window.location.href='lobby.html';
+    localStorage.setItem("leapLevel", levelNumber);
 		
-			
-	// 	}
-	// 	else
-	// 	{
-	// 		$(".favorite-game-errors").html("Please enter a valid game name");
-	// 	}
-	// });
+  });
 
-	$("#begin-game").click(function(e) {
-		e.preventDefault();
-		var inviteUsers = [];
-		var gameName;
-		[].forEach.call(document.querySelectorAll('.user'), function(user) {
-			if(user.checked) {
-				inviteUsers.push(user.getAttribute('name'));
 
-				console.log(user.getAttribute('name'));
-			}
-		});
-		[].forEach.call(document.querySelectorAll('.game-name'), function(user) {
-			if(user.checked) {
-				gameName = user.getAttribute('game-name');
-			}
-		});
-		//console.log(inviteUsers);
-		if(gameName)
-		{
+  var renderFavoriteGamesPage = function() {
+    var $section = $(".my-favorite-games-list");
+    $section.html('');
+    for(var user in User.onlineUsers()) {
+      if (user === User.currentUser())  {
+        (User.onlineUsers()[User.currentUser()].favoriteGames||[]).forEach(function(game) {
+          $section.append('<li><input id="' + game + '"  name="' + game + '"' +
+          	'type="checkbox" style="display:none"> <label class="favorite-game-checkbox"  for="' + game + '">' + game.split("_").join(" ") + '</label></li>');
+        });
+      }
+    }
+  };
 
-			emitter.emit("start_new_game", inviteUsers, gameName);
-		}
-      	else 
-      	{
-      		$(".choose-game-errors").html("Please choose a game");
-      	}	
-      	
+  
 
-      	
-      		
-      	
-		
-	});
+  var refreshLobby = function(invitedUsers) {
+    var $section = $(".current-level");
+    $section.html('');
+    var leapLevel = localStorage.getItem("leapLevel");
+    if (leapLevel != null)  {
+      $section.append('<div class="current-level">Level ' + localStorage.getItem("leapLevel") + '</div>');
+    }
+    else  {
+      $section.append('<div class="current-level">Level ' + 1 + '</div>');
+      localStorage.leapLevel = 1;
+    }
+    var $section = $(".users-online");
+    $section.html('');
+    Object.keys(User.onlineUsers()).forEach(function(username) {
+    var usersGames = '';
+    if(User.onlineUsers()[username].favoriteGames)
+      usersGames = User.onlineUsers()[username].favoriteGames.join(', ');
+      if(usersGames === '') usersGames = "no favorite games :("
+      if (username === User.currentUser()) {
+        $(".my-favorite-game-list").html('');
+        $(".my-favorite-game-list").append("<p> My Favorite Games: " + usersGames.split("_").join(" ") + "</p>");
+      }
+      if (username != User.currentUser())  {
+      	if ($.inArray(username, invitedUsers) === -1)  {
+      	  $section.append(  '<li>' + '<input type="checkbox" style="display:none" id="' + username + '" class="user" name="' + 
+            username + '">' + '<label class="online-users-checkbox" for="' + username + '"></label> ' + 
+            username + ": " + usersGames + '</li> ');	
+      	}
+        else  {
+          $section.append(  '<li>' + '<input checked type="checkbox" style="display:none" id="' + username + '" class="user" name="' + 
+            username + '">' + '<label class="online-users-checkbox" for="' + username + '"></label> ' + 
+            username + ": " + usersGames + '</li> ');
+        }
+      }
+    })
 
-	$("#level-form").submit(function(e) {
-		e.preventDefault();
-		if ($('input[name=level-name]:checked').length > 0)
-		{
-			window.levelNumber = $('input[name=level-name]:checked').val();
-		}
-		window.location.href='lobby.html';
-		localStorage.setItem("leapLevel", levelNumber);
-		
-	});
-  var refreshLobby = function() {
-  		var $section = $(".current-level");
-  		$section.html('');
+  };
 
-  		if (localStorage.getItem("leapLevel") != "undefined")
-  		{
-  			$section.append('<div class="current-level">Level ' + localStorage.getItem("leapLevel") + '</div>');
-  		}
-  		else 
-  		{
-  			$section.append('<div class="current-level">Level ' + 1 + '</div>');
-  			localStorage.leapLevel = 1;
 
-  		}
-		var $section = $(".users-online");
-		$section.html('');
-    	Object.keys(User.onlineUsers()).forEach(function(username) {
-     		 var games = '';
-      		if(User.onlineUsers()[username].favoriteGames)
-       		 games = User.onlineUsers()[username].favoriteGames.join(', ');
-      		if(games === '') games = "no favorite games :("
-      		if (username === User.currentUser())
-      		{
-      			$(".my-favorite-game-list").html('');
-                $(".my-favorite-game-list").append("<p> My Favorite Games: " + games + "</p>");
-      		}
-      		if (username != User.currentUser())
-      		{
-      			$section.append(  '<li>' + '<input type="checkbox" style="display:none" id="' + username + '" class="user" name="' + 
-      				username + '">' + '<label class="online-users-checkbox" for="' + username + '"></label> ' + 
-                    username + ": " + games + '</li> ');
+  var updateUsername = function()  {
+    var $section = $(".username-place-holder");
+    $section.html('');
+    $section.append('<p class="username-place-holder">' + User.currentUser() + "</p>");
+  };
 
-      		}
-    	})
 
-	};
-    emitter.on('change_users', refreshLobby);
-
-	var updateUsername = function()
-	{
-		var $section = $(".username-place-holder");
-		$section.html('');
-		$section.append('<p class="username-place-holder">' + User.currentUser() + "</p>");
-	};
-
-  emitter.on('change_users', updateUsername);
-
-  var	insertFavoriteGames = function() {
+  var insertFavoriteGames = function(gameName) {
     var $section = $(".games-available");
     $section.html('');
     var games = [];
-
     for(var user in User.onlineUsers()) {
-      (User.onlineUsers()[user].favoriteGames||[]).forEach(function(game) {
-        
+      (User.onlineUsers()[user].favoriteGames||[]).forEach(function(game) {  
         if(games.indexOf(game) == -1)
           games.push(game);
       });
     }
-		for (var i = 0; i < games.length; i++) {
-			$section.append('<li><input type="radio" name="games-list" style="display:none" class="game-name" id="' + games[i] + '" game-name=' +  games[i] + '>' + '<label class="online-users-checkbox" for="' + games[i] + '"></label> ' + games[i] + "</li>");
-		}
+    for (var i = 0; i < games.length; i++) {
+      if (games[i] != gameName)  {
+        $section.append('<li><input type="radio" name="games-list" style="display:none" class="game-name" id="' + games[i] + '" game-name=' +  
+           games[i] + '>' + '<label class="online-users-checkbox" for="' + games[i] + '"></label> ' + games[i].split("_").join(" ") + "</li>");
+      }
+      else  {		
+        $section.append('<li><input type="radio" checked name="games-list" style="display:none" class="game-name" id="' + games[i] + '" game-name=' +  
+        games[i] + '>' + '<label class="online-users-checkbox" for="' + games[i] + '"></label> ' + games[i].split("_").join(" ") + "</li>");
+      }
+    }
   };
-  emitter.on('change_users', insertFavoriteGames);
-  function BrowserDetection() {      
-                //Check if browser is IE or not
-                
-                if (navigator.userAgent.search("Chrome") < 0) {
-                	console.log("Browser Detection");
-                    $(".browser-error").html("The application requires Google Chrome");
-                   
-                }
 
-    };
-    BrowserDetection();
+
+  var onChangeUsers = function() {
+    var invitedUsers = [];
+    var gameName = "";
+    [].forEach.call(document.querySelectorAll('.user'), function(user) {
+      if(user.checked) {
+        invitedUsers.push(user.getAttribute('name'));
+      }
+    });
+    [].forEach.call(document.querySelectorAll('.game-name'), function(user) {	
+      if(user.checked) {
+        gameName = user.getAttribute('game-name');
+      }
+    });
+    gameName.split(" ").join("_");
+    refreshLobby(invitedUsers);
+    updateUsername();
+    insertFavoriteGames(gameName);
+    renderFavoriteGamesPage();
+  }
+
+  emitter.on('change_users', onChangeUsers);
+
+  function BrowserDetection() {                    
+    if (navigator.userAgent.search("Chrome") < 0) {
+      $(".browser-error").html("The application requires Google Chrome");             
+    }
+
+  };
+
+  BrowserDetection();
+  renderFavoriteGamesPage();
 
 });

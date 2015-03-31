@@ -216,6 +216,26 @@ body.lobby {
     float: right;
 }
 
+.my-favorite-games-list li {
+    background-color: #f4fef4;
+    text-decoration: none;
+    min-height: 25px;
+    border-radius: 6px;
+    border: black solid 2px;
+    display: inline-block;
+    margin-top: 10px;
+    cursor: pointer;
+    width: 400px;
+    color: black;
+    vertical-align: middle;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+.my-favorite-games-list li label {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
 
 .games p.game-title {
     margin-bottom: 0px;
@@ -348,10 +368,7 @@ li {
 .bootstrap-tagsinput  {
     background-color: #CFDBC5;
     width: auto;
-
     border: 2px solid black;
-
-
 }
 
 .tagsinput-primary .tag {
@@ -378,6 +395,11 @@ li {
 
 input[type="checkbox"]:checked+label{
     background-color: black;
+
+}
+
+input[type="checkbox"]:checked+label.favorite-game-checkbox{
+    color: white;
 
 }
 
@@ -418,18 +440,6 @@ input[type="radio"]:checked+label{
     width: 100%;
     height: 50px;
     margin: 0;
-}
-
-.my-favorite-game-list {
-    display: inline-block;
-    font-size: 20px;
-    color: #9CBA7F;
-    margin-right: 0px;
-    margin-left: 30px;
-    max-width: 600px;
-    word-wrap: break-word;
-    margin-top: 0px;
-
 }
 
 .nav-wrapper .current-level {
@@ -517,12 +527,24 @@ a.cancel-button {
     margin-left: auto;
     text-align: left;
     background-color: #005a00;
+    color: gray;
 }
+
+.favorite-game-checkbox {
+    width: 100%;
+    height: 100%;
+    color: black;
+    display: block;
+}
+
+
 
 .game-description-box p.game-name {
     font-size: 25px;
     width: 100%;
     vertical-align: middle;
+    color: white;
+
 }
 
 .game-description-box .input-game {
@@ -556,6 +578,15 @@ a.cancel-button {
     margin-left: auto;
     width: 300px;
     margin-top: 20px;
+}
+
+input.add-name {
+    color: black;
+}
+
+.game-description-box p.my-game-list {
+    color: white;
+    font-size: 20px;
 }
 /*END FAVORITE GAME SCREEN*/
 
