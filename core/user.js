@@ -28,7 +28,6 @@ window.User = {
         out[username] = cache[username];
     });
     return out;
-    //return cache;
   },
 
   create: function(username, favoriteGames, cb) {
@@ -70,6 +69,16 @@ emitter.on('add_favorite_game', function(name) {
     users.child(User.currentUser()).update({favoriteGames: games});
   }
 });
+
+emitter.on('remove_favorite_game', function (game) {
+  if(cache[User.currentUser()]) {
+    games = cache[User.currentUser()].favoriteGames || [];
+    games = games.filter(function(name) {
+      return name != game;
+    });
+    users.child(User.currentUser()).update({favoriteGames: games});
+  }
+}
 
 var updateLastSeen = function() {
   var user = User.currentUser();
