@@ -1,6 +1,6 @@
 window.root = require('./fb');
 var users = root.child('users');
-window.cache = {};
+var cache = {};
 var currentUser = null;
 var _ = require('lodash');
 var uuid = require('uuid');
@@ -78,7 +78,7 @@ emitter.on('remove_favorite_game', function (game) {
     });
     users.child(User.currentUser()).update({favoriteGames: games});
   }
-}
+});
 
 var updateLastSeen = function() {
   var user = User.currentUser();
