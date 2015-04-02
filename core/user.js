@@ -1,8 +1,9 @@
 window.root = require('./fb');
 var users = root.child('users');
-window.cache = {};
+var cache = {};
 var currentUser = null;
 var _ = require('lodash');
+window.l = require('lodash');
 var uuid = require('uuid');
 
 var reset = function (snapshot) {
@@ -28,7 +29,6 @@ window.User = {
         out[username] = cache[username];
     });
     return out;
-    //return cache;
   },
 
   create: function(username, favoriteGames, cb) {
@@ -67,6 +67,16 @@ emitter.on('add_favorite_game', function(name) {
   if(cache[User.currentUser()]) {
     games = cache[User.currentUser()].favoriteGames || [];
     games.push(name);
+    users.child(User.currentUser()).update({favoriteGames: games});
+  }
+});
+
+emitter.on('remove_favorite_game', function (game) {
+  if(cache[User.currentUser()]) {
+    games = cache[User.currentUser()].favoriteGames || [];
+    games = games.filter(function(name) {
+      return name != game;
+    });
     users.child(User.currentUser()).update({favoriteGames: games});
   }
 });

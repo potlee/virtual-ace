@@ -13,9 +13,7 @@ window.gameCache = {};
 var gameAdded = function(child, parent) {
   var snapshot = child.val();
   if(snapshot.turn) {
-    if((snapshot.invitedUsers || []).indexOf(User.currentUser()) != -1 &&
-       snapshot.left.indexOf(User.currentUser()) == -1
-      ) {
+    if((snapshot.invitedUsers || []).indexOf(User.currentUser()) != -1) {
       location.href = '/table.html?gameId=' + snapshot.id;
     }
   }
@@ -87,12 +85,14 @@ if(gameId !== '') {
   });
   emitter.on('deal', function(num) {
     var offset = 0;
+    indexes = _.shuffle(_.range(1,52));
     cards = gameCache.cards;
+    for(var c in cards) {
+      cards[c].position.z = indexes.pop();
+    }
     cardsArray = Object.keys(cards).map(function(key) {
       return cards[key];
     });
-    cardsArray.forEach(function(card) { card.position.z = Math.round(Math.random() * 100000); });
-    cardsArray = cardsArray.sort(function(a,b) { return a.position.z > b.position.z ? 1 : -1;});
     gameCache.users.forEach(function(user) {
       var i = 0;
       while(i++ < num) {
@@ -129,8 +129,7 @@ emitter.on('start_new_game', function(usernames, name) {
     name: name,
     id: gameId,
     dealer: User.currentUser(),
-    users: [ User.currentUser() ],
-    left: ['none']
+    users: [ User.currentUser() ]
   }, function() { window.location.href = '/table.html?gameId=' + gameId; });
 });
 
