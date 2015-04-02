@@ -172,3 +172,14 @@ footer {
 	text-align: center;
 	width: 50px;
 }
+
+#gameName {
+	position: relative; 
+	left: -50%; 
+	font-size:1.5em;
+}
+
+#gameNameWrapper {
+	position: absolute; 
+	left: 50%;
+}
