@@ -133,7 +133,6 @@ $(function() {
 	
 	
 	function render_game(){
-		console.log('render_game BRIANNNNNNNNNNN');
 		//Display the game's name in the footer.
 		$("#gameName").text(gameCache.name);
 		
@@ -458,7 +457,6 @@ $(function() {
 				case 3:
 					//alert('Right Mouse button pressed.');
 					flip_card(el);
-					console.log(el);
 					event.preventDefault();
 					break;
 				default:
@@ -477,6 +475,7 @@ $(function() {
 		});
 		
 		$('.clear').click(function() {
+			console.log('clear_table()');
 			emitter.emit('clear_table');
 		});
 		
