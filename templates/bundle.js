@@ -11915,7 +11915,7 @@ var EventEmitter = require('events').EventEmitter;
 window.emitter = new EventEmitter();
 
 var root = require('./fb');
-var games = root.child('games');
+window.games = root.child('games');
 var gameId = require("./parse_game_id");
 var User = require('./user');
 
@@ -11925,32 +11925,23 @@ var gameAdded = function(child, parent) {
   var snapshot = child.val();
   if(snapshot.turn) {
     if((snapshot.invitedUsers || []).indexOf(User.currentUser()) != -1 &&
-       snapshot.left.indexOf(User.currentUser()) == -1 &&
-       !snapshot.ended
+       snapshot.left.indexOf(User.currentUser()) == -1
       ) {
       location.href = '/table.html?gameId=' + snapshot.id;
     }
   }
 };
 
-//console.log('gameId', gameId);
 if(gameId !== '') {
+  games.on('child_removed', function (oldGameSnapshot) {
+    if(oldGameSnapshot.val().id == gameId)
+      location.href = '/lobby.html';
+  });
   var game = games.child(gameId);
-  //console.log('game', game);
   var reset = function (snapshot) {
     game.on('value', function(snapshot) {
-		//console.log('snapshot', snapshot);
-		//console.log('snapshot.val()', snapshot.val());
-		//console.log('gameCache)', gameCache);
-		//console.log('!_.isEqual(snapshot.val(), gameCache)', !_.isEqual(snapshot.val(), gameCache));
       if(!_.isEqual(snapshot.val(), gameCache)) {
         gameCache = snapshot.val();
-		//console.log('gameCache)', gameCache);
-        if(gameCache.ended) {
-          //game.remove(function() {
-            location.href = '/lobby.html';
-          //});
-        }
         emitter.emit('render_game', gameCache);
       }
     });
@@ -11984,12 +11975,8 @@ if(gameId !== '') {
     game.update({turn: gameCache.users[position % gameCache.users.length]});
   });
   emitter.on('leave_game', function() {
-    //var left = gameCache.left;
-    //left.push(User.currentUser());
-    game.update({left: gameCache.users}, function() {
-      game.update({ ended: true }, function() {
-        location.href = '/lobby.html';
-      });
+    game.remove(function() {
+      location.href = '/lobby.html';
     });
   });
   emitter.on('reject_invite', function() {
@@ -12042,7 +12029,7 @@ emitter.on('start_new_game', function(usernames, name) {
   ['H', 'D', 'C', 'S'].forEach(function(suit) {
     [2,3,4,5,6,7,8,9,'J','K','Q','A'].forEach(function(value) {
       cards[value + suit] = {
-        position: {x:0,y:0,z:0}, faceup: false, username: 'table', location: 'table'
+        position: {x:10,y:10,z:0}, faceup: false, username: 'table', location: 'table'
       };
     });
   });
