@@ -11959,6 +11959,19 @@ if(gameId !== '') {
   emitter.on('move_card', function(card, position, location) {
     game.child('cards').child(card).update({ position: position, username: 'table', location: location });
   });
+
+  emitter.on('clear_table', function() {
+    var cards = {};
+    ['H', 'D', 'C', 'S'].forEach(function(suit) {
+      [2,3,4,5,6,7,8,9,'J','K','Q','A'].forEach(function(value) {
+        cards[value + suit] = {
+          position: {x:10,y:10,z:0}, faceup: false, username: 'table', location: 'table'
+        };
+      });
+    });
+    game.set({ cards: cards });
+  });
+
   emitter.on('move_card_to_hand', function(card) {
     console.log('move card to hand emitted');
     game.child('cards').child(card).update({ username: User.currentUser() });
