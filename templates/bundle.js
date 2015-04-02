@@ -11996,7 +11996,7 @@ if(gameId !== '') {
   });
   emitter.on('deal', function(num) {
     var offset = 0;
-    indexes = _.range(1,52).shuffle();
+    indexes = _.shuffle(_.range(1,52));
     cards = gameCache.cards;
     for(var c in cards) {
       cards[c].position.z = indexes.pop();
@@ -12052,6 +12052,7 @@ var users = root.child('users');
 var cache = {};
 var currentUser = null;
 var _ = require('lodash');
+window.l = require('lodash');
 var uuid = require('uuid');
 
 var reset = function (snapshot) {

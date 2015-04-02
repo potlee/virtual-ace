@@ -3,6 +3,7 @@ var users = root.child('users');
 var cache = {};
 var currentUser = null;
 var _ = require('lodash');
+window.l = require('lodash');
 var uuid = require('uuid');
 
 var reset = function (snapshot) {
