@@ -11924,9 +11924,7 @@ window.gameCache = {};
 var gameAdded = function(child, parent) {
   var snapshot = child.val();
   if(snapshot.turn) {
-    if((snapshot.invitedUsers || []).indexOf(User.currentUser()) != -1 &&
-       snapshot.left.indexOf(User.currentUser()) == -1
-      ) {
+    if((snapshot.invitedUsers || []).indexOf(User.currentUser()) != -1) {
       location.href = '/table.html?gameId=' + snapshot.id;
     }
   }
@@ -12040,8 +12038,7 @@ emitter.on('start_new_game', function(usernames, name) {
     name: name,
     id: gameId,
     dealer: User.currentUser(),
-    users: [ User.currentUser() ],
-    left: ['none']
+    users: [ User.currentUser() ]
   }, function() { window.location.href = '/table.html?gameId=' + gameId; });
 });
 
