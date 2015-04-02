@@ -68,7 +68,7 @@
 ********************************************************************/
 
 .playingCards .card.diams {
-    color: #00f !important;
+    color: #f00 !important;
 }
 .playingCards.fourColours .card.diams {
     color: #00f !important;
@@ -86,7 +86,7 @@
     color: #090 !important;
 }
 .playingCards .card.clubs {
-    color: #090 !important;
+    color: #000 !important;
 }
 .playingCards.fourColours .card.clubs {
     color: #090 !important;

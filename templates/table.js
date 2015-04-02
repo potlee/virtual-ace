@@ -476,9 +476,12 @@ $(function() {
 			}
 		});
 		
+		$('.clear').click(function() {
+			emitter.emit('clear_table');
+		});
+		
 		$('.finish').click(function() {
 			emitter.emit('leave_game');
-			//gameComplete();
 		});
 		
 	} // create_events
