@@ -85,12 +85,14 @@ if(gameId !== '') {
   });
   emitter.on('deal', function(num) {
     var offset = 0;
+    indexes = _.range(1,52).shuffle();
     cards = gameCache.cards;
+    for(var c in cards) {
+      cards[c].position.z = indexes.pop();
+    }
     cardsArray = Object.keys(cards).map(function(key) {
       return cards[key];
     });
-    cardsArray.forEach(function(card) { card.position.z = Math.round(Math.random() * 100000); });
-    cardsArray = cardsArray.sort(function(a,b) { return a.position.z > b.position.z ? 1 : -1;});
     gameCache.users.forEach(function(user) {
       var i = 0;
       while(i++ < num) {
