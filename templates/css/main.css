@@ -216,6 +216,16 @@ body.lobby {
     float: right;
 }
 
+.my-favorite-games-lobby {
+    color: #CFDBC5;
+    margin-left: 30px;
+}
+.my-favorite-games-list {
+    margin: 10px;
+    padding: 0;
+    color: #005a00;
+}
+
 .my-favorite-games-list li {
     background-color: #f4fef4;
     text-decoration: none;
@@ -226,15 +236,16 @@ body.lobby {
     margin-top: 10px;
     cursor: pointer;
     width: 400px;
-    color: black;
+    color: #005a00;
     vertical-align: middle;
     text-align: center;
-    word-wrap: break-word;
+    word-wrap: break-word
 }
 
 .my-favorite-games-list li label {
     padding-top: 5px;
     padding-bottom: 5px;
+    cursor: pointer;
 }
 
 .games p.game-title {
@@ -303,12 +314,26 @@ a.add-favorite-game-button {
     background-color: white;
     color: #005a00;
     border: black solid 2px;
+
 }
 
 .add-favorite-game {
     height: 30px;
     margin-right: 10px;
    
+}
+
+button.favorite-game-button {
+    background-color: #f4fef4;
+    text-decoration: none;
+    min-height: 25px;
+    border-radius: 6px;
+    border: black solid 2px;
+    display: inline-block;
+    color: #005a00;
+    cursor: pointer;
+    width: 50px;
+    text-align: center;
 }
 
 .begin, .level, .favorite-game { 
@@ -400,6 +425,7 @@ input[type="checkbox"]:checked+label{
 
 input[type="checkbox"]:checked+label.favorite-game-checkbox{
     color: white;
+    color: #005a00;
 
 }
 
@@ -504,6 +530,12 @@ a.cancel-button {
     padding-right: 7px;
 }
 
+a.cancel-button.return-to-lobby {
+    float: none;
+    margin: 0;
+    background-color: #f4fef4;
+}
+
 
 
 /*END LEVEL SCREEN*/
@@ -522,10 +554,10 @@ a.cancel-button {
     padding: 20px;
     width: 75%;
     max-width: 500px;
-    height: 400px;
+    height: auto;
     margin-right: auto;
     margin-left: auto;
-    text-align: left;
+    text-align: center;
     background-color: #005a00;
     color: gray;
 }
@@ -533,7 +565,6 @@ a.cancel-button {
 .favorite-game-checkbox {
     width: 100%;
     height: 100%;
-    color: black;
     display: block;
 }
 
@@ -582,11 +613,35 @@ a.cancel-button {
 
 input.add-name {
     color: black;
+    width: 200px;
+    margin-left: 10px;
+
 }
 
 .game-description-box p.my-game-list {
+    font-size: 25px;
+    width: 100%;
+    vertical-align: middle;
     color: white;
-    font-size: 20px;
+}
+
+p.my-game-list {
+    margin: 0;
+}
+
+button.delete-favorite-games-button  {
+    background-color: #f4fef4;
+    text-decoration: none;
+    min-height: 25px;
+    border-radius: 6px;
+    border: black solid 2px;
+    display: inline-block;
+    margin-top: 10px;
+    cursor: pointer;
+    width: 250px;
+    color: #005a00;
+    vertical-align: middle;
+    text-align: center;
 }
 /*END FAVORITE GAME SCREEN*/
 

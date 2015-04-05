@@ -134,7 +134,7 @@ $(function() {
 	
 	function render_game(){
 		//Display the game's name in the footer.
-		$("#gameName").text(gameCache.name);
+		$("#gameName").text(gameCache.name.split("_").join(" "));
 		
 		render_users();
 
