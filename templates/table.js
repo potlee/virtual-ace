@@ -472,18 +472,11 @@ $(function() {
 			}
 		});
 		
-		$('#cleartable').click(function() {
-			console.log('clear_table()');
-			emitter.emit('clear_table');
-		});
-		
 		$('.finish').click(function() {
 			emitter.emit('leave_game');
 		});
 		
 	} // create_events
-	
-	
 	
 	function game_invite(dealer, gameid) {
 		$.fn.jAlert({
@@ -680,7 +673,7 @@ $(function() {
     }
     
     function oneTimeRun(name, func) {
-		//console.log('oneTimeRun('+name+', '+func+')');
+		//console.log('Run('+name+', '+func+')');
 		var hasItRan = localStorage.getItem(name + gameCache.id);
 		if(hasItRan != "true") {
 			func();
