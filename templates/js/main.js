@@ -115,7 +115,7 @@ $(document).ready(function() {
   	  }
   	}
   	for (var i = 0; i < gameNamesChecked.length; i++)  {
-  		// emitter.emit("remove_favorite_game", gameNamesChecked[i]);
+  		 emitter.emit("remove_favorite_game", gameNamesChecked[i]);
   	}
   	renderFavoriteGamesPage([]);
   });
