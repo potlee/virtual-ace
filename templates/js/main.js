@@ -185,6 +185,10 @@ $(document).ready(function() {
     var $section = $(".username-place-holder");
     $section.html('');
     $section.append('<p class="username-place-holder">' + User.currentUser() + "</p>");
+    // If in lobby and username is null, redirect them to login page
+    if(window.location.pathname == '/lobby.html' && User.currentUser() == 'null') {
+		location.href = '/index.html';
+    }
   };
 
 
