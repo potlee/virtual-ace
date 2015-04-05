@@ -65,6 +65,10 @@ $(document).ready(function() {
       $(".favorite-game-errors").html("Please enter a valid game name");
     }
     renderFavoriteGamesPage();
+    console.log("yo");
+    $section = $(".add-name");
+    $section.val("");
+   // $section.append('<input class="add-name" type="text" placeholder="Favorite Game">');
   });
 
 
@@ -101,15 +105,36 @@ $(document).ready(function() {
 		
   });
 
+  $("#delete-favorite-games-id").click(function(e)  {
+  	e.preventDefault;
+  	var gameCheckBoxes = $(".delete-favorite-game-class");
+  	var gameNamesChecked = [];
+  	for (var i = 0; i < gameCheckBoxes.length; i++)  {
+  	  if ($(gameCheckBoxes[i]).prop("checked")) {
+  	  	gameNamesChecked.push(gameCheckBoxes[i].id);
+  	  }
+  	}
+  	for (var i = 0; i < gameNamesChecked.length; i++)  {
+  		// emitter.emit("remove_favorite_game", gameNamesChecked[i]);
+  	}
+  	renderFavoriteGamesPage([]);
+  });
 
-  var renderFavoriteGamesPage = function() {
+
+  var renderFavoriteGamesPage = function(deleteGames) {
     var $section = $(".my-favorite-games-list");
     $section.html('');
     for(var user in User.onlineUsers()) {
       if (user === User.currentUser())  {
         (User.onlineUsers()[User.currentUser()].favoriteGames||[]).forEach(function(game) {
-          $section.append('<li><input id="' + game + '"  name="' + game + '"' +
-          	'type="checkbox" style="display:none"> <label class="favorite-game-checkbox"  for="' + game + '">' + game.split("_").join(" ") + '</label></li>');
+          if ($.inArray(game, deleteGames) === -1)  {
+            $section.append('<li><input id="' + game + '"  name="' + game + '"' +
+          	  'type="checkbox" class="delete-favorite-game-class" style="display:none"> <label class="favorite-game-checkbox"  for="' + game + '">' + game.split("_").join(" ") + '</label></li>');
+          }
+          else {
+          	$section.append('<li><input id="' + game + '"  name="' + game + '"' +
+          	  'type="checkbox" checked class="delete-favorite-game-class" style="display:none"> <label class="favorite-game-checkbox"  for="' + game + '">' + game.split("_").join(" ") + '</label></li>');
+          }
         });
       }
     }
@@ -189,6 +214,13 @@ $(document).ready(function() {
   var onChangeUsers = function() {
     var invitedUsers = [];
     var gameName = "";
+    var gamesCheckedDelete = $(".delete-favorite-game-class");
+  	var deleteGameNamesChecked = [];
+  	for (var i = 0; i < gamesCheckedDelete.length; i++)  {
+      if ($(gamesCheckedDelete[i]).prop("checked")) {
+  	  	deleteGameNamesChecked.push(gamesCheckedDelete[i].id);
+  	  }
+  	}
     [].forEach.call(document.querySelectorAll('.user'), function(user) {
       if(user.checked) {
         invitedUsers.push(user.getAttribute('name'));
@@ -203,7 +235,7 @@ $(document).ready(function() {
     refreshLobby(invitedUsers);
     updateUsername();
     insertFavoriteGames(gameName);
-    renderFavoriteGamesPage();
+    renderFavoriteGamesPage(deleteGameNamesChecked);
   }
 
   emitter.on('change_users', onChangeUsers);

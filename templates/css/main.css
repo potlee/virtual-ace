@@ -229,12 +229,13 @@ body.lobby {
     color: black;
     vertical-align: middle;
     text-align: center;
-    word-wrap: break-word;
+    word-wrap: break-word
 }
 
 .my-favorite-games-list li label {
     padding-top: 5px;
     padding-bottom: 5px;
+    cursor: pointer;
 }
 
 .games p.game-title {
@@ -522,7 +523,7 @@ a.cancel-button {
     padding: 20px;
     width: 75%;
     max-width: 500px;
-    height: 400px;
+    height: auto;
     margin-right: auto;
     margin-left: auto;
     text-align: left;
@@ -585,8 +586,25 @@ input.add-name {
 }
 
 .game-description-box p.my-game-list {
+    font-size: 25px;
+    width: 100%;
+    vertical-align: middle;
     color: white;
-    font-size: 20px;
+}
+
+button.delete-favorite-games-button  {
+    background-color: #f4fef4;
+    text-decoration: none;
+    min-height: 25px;
+    border-radius: 6px;
+    border: black solid 2px;
+    display: inline-block;
+    margin-top: 10px;
+    cursor: pointer;
+    width: 250px;
+    color: black;
+    vertical-align: middle;
+    text-align: center;
 }
 /*END FAVORITE GAME SCREEN*/
 
