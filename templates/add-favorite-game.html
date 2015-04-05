@@ -21,17 +21,12 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class="nav-wrapper">
-            <div class="help">
-                <a class="help-button" href="help.html">(?)Help</a>
-            </div>
-        </div>
         <div class="favorite-game-screen">
-            <p>Manage Favorite Games</p>
-            <form id="add-game-form" >
+            <form id="add-game-form">
+                <p>Manage Favorite Games</p>
                 <div class="game-description-box">
                    <p class="game-name">
-                       Add Favorite Games: 
+                       Add Game: 
                        <input class="add-name" type="text" placeholder="Favorite Game">
                        <button class="favorite-game-button" type="submit">Add</button>
                    </p>
@@ -42,14 +37,11 @@
                             <input id="favorite-game-checkbox" style="display:none" type="checkbox"> 
                         </li>
                     </ul>
-                    <button id="delete-favorite-games-id" class="delete-favorite-games-button" type="submit">Delete Selected Games </button>
-                </div>
-                <div class="okay-cancel">
-                    <div class="okay">
-                        <a class="cancel-button" href="lobby.html" type="submit">Back to Lobby</a>
-                        
+                    <div class="delete-favorite-games-wrapper">
+                        <button id="delete-favorite-games-id" class="delete-favorite-games-button" type="submit">Delete Selected Games </button>
                     </div>
                 </div>
+                <a class="cancel-button return-to-lobby" href="lobby.html" type="submit">Back to Lobby</a>
             </form>
         </div>
         
