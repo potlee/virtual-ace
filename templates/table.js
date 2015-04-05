@@ -133,9 +133,8 @@ $(function() {
 	
 	
 	function render_game(){
-		console.log('render_game BRIANNNNNNNNNNN');
 		//Display the game's name in the footer.
-		$("#gameName").text(gameCache.name);
+		$("#gameName").text(gameCache.name.split("_").join(" "));
 		
 		render_users();
 
@@ -210,9 +209,7 @@ $(function() {
 		if(beginHandCount == 0) {	
 			$.each(gameCache.users, function(key, value){
 					// Someone got a card, set dealt flag
-					console.log(key, value, hand_count[value]);
 					if(hand_count[value] > 0) {
-						console.log('cards_dealt should be run');
 						oneTimeRun('cardsDealt', cards_dealt);
 						return false; // break out of $.each
  					}
@@ -458,7 +455,6 @@ $(function() {
 				case 3:
 					//alert('Right Mouse button pressed.');
 					flip_card(el);
-					console.log(el);
 					event.preventDefault();
 					break;
 				default:
@@ -476,9 +472,13 @@ $(function() {
 			}
 		});
 		
+		$('#cleartable').click(function() {
+			console.log('clear_table()');
+			emitter.emit('clear_table');
+		});
+		
 		$('.finish').click(function() {
 			emitter.emit('leave_game');
-			//gameComplete();
 		});
 		
 	} // create_events
