@@ -11969,7 +11969,7 @@ if(gameId !== '') {
         };
       });
     });
-    game.set({ cards: cards });
+    game.update({ cards: cards });
   });
 
   emitter.on('move_card_to_hand', function(card) {
