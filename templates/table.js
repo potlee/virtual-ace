@@ -209,9 +209,7 @@ $(function() {
 		if(beginHandCount == 0) {	
 			$.each(gameCache.users, function(key, value){
 					// Someone got a card, set dealt flag
-					console.log(key, value, hand_count[value]);
 					if(hand_count[value] > 0) {
-						console.log('cards_dealt should be run');
 						oneTimeRun('cardsDealt', cards_dealt);
 						return false; // break out of $.each
  					}
