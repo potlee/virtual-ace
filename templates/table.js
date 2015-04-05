@@ -474,7 +474,7 @@ $(function() {
 			}
 		});
 		
-		$('.clear').click(function() {
+		$('#cleartable').click(function() {
 			console.log('clear_table()');
 			emitter.emit('clear_table');
 		});
