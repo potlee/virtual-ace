@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <base href="https://editor-leapmotion.netdna-ssl.com/leapmotion-examples/javascript/9ec8b75849886cdad0a232f719fd8a15a50cbb64/v2/grab-strength/index.html.livegit" />
     <title>Grab Strength Demo</title>
     <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.js"></script>
     <script src="//js.leapmotion.com/leap-0.6.4.js"></script>
-    <script src="http://www.virtual-ace.com/tutorial/plugin.js"></script>
+	<script src="//js.leapmotion.com/leap-plugins-0.1.10.js"></script>
     <script src="//js.leapmotion.com/leap.rigged-hand-0.1.4.js"></script>
 	<script src="http://code.jquery.com/jquery-1.11.2.js"></script>
     <script src='http://www.virtual-ace.com/jAlert-v2.js'></script>
@@ -16,6 +15,7 @@
       body{
         font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
       }
+      
       #output{
         font-size: 66px;
         color: #005d98;
@@ -62,7 +62,7 @@
 	LeapController.on('playback.userTakeControl',function(hand){
 		if(window.handAlert) {
 			window.handAlert.closeAlert(true);
-			setTimeout(function() { displayError(); }, 10000);
+			setTimeout(function() { displayError(); }, 3000);
 			window.handAlert = null;
 		}
 
@@ -71,6 +71,12 @@
 				displayError.alert.closeAlert(true);
 			}
 		}
+		if(displayError2.seen) {
+			if(displayError2.releaseCount > 1) {
+				displayError2.alert.closeAlert(true);
+			}
+		}
+
 		
 	});
 	
@@ -78,13 +84,17 @@
 		if(displayError.seen) {
 			displayError.releaseCount++;
 		}
-		
+
+
+		if(displayError2.seen) {
+			displayError2.releaseCount++;
+		}
+
 		displayError();
 		
 	});
 
 	LeapController.on('deviceStreaming', function() {
-		//LeapController.streaming = true;
 		console.log("A Leap device has been connected.");
 		if(prevJAlert) {
 			prevJAlert.closeAlert(true);
@@ -96,7 +106,6 @@
 
 	LeapController.on('deviceStopped', function() {
 		console.log("A Leap device has been disconnected.");
-		//LeapController.streaming = false;
 	});
 
 	LeapController.connect();
@@ -112,8 +121,23 @@
 	function onFrame(frame) {
 		var hand = frame.hands[0];
 		// There is atleast one hand in view
-		if(hand === undefined) { return false; }		
+		if(hand === undefined) { return false; }	
+		
+		if(displayError.start == true) {
+			// previous 10 frames
+			var sum = 0;
+			for (i = 1; i <= 100; i++) {
+				if(LeapController.frame(i).hands[0] !== undefined) {
+					sum += LeapController.frame(i).hands[0].confidence;
+				}
+			}
+			
+			if(sum == 100) {
+				displayError2();
+			}
+		}
 
+		
 		output.innerHTML = hand.confidence.toPrecision(2);
 		progress.style.width = hand.confidence * 100 + '%';
 	}
@@ -136,7 +160,7 @@
 
         controller.use('playback', {
             // This is a compressed JSON file of preprecorded frame data
-            recording: 'grab-bones-7-54fps.json.lz',
+            recording: 'https://editor-leapmotion.netdna-ssl.com/leapmotion-examples/javascript/9ec8b75849886cdad0a232f719fd8a15a50cbb64/v2/grab-strength/grab-bones-7-54fps.json.lz',
             // How long, in ms, between repeating the recording.
             timeBetweenLoops: 1000,
             pauseOnHand: true
@@ -174,7 +198,7 @@
     
     
   
-    $(function() {
+    $(function() {    
 		if(!LeapController.streaming()) {
 
 			prevJAlert = $.fn.jAlert({
@@ -211,15 +235,38 @@
 				displayError.alert = $.fn.jAlert({
 						'title': 'Hand detected',
 						'theme': 'success',
-						'message': 'Leap Motion has detected your hand. Sometimes Leap Motion reads your hand incorrectly, in the next screen there will be a display 0-1 how well leap motion reads your hand. Attempt to get it to 1.0 by spreading your fingers out.<br><br>Begin by leaving and rentering the sensor a few times',
-						'size': 'medium',
+						'message': 'Leap Motion has detected your hand. <br><br>Sometimes Leap Motion reads your hand incorrectly, in the next screen there will be a display 0 - 1 how well leap motion reads your hand. Attempt to get it to 1.0 and keep it there for five seconds by spreading your fingers out.<br><br><video controls autoplay style="width:460px"><source src="spread.mp4" type="video/mp4"></video><br><br>Begin by leaving and rentering the sensor a few times',
+						'size': 'large',
 						'closeBtn': true,
 						'clickAnywhere': true,
 						'hideOnEsc': true,
-						'autofocus': 'btn:last'
+						'autofocus': 'btn:last',
+						'onClose': function(){
+							displayError.start = true;
+						},
 				}); //$.fn.jAlert				 
 		}
-		
+
+		displayError2 = function() {
+				if(displayError2.seen == true) return;
+				displayError2.releaseCount = 0;
+				displayError2.controlCount = 0;
+				
+				displayError2.seen = true;
+				displayError2.alert = $.fn.jAlert({
+						'title': 'Success',
+						'theme': 'success',
+						'message': 'Congratualations<br> It is good practice to perform the hand opening gesture whenever the Leap Motion seems to be acting weird to reset it<br><br>Proceed by leaving and entering the sensor a few times',
+						'size': 'small',
+						'closeBtn': true,
+						'clickAnywhere': true,
+						'hideOnEsc': true,
+						'autofocus': 'btn:last',
+						'onClose': function(){
+							location.href='/tutorial/1.html';
+						},
+				}); //$.fn.jAlert				 
+		}	
 		visualizeHand(LeapController);
 
 	});

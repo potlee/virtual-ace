@@ -285,13 +285,13 @@ $(function() {
 	function createHands() {		
 		var i = document.createElement('img');
 		document.body.appendChild(i);
-		i.src='grab.gif';
+		i.src='/grab.gif';
 		i.id = 'grabIcon';
 		i.style.display = 'none';
 
 		var i2 = document.createElement('img');
 		document.body.appendChild(i2);
-		i2.src='grabbing.gif';
+		i2.src='/grabbing.gif';
 		i2.id = 'grabIcon';
 		i2.style.display = 'none';
 

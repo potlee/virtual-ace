@@ -16,8 +16,6 @@ $(function() {
 	create_events();
 	create_jquery_widgets();
 	
-
-	
 	emitter.on('render_game', render_game);
 	emitter.on('cards_dealt', cards_dealt);
 	emitter.on('invitation', game_invite);
@@ -34,7 +32,8 @@ $(function() {
 	
 	
 	//Handles hand re-rendering after refreshing the page in
-	//render_game()
+	//render_game();
+	
 	$(window).unload(function(){
 		localStorage.setItem("reentered"  + gameCache.id, true);
 		localStorage.setItem("firstRender"  + gameCache.id, true);
@@ -133,8 +132,12 @@ $(function() {
 	
 	
 	function render_game(){
+	
+		
 		//Display the game's name in the footer.
-		$("#gameName").text(gameCache.name.split("_").join(" "));
+		if(gameCache.name) {
+			$("#gameName").text(gameCache.name.split("_").join(" "));
+		}
 		
 		render_users();
 
@@ -634,12 +637,6 @@ $(function() {
 					'cssClass': 'green',
 					'onClick': function() {
 						prompt("Deal and Shuffle", "Number of Cards to be Dealt", "deal");
-					}
-				}, {
-					'label': 'Deal',
-					'cssClass': 'green',
-					'onClick': function() {
-						prompt("Deal", "Number of Cards to be Dealt", "deal");
 					}
 				}],
 				'autofocus': 'btn:last',

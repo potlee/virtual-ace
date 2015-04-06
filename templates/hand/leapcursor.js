@@ -243,9 +243,10 @@ LeapCursor.prototype = {
 					 */
 					hand = frame.hands[0];
 
-					var top		= (-hand.stabilizedPalmPosition[1] * 3) + (window.innerHeight);
-					var left	= (hand.stabilizedPalmPosition[0] * 3) + (window.innerWidth/2);
+					var top		= 50; //(-hand.stabilizedPalmPosition[1] * 3) + (window.innerHeight);
+					var left	= 50; //(hand.stabilizedPalmPosition[0] * 3) + (window.innerWidth/2);
 
+console.log(top);
 					/*
 					 * Then we move the virtual hand to that position
 					 */					

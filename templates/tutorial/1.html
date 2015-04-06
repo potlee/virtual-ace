@@ -25,15 +25,264 @@
     <script src="/jquery.simulate.js"></script>
     <script src='/jAlert-v2.js'></script>
     <script src="/leap.js"></script>
-    <script src="/table.js"></script>
+    <script src="/table3.js"></script>
 	
 </head>
 
 <body>
+	<script>
+    $(function() {
+    
+		$('*:not(:input)').disableSelection();
+		
+		$('finish').click(function(){
+			location.href = '/lobby.html';
+		});
+		
+		
+		var level = localStorage.getItem('leapLevel');
+		if ( level == 3 ) { 
+			var msg = "You currently have level 3 set. <br><br>How to click buttons: hover over button, make a fist and then open it";
+			var msg2 = "To grab a card hover over the card and make a fist and keep it close, then move your hand. <br><br>When you want to release the card just open your hand";
+			var video = "level3.mp4";
+		} else if (level == 2 ) {
+			var msg = "You currently have level 2 set. <br><br>How to click buttons: hover over button, pinch your index and thumb together and then move your index away from thumb.";
+			var msg2 = "To grab a card hover over the card and pinch your index and thumb fingers closed and keep them closed, then move your hand. <br><br>When you want to release the card just stop pinching your fingers";
+			var video = "level2.mp4";
+		} else {
+			level = 1;
+			var msg = "You currently have level 1 set. <br><br>How to click buttons: hover over button, bring your index finger close to your thumb and then move your index away from thumb";
+			var msg2 = "To grab a card hover over the card and bring your index finger close to your thumb, then move your hand. <br><br>When you want to release the card just increase the distance from index finger and thumb";
+			var video = "level1.mp4";
+		}
+
+		display1 = function() {
+			if(display1.seen == true) return;
+			display1.seen = true;
+
+			display1.alert = $.fn.jAlert({
+					'title': 'Close Dialog',
+					'theme': 'success',
+					'message': 'Move your hand around while in the sensor until you see a hand appear like this:<br> <img src=\'/grab.gif\'></img><br><br>'+ msg +'<br><br>Close this dialog but clicking the X button at the top right',
+					'size': 'small',
+					'closeBtn': true,
+					'clickAnywhere': true,
+					'hideOnEsc': true,
+					'autofocus': 'btn:last',
+					'onClose': function(){
+						display2();
+					},
+			});			 
+		}
+
+		display2 = function() {
+			if(display2.seen == true) return;
+			display2.seen = true;
+
+			display2.alert = $.fn.jAlert({
+					'title': 'Drag Card',
+					'theme': 'success',
+					'message': 'Dragging cards is similar to clicking buttons.<br><br>' + msg2 + '<br><br><video controls autoplay style="width:460px"><source src="'+video+'" type="video/mp4"></video><br><br>Go ahead and try to move the card to the hand, begin by closing this dialog like you learned previously',
+					'size': 'medium',
+					'closeBtn': true,
+					'clickAnywhere': true,
+					'hideOnEsc': true,
+					'autofocus': 'btn:last'
+			}); 
+		}
+
+
+		display3 = function() {
+			if(display3.seen == true) return;
+			display3.seen = true;
+
+			display3.alert = $.fn.jAlert({
+					'title': 'Flip card',
+					'theme': 'success',
+					'message': 'Now that the card is in your hard, go ahead a flip the card so it is facing down. <br><br>To flip a card tap your middle finger twice in a row rapidly <br><br><video controls autoplay style="width:460px"><source src="flip.mp4" type="video/mp4"></video>',
+					'size': 'medium',
+					'closeBtn': true,
+					'clickAnywhere': true,
+					'hideOnEsc': true,
+					'autofocus': 'btn:last'
+			}); 
+		}
+
+
+		display4 = function() {
+			if(display4.seen == true) return;
+			display4.seen = true;
+
+			display4.alert = $.fn.jAlert({
+					'title': 'Completed',
+					'theme': 'success',
+					'message': 'You have completed the leap tutorial, click "End Tutorial" when you are ready to exit the tutorial',
+					'size': 'small',
+					'closeBtn': true,
+					'clickAnywhere': true,
+					'hideOnEsc': true,
+					'autofocus': 'btn:last'
+			}); 
+		}
+			
+		display1();
+		make_cards_draggable();
+		create_jquery_widgets();
+
+
+
+		$('body').bind('contextmenu', function(){ return false });
+			
+		$("body").mousedown(function(event) {
+			//Prevent other players from flipping cards when it is not their turn
+			if(User.currentUser() != window.gameCache.turn) {
+				return;
+			}
+			
+			var el = document.elementFromPoint(event.clientX,event.clientY);
+			
+			var card = false;
+			
+			if($(el).hasClass('card')) {
+				card = true;
+			} else {
+				var parentCard = $(el).parents('.card')[0];
+				if(parentCard) {
+					card = true;
+					el = parentCard;
+				}
+			}
+			
+			if(!card) return;
+			
+			switch (event.which) {
+				case 2:
+					//alert('Left Mouse button pressed.');
+					break;
+				case 1:
+					//alert('Middle Mouse button pressed.');
+					
+					break;
+				case 3:
+					//alert('Right Mouse button pressed.');
+					flip_card(el);
+					event.preventDefault();
+					break;
+				default:
+					alert('You have a strange Mouse!');
+			}
+		});
+
+
+	flip_card = function(card) {
+		var card_val = $(card).data('card');
+		$(card).toggleClass("back");
+		display4();
+	}
+	
+	});
+	
+
+	
+	
+	function make_cards_draggable() {
+	
+		var drag_count = 0;
+		// Make only droppable cards sortable because cards in hand
+		// because sortable when we run sortable()
+		$('.droppable .card').draggable({
+			connectToSortable: '#hand',
+			revert: 'invalid',
+			stack: false,
+			containment: '#bounds',
+			drag: function(event, ui) {
+				drag_count++;
+				console.log(drag_count);
+			},
+			stop: function() {
+				if(drag_count > 50) {
+					display3();
+				}
+			}
+		});
+	}
+	
+	function create_jquery_widgets() {
+		$("#hand").sortable({
+			revert: 100,
+			connectWith: '#hand, .droppable',
+			containment: '#bounds',
+			receive: function(event, ui) {
+			  var card = ui.item.data('card');
+			  ui.item.draggable('option', 'disabled', 'true');
+			},
+			beforeStop: function (event, ui) {
+				ui.item.css('position', 'relative');
+			}
+		});
+
+		$(".droppable").droppable({
+			tolerance: "intersect",
+			out: function (ev, ui) {
+				window.origin = this;
+			},
+			drop: function (ev, ui) {
+				
+				if(User.currentUser() != window.gameCache.turn) {
+					return;
+				}
+				
+				if((window.origin !== null && this != window.origin) || ui.draggable.parent().hasClass('ui-sortable')) {
+					var clone = ui.draggable.clone();
+					ui.draggable.remove();
+					
+					zIndexCounter++;
+					
+					$(clone).css({
+						width: '',
+						height: '',
+						'z-index' : zIndexCounter
+					});
+					
+					$(this).append(clone);
+					
+					$(clone).draggable({
+						connectToSortable: '#hand',
+						revert: 'invalid',
+						stack: false,
+						containment: '#bounds'
+					});
+					
+					
+					ui.draggable = clone;
+				}
+				
+				window.origin = null;
+
+				var left = $(ui.draggable).position().left;
+				var top  = $(ui.draggable).position().top;
+				var percentLeft = (left / $(window).width()) * 100;
+				var precentTop  = (top / $(window).height()) * 100;
+				var position = { left: percentLeft+'%', top: precentTop +'%' };
+
+				
+				$(ui.draggable).css(position);  
+				var zIndex = $(ui.draggable).zIndex();
+				var location = $(this).data('location');
+				var cardString = $(ui.draggable).data('card');
+			}
+		});
+	}
+
+
+	
+	</script>
 	<header></header>
 	<article id="bounds">
 	<section class='playingCards fourColours'>
 	<div id="table" class="droppable" data-location='table'>
+	<div data-card="4H" class="card rank-4 hearts ui-draggable ui-draggable-handle" style="top: 23.6715587044534%; left: 31.40625%; z-index: 55;"><span class="rank">4</span><span class="suit">♥</span></div>
+	
 	</div>
 	<div id="hand">
 	</div>
@@ -52,7 +301,6 @@
         <div id="gameName"></div>
     </div>
 	
-	<div class="button next">Next Player</div>
 	</footer>
 </body>
 </html>
