@@ -12010,7 +12010,7 @@ if(gameId !== '') {
   });
   emitter.on('deal', function(num) {
     var offset = 0;
-    var indexes = _.shuffle(_.range(1,52));
+    var indexes = _.shuffle(_.range(1,53));
     cards = gameCache.cards;
     for(var c in cards) {
       cards[c].position.z = indexes.pop();
@@ -12044,7 +12044,7 @@ emitter.on('start_new_game', function(usernames, name) {
   ['H', 'D', 'C', 'S'].forEach(function(suit) {
     [2,3,4,5,6,7,8,9, 10,'J','K','Q','A'].forEach(function(value) {
       cards[value + suit] = {
-        position: {x:10,y:10,z:0}, faceup: false, username: 'table', location: 'table'
+        position: {x:10,y:10,z:1}, faceup: false, username: 'table', location: 'table'
       };
     });
   });
