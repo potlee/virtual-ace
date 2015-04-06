@@ -65,10 +65,8 @@ $(document).ready(function() {
       $(".favorite-game-errors").html("Please enter a valid game name");
     }
     renderFavoriteGamesPage();
-    console.log("yo");
     $section = $(".add-name");
     $section.val("");
-   // $section.append('<input class="add-name" type="text" placeholder="Favorite Game">');
   });
 
 
@@ -164,7 +162,7 @@ $(document).ready(function() {
         $(".my-favorite-game-list").html('');
         $(".my-favorite-game-list").append("<p> My Favorite Games: " + usersGames.split("_").join(" ") + "</p>");
       }
-      if (username != User.currentUser())  {
+      if ((username != User.currentUser()) && (username != "null"))  {
       	if ($.inArray(username, invitedUsers) === -1)  {
       	  $section.append(  '<li>' + '<input type="checkbox" style="display:none" id="' + username + '" class="user" name="' + 
             username + '">' + '<label class="online-users-checkbox" for="' + username + '"></label> ' + 
