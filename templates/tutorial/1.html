@@ -25,7 +25,6 @@
     <script src="/jquery.simulate.js"></script>
     <script src='/jAlert-v2.js'></script>
     <script src="/leap.js"></script>
-    <script src="/table3.js"></script>
 	
 </head>
 
@@ -197,7 +196,6 @@
 			containment: '#bounds',
 			drag: function(event, ui) {
 				drag_count++;
-				console.log(drag_count);
 			},
 			stop: function() {
 				if(drag_count > 50) {
@@ -235,13 +233,10 @@
 				if((window.origin !== null && this != window.origin) || ui.draggable.parent().hasClass('ui-sortable')) {
 					var clone = ui.draggable.clone();
 					ui.draggable.remove();
-					
-					zIndexCounter++;
-					
+										
 					$(clone).css({
 						width: '',
-						height: '',
-						'z-index' : zIndexCounter
+						height: ''
 					});
 					
 					$(this).append(clone);

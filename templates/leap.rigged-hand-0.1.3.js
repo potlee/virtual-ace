@@ -306,8 +306,6 @@ var _sortBy = function (obj, iterator, context) {
       alpha: true
     });
     
-    
-    console.log(this.renderer);
     this.renderer.setClearColor(0x000000, 0);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.domElement.style.position = 'fixed';
@@ -325,14 +323,14 @@ var _sortBy = function (obj, iterator, context) {
     this.camera.position.fromArray([0, 6, 30]);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
     
-        console.log(this.renderer.domElement);
-
+/*
     window.addEventListener('resize', function() {
       scope.camera.aspect = window.innerWidth / window.innerHeight;
       scope.camera.updateProjectionMatrix();
       scope.renderer.setSize(window.innerWidth, window.innerHeight);
       return scope.renderer.render(scope.scene, scope.camera);
     }, false);
+  */  
     scope.scene.add(scope.camera);
     return scope.renderer.render(scope.scene, scope.camera);
   };
