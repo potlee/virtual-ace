@@ -674,9 +674,9 @@ a.to-lobby {
 
 .help-body {
     background-color: #005a00;
-    margin-right : 25%;
-    margin-left: 25%;
-    min-width: 430px;
+    margin-right : 20%;
+    margin-left: 20%;
+    min-width: 640px;
     border: black solid 2px;
     margin-top: 30px;
     padding: 20px;
