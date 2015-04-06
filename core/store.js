@@ -98,7 +98,7 @@ if(gameId !== '') {
   });
   emitter.on('deal', function(num) {
     var offset = 0;
-    indexes = _.shuffle(_.range(1,52));
+    var indexes = _.shuffle(_.range(1,52));
     cards = gameCache.cards;
     for(var c in cards) {
       cards[c].position.z = indexes.pop();
@@ -109,6 +109,7 @@ if(gameId !== '') {
     gameCache.users.forEach(function(user) {
       var i = 0;
       while(i++ < num) {
+        global.ca = cardsArray;
         cardsArray[offset++].username = user;
         cardsArray[offset - 1].faceup = true;
         console.log(user);
@@ -129,7 +130,7 @@ emitter.on('start_new_game', function(usernames, name) {
   var game = games.child(gameId);
   var cards = {};
   ['H', 'D', 'C', 'S'].forEach(function(suit) {
-    [2,3,4,5,6,7,8,9,'J','K','Q','A'].forEach(function(value) {
+    [2,3,4,5,6,7,8,9, 10,'J','K','Q','A'].forEach(function(value) {
       cards[value + suit] = {
         position: {x:10,y:10,z:0}, faceup: false, username: 'table', location: 'table'
       };

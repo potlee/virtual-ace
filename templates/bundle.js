@@ -11909,6 +11909,7 @@ function getParameterByName(name) {
 module.exports = getParameterByName('gameId');
 
 },{}],7:[function(require,module,exports){
+(function (global){
 var _ = require('lodash');
 var uuid = require('uuid');
 var EventEmitter = require('events').EventEmitter;
@@ -12009,7 +12010,7 @@ if(gameId !== '') {
   });
   emitter.on('deal', function(num) {
     var offset = 0;
-    indexes = _.shuffle(_.range(1,52));
+    var indexes = _.shuffle(_.range(1,52));
     cards = gameCache.cards;
     for(var c in cards) {
       cards[c].position.z = indexes.pop();
@@ -12020,6 +12021,7 @@ if(gameId !== '') {
     gameCache.users.forEach(function(user) {
       var i = 0;
       while(i++ < num) {
+        global.ca = cardsArray;
         cardsArray[offset++].username = user;
         cardsArray[offset - 1].faceup = true;
         console.log(user);
@@ -12040,7 +12042,7 @@ emitter.on('start_new_game', function(usernames, name) {
   var game = games.child(gameId);
   var cards = {};
   ['H', 'D', 'C', 'S'].forEach(function(suit) {
-    [2,3,4,5,6,7,8,9,'J','K','Q','A'].forEach(function(value) {
+    [2,3,4,5,6,7,8,9, 10,'J','K','Q','A'].forEach(function(value) {
       cards[value + suit] = {
         position: {x:10,y:10,z:0}, faceup: false, username: 'table', location: 'table'
       };
@@ -12059,6 +12061,7 @@ emitter.on('start_new_game', function(usernames, name) {
 
 module.exports = emitter;
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./fb":4,"./parse_game_id":6,"./user":8,"events":9,"lodash":1,"uuid":3}],8:[function(require,module,exports){
 window.root = require('./fb');
 var users = root.child('users');
