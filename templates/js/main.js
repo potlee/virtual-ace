@@ -168,12 +168,12 @@ $(document).ready(function() {
       	if ($.inArray(username, invitedUsers) === -1)  {
       	  $section.append(  '<li>' + '<input type="checkbox" style="display:none" id="' + username + '" class="user" name="' + 
             username + '">' + '<label class="online-users-checkbox" for="' + username + '"></label> ' + 
-            username + ": " + usersGames + '</li> ');	
+            username + ": " + usersGames.split("_").join(" ") + '</li> ');	
       	}
         else  {
           $section.append(  '<li>' + '<input checked type="checkbox" style="display:none" id="' + username + '" class="user" name="' + 
             username + '">' + '<label class="online-users-checkbox" for="' + username + '"></label> ' + 
-            username + ": " + usersGames + '</li> ');
+            username + ": " + usersGames.split("_").join(" ") + '</li> ');
         }
       }
     })
