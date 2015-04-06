@@ -676,10 +676,16 @@ a.to-lobby {
     background-color: #005a00;
     margin-right : 25%;
     margin-left: 25%;
+    min-width: 430px;
     border: black solid 2px;
     margin-top: 30px;
     padding: 20px;
     color: #CFDBC5;
+    text-align: center;
+}
+
+.help-body .lobby-help-video {
+
 }
 
 .help-text {

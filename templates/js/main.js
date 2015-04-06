@@ -2,6 +2,7 @@
 
 $(document).ready(function() {
 
+//Login button
   $("#login-form").submit(function(e) {
     e.preventDefault();
     var username = $(".username").val();
@@ -19,14 +20,14 @@ $(document).ready(function() {
     }
   });
 
-
+//Logout button
   $("#logout-id").click(function(e) {
     e.preventDefault();
     emitter.emit("logout");
     window.location.href=$(this).attr("action");
   });
 
-
+//create login button
   $("#create-login-form").submit(function(e) {
     e.preventDefault();
     var username = $(".username").val();
@@ -45,7 +46,7 @@ $(document).ready(function() {
     }
   });
 
-
+//add game button on the add-favorite-game.html page
   $("#add-game-form").submit(function(e) {
     e.preventDefault();
     var gameName = $(".add-name").val().split(" ").join("_");
@@ -69,7 +70,7 @@ $(document).ready(function() {
     $section.val("");
   });
 
-
+//begin game button
   $("#begin-game").click(function(e) {
     e.preventDefault();
     var inviteUsers = [];
@@ -92,7 +93,7 @@ $(document).ready(function() {
     }	
   });
 
-
+//okay button on the choose level page
   $("#level-form").submit(function(e) {
     e.preventDefault();
     if ($('input[name=level-name]:checked').length > 0)  {
@@ -103,6 +104,7 @@ $(document).ready(function() {
 		
   });
 
+//delete favorite game button on the add-favorite-game page
   $("#delete-favorite-games-id").click(function(e)  {
   	e.preventDefault;
   	var gameCheckBoxes = $(".delete-favorite-game-class");
@@ -118,7 +120,7 @@ $(document).ready(function() {
   	renderFavoriteGamesPage([]);
   });
 
-
+//renders the game list on the add-favorite-game page
   var renderFavoriteGamesPage = function(deleteGames) {
     var $section = $(".my-favorite-games-list");
     $section.html('');
@@ -139,7 +141,7 @@ $(document).ready(function() {
   };
 
   
-
+//refreshes the lobby including the online users and their favorite games, does not refresh the online users games list
   var refreshLobby = function(invitedUsers) {
     var $section = $(".current-level");
     $section.html('');
@@ -179,6 +181,7 @@ $(document).ready(function() {
   };
 
 
+//displays the current username on the right left side of the screen
   var updateUsername = function()  {
     var $section = $(".username-place-holder");
     $section.html('');
@@ -190,6 +193,7 @@ $(document).ready(function() {
   };
 
 
+//displays the current online users favorite games on the right column of the lobby
   var insertFavoriteGames = function(gameName) {
     var $section = $(".games-available");
     $section.html('');
@@ -213,6 +217,7 @@ $(document).ready(function() {
   };
 
 
+//refreshes the page so that the online users is always up to date
   var onChangeUsers = function() {
     var invitedUsers = [];
     var gameName = "";
@@ -242,11 +247,11 @@ $(document).ready(function() {
 
   emitter.on('change_users', onChangeUsers);
 
+//makes sure that the user is using chrome.  It PURPOSELY displays an annoying message if the user is not using google chrome
   function BrowserDetection() {                    
     if (navigator.userAgent.search("Chrome") < 0) {
       $(".browser-error").html("The application requires Google Chrome");             
     }
-
   };
 
   BrowserDetection();
