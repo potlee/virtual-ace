@@ -34,7 +34,7 @@
     
 		$('*:not(:input)').disableSelection();
 		
-		$('finish').click(function(){
+		$('.finish').click(function(){
 			location.href = '/lobby.html';
 		});
 		
@@ -133,10 +133,6 @@
 		$('body').bind('contextmenu', function(){ return false });
 			
 		$("body").mousedown(function(event) {
-			//Prevent other players from flipping cards when it is not their turn
-			if(User.currentUser() != window.gameCache.turn) {
-				return;
-			}
 			
 			var el = document.elementFromPoint(event.clientX,event.clientY);
 			
@@ -176,8 +172,11 @@
 	flip_card = function(card) {
 		var card_val = $(card).data('card');
 		$(card).toggleClass("back");
-		display4();
+		if(display3.seen){
+			display4();
+		}
 	}
+	
 	
 	});
 	
@@ -198,7 +197,7 @@
 				drag_count++;
 			},
 			stop: function() {
-				if(drag_count > 50) {
+				if(drag_count > 25) {
 					display3();
 				}
 			}
