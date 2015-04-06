@@ -30,6 +30,7 @@ $(function() {
 	var zIndexCounter = 0;
 	var prevJAlert = null;
 	
+	$("#dhand").text("Level: " + localStorage.getItem("leapLevel"));
 	
 	//Handles hand re-rendering after refreshing the page in
 	//render_game();
