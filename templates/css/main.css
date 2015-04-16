@@ -126,7 +126,7 @@ textarea {
 .login-screen .create-login-content {
     width: 250px;
     height: 150px;
-    margin-top: 80px;
+    margin-top: 50px;
 }
 
 a, button {
@@ -176,6 +176,16 @@ body.lobby {
     margin-left: 50px;
     margin-top: 10px;
     overflow: auto;
+}
+
+.checkbox-container {
+    width: 25px;
+    height: 25px;
+}
+
+.checkbox-image {
+    width: 25px;
+    height: 25px;
 }
 
 .users-games .users {
@@ -376,6 +386,7 @@ ul {
     list-style-type: none;
     min-height: 5px;
     padding-top: 10px;
+
 }
 
 
@@ -387,6 +398,7 @@ li {
     min-height: 7px;
     margin: 5px;
     word-wrap: break-word;
+
 
 }
 
@@ -419,7 +431,13 @@ li {
 }
 
 input[type="checkbox"]:checked+label{
-    background-color: black;
+    background: url('/checkmark-graphic-free.png') no-repeat;
+    background-size: 27px;
+    background-color: white;
+    display: inline-block;
+    top: 125px;
+   
+ 
 
 }
 
@@ -427,10 +445,15 @@ input[type="checkbox"]:checked+label.favorite-game-checkbox{
     color: white;
     color: #005a00;
 
+
 }
 
 input[type="radio"]:checked+label{
-    background-color: black;
+    background: url('/checkmark-graphic-free.png') no-repeat;
+    background-size: 27px;
+    background-color: white;
+    display: inline-block;
+    top: 125px;
 
 }
 
