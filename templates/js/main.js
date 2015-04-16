@@ -200,11 +200,10 @@ $(document).ready(function() {
     $section.html('');
     $section.append('<p class="username-place-holder">' + User.currentUser() + "</p>");
     // If in lobby and username is null, redirect them to login page
-    if(window.location.pathname == '/lobby.html' && (User.currentUser() == 'null' || User.currentUser() == 'undefined')) {
+    if(window.location.pathname == '/lobby.html' && (User.currentUser() == 'null' || User.currentUser() == undefined)) {
 		location.href = '/index.html';
-    }
-    else if (((window.location.pathname == '/index.html') || (window.location.pathname == '/') || (window.location.pathname == '/create-login.html')) && ((User.currentUser() != 'null') && (User.currentUser() != 'undefined')))  {
-      location.href = '/lobby.html'
+    } else if (((window.location.pathname == '/index.html') || (window.location.pathname == '/') || (window.location.pathname == '/create-login.html')) && ((User.currentUser() != 'null') && (User.currentUser() != undefined)))  {
+		location.href = '/lobby.html'
     }
   };
 

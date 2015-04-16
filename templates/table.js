@@ -578,13 +578,6 @@ $(function() {
 					var form = $('.jContent > form :input');
 					var value = form.val();
 					
-					if(value < 0) {
-						form.val('0');
-						return;
-					} else if ( value > max) {
-						form.val(max);
-						return;
-					}
 
 					console.log(''+call+'(' + value + ')');
 					LeapController.updownswipeable = false;
@@ -594,6 +587,33 @@ $(function() {
 			
 			'autofocus': 'btn:last'
 		});
+
+
+		$('.jContent > form :input').change(function() { 
+			var form = $(this);
+			var value = form.val();
+			if(value < 0) {
+				form.val('0');
+				return;
+			} else if ( value > max) {
+				form.val(max);
+				return;
+			}
+		 });
+		 	
+		$('.jContent > form :input').keyup(function() { 
+			var form = $(this);
+			var value = form.val();
+			if(value < 0) {
+				form.val('0');
+				return;
+			} else if ( value > max) {
+				form.val(max);
+				return;
+			}
+		 });
+		
+		
 	}
 
 	function inviteNotifications() {
