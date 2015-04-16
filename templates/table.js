@@ -2,10 +2,15 @@
 var flip_card = function() { console.log("Not yet loaded") };
 var duration = 300000;
 
-$(function() {
-					
-	BrowserDetection();
 
+$(function() {
+	
+	
+	BrowserDetection();
+	var gameId = getParameterByName('gameId');
+	if(gameId == '') {
+		location.href = 'lobby.html';
+	}
 	// set timeout duration
 	
 	timeout = setTimeout();
@@ -550,12 +555,17 @@ $(function() {
 
 	function prompt(title, message, call) {
 		LeapController.updownswipeable = true;
+		var max = 52;
+		if(gameCache.users) {
+			max = 52 / gameCache.users.length;
+		}
+		
 		$.fn.jAlert({
 			'title': title,
 			'message': message +
 						'<br>'+
 						'<form style="text-align:center">'+
-							'<input class="updownswipeable" type="number" size="2" step="1" min="0" max="52" value="0">'+
+							'<input class="updownswipeable" type="number" size="2" step="1" min="0" max="'+max+'" value="0">'+
 						'</form>',
 			'theme': 'success',
 			'size': 'small',
@@ -565,7 +575,17 @@ $(function() {
 			'btn': [{
 				'label': 'Deal',
 				'onClick': function() {
-					var value = $('.jContent > form :input').val();
+					var form = $('.jContent > form :input');
+					var value = form.val();
+					
+					if(value < 0) {
+						form.val('0');
+						return;
+					} else if ( value > max) {
+						form.val(max);
+						return;
+					}
+
 					console.log(''+call+'(' + value + ')');
 					LeapController.updownswipeable = false;
 					emitter.emit(call, value);
@@ -669,7 +689,14 @@ $(function() {
 		console.log("Highest z index was: " + highest);
 		return highest;
     }
-    
+
+	function getParameterByName(name) {
+	  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+	  var results = regex.exec(location.search);
+	  return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+
     function oneTimeRun(name, func) {
 		//console.log('Run('+name+', '+func+')');
 		var hasItRan = localStorage.getItem(name + gameCache.id);
