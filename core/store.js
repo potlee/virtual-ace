@@ -106,6 +106,7 @@ if(gameId !== '') {
     cardsArray = Object.keys(cards).map(function(key) {
       return cards[key];
     });
+    cardsArray = _.shuffle(cardsArray);
     gameCache.users.forEach(function(user) {
       var i = 0;
       while(i++ < num) {
