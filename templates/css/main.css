@@ -25,12 +25,10 @@ html {
  */
 
 ::-moz-selection {
-    background: #b3d4fc;
     text-shadow: none;
 }
 
 ::selection {
-    background: #b3d4fc;
     text-shadow: none;
 }
 
@@ -417,6 +415,7 @@ li {
 
 }
 
+
 .tagsinput-primary .bootstrap-tagsinput {
   border-color: black;
 }
@@ -430,27 +429,26 @@ li {
     display: none;
 }
 
-input[type="checkbox"]:checked+label{
+.users-select input[type="checkbox"]:checked+label{
     background: url('/checkmark-graphic-free.png') no-repeat;
     background-size: 27px;
     background-color: white;
     display: inline-block;
     top: 125px;
-   
- 
-
 }
 
+
+
 input[type="checkbox"]:checked+label.favorite-game-checkbox{
+    background-color: #004b00;
     color: white;
-    color: #005a00;
 
 
 }
 
 /*http://sethtaylor.com/b2/2013/10/19/vector-checkmark-design/  the checkmark was taken from this website*/
 
-input[type="radio"]:checked+label{
+.online-users-checkbox input[type="radio"]:checked+label{
     background: url('/checkmark-graphic-free.png') no-repeat;
     background-size: 27px;
     background-color: white;
