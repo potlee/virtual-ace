@@ -31,7 +31,7 @@ $(document).ready(function() {
   $("#create-login-form").submit(function(e) {
     e.preventDefault();
     var username = $(".username").val();
-    if (username.length > 0)  {
+    if ((username.length > 0) && (username.length < 50))  {
       try {
         User.create(username, [], function() {
           window.location.href= '/lobby.html';
@@ -41,6 +41,10 @@ $(document).ready(function() {
         $(".login-errors").html("This username already exists");
       }
     }
+    else if (username.length >= 50)  {
+    	$(".login-errors").html("Please enter a username less than 50 characters");
+    }
+
     else  {
 			$(".login-errors").html("Please enter a valid username");
     }
@@ -49,9 +53,13 @@ $(document).ready(function() {
 //add game button on the add-favorite-game.html page
   $("#add-game-form").submit(function(e) {
     e.preventDefault();
-    var gameName = $(".add-name").val().split(" ").join("_");
     var doesntExist = true;
-    if(gameName.length > 0) {
+    var gameName = $(".add-name").val();
+    if ($.trim(gameName) == '')
+    {
+      $(".favorite-game-errors").html("Please enter a valid game name");
+    }
+    else if ((gameName.length > 0) && (gameName.length < 50)) {
       (User.onlineUsers()[User.currentUser()].favoriteGames||[]).forEach(function(game) {
         if (game === gameName)  {
           $(".favorite-game-errors").html("Please enter a valid game name");
@@ -59,8 +67,13 @@ $(document).ready(function() {
         }
       });
       if (doesntExist === true)  {
+      	var gameName = gameName.split(" ").join("_");
         emitter.emit('add_favorite_game', gameName);
+
       }
+    }
+    else if (gameName.length >= 50)  {
+    	$(".favorite-game-errors").html("Please enter a game less than 50 characters");
     }
     else  {
       $(".favorite-game-errors").html("Please enter a valid game name");
@@ -164,7 +177,7 @@ $(document).ready(function() {
         $(".my-favorite-game-list").html('');
         $(".my-favorite-game-list").append("<p> My Favorite Games: " + usersGames.split("_").join(" ") + "</p>");
       }
-      if ((username != User.currentUser()) && (username != "null"))  {
+      if ((username != User.currentUser()) && (username != "null") && (username != "undefined"))  {
       	if ($.inArray(username, invitedUsers) === -1)  {
       	  $section.append(  '<li>' + '<input type="checkbox" style="display:none" id="' + username + '" class="user" name="' + 
             username + '">' + '<label class="online-users-checkbox" for="' + username + '"></label> ' + 
@@ -187,8 +200,11 @@ $(document).ready(function() {
     $section.html('');
     $section.append('<p class="username-place-holder">' + User.currentUser() + "</p>");
     // If in lobby and username is null, redirect them to login page
-    if(window.location.pathname == '/lobby.html' && User.currentUser() == 'null') {
+    if(window.location.pathname == '/lobby.html' && (User.currentUser() == 'null' || User.currentUser() == 'undefined')) {
 		location.href = '/index.html';
+    }
+    else if (((window.location.pathname == '/index.html') || (window.location.pathname == '/create-login.html')) && ((User.currentUser() != 'null') && (User.currentUser() != 'undefined')))  {
+      location.href = '/lobby.html'
     }
   };
 
