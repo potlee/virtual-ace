@@ -203,7 +203,7 @@ $(document).ready(function() {
     if(window.location.pathname == '/lobby.html' && (User.currentUser() == 'null' || User.currentUser() == 'undefined')) {
 		location.href = '/index.html';
     }
-    else if (((window.location.pathname == '/index.html') || (window.location.pathname == '/create-login.html')) && ((User.currentUser() != 'null') && (User.currentUser() != 'undefined')))  {
+    else if (((window.location.pathname == '/index.html') || (window.location.pathname == '/') || (window.location.pathname == '/create-login.html')) && ((User.currentUser() != 'null') && (User.currentUser() != 'undefined')))  {
       location.href = '/lobby.html'
     }
   };
