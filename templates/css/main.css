@@ -448,6 +448,8 @@ input[type="checkbox"]:checked+label.favorite-game-checkbox{
 
 }
 
+/*http://sethtaylor.com/b2/2013/10/19/vector-checkmark-design/  the checkmark was taken from this website*/
+
 input[type="radio"]:checked+label{
     background: url('/checkmark-graphic-free.png') no-repeat;
     background-size: 27px;
