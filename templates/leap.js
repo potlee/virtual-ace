@@ -87,7 +87,7 @@ $(function() {
 			if(LeapController.hCard == null || LeapController.hCard === undefined) return;
 			
 			var msElapsed = Math.round(+new Date()) - LeapController.lastKeyTap;
-			if(msElapsed >= 1000) {
+			if(msElapsed >= 2000) {
 				LeapController.lastKeyTap = Math.round(+new Date());
 				// console.log('first click');
 				return;
@@ -252,7 +252,6 @@ $(function() {
 
 	function mouseDown(x,y) {
 		if(LeapController.mousedown == true) return;
-
 		$(LeapController.hEle).simulate("mousedown", {clientX: x, clientY: y});
 		LeapController.mousedown = true;
 		LeapController.color = 'green';
@@ -260,7 +259,6 @@ $(function() {
 
 	function mouseUp(x,y) {
 		if(LeapController.mousedown == false) return;
-		
 		$(LeapController.hEle).simulate("mouseup", {clientX: x, clientY: y});
 		$(LeapController.hEle).simulate("click", {clientX: x, clientY: y});
 		LeapController.mousedown = false;
