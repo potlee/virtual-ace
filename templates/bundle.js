@@ -12794,6 +12794,28 @@ emitter.on('start_new_game', function(usernames, name) {
       };
     });
   });
+  if(name.toLocaleLowerCase() == 'solitaire') {
+    var offset = 0;
+    var indexes = _.shuffle(_.range(1,53));
+    for(var c in cards) {
+      cards[c].position.z = indexes.pop();
+    }
+    cardsArray = Object.keys(cards).map(function(key) {
+      return cards[key];
+    });
+    cardsArray = _.shuffle(cardsArray);
+    cardsArray = _.sortBy(cardsArray, function(c) { return c.position.z })
+    var count = 0;
+    [1,2,3,4,5,6].forEach(function(c) {
+      var i = c;
+      while(i--) {
+        cardsArray[count++ ].position.y = 8 + (c-i)*3;
+        cardsArray[count - 1].position.x = 12 + c * 8; 
+      }
+      cardsArray[count - 1].faceup = true;
+    })
+  }
+    
   game.set({
     cards: cards,
     invitedUsers: usernames,
