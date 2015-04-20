@@ -97,12 +97,20 @@ $(function() {
 		if(prevJAlert != null) {
 			prevJAlert.closeAlert(true);
 		}
-		
+
 		render_hand();
 		render_game();
 	}
 
 	function render_hand() {
+
+		
+		if(gameCache.users.length == 1) {
+			$('.next').hide();
+		} else {
+			$('.next').show();
+		}
+		
 		console.log('render_hand');
 		$("#hand .card").remove();
 		$.each(window.gameCache.cards, function(key, value){
@@ -116,10 +124,11 @@ $(function() {
 	}
 	
 	function first_render_game() {
+		console.log('first_render_game');
 		//Handles re-rendering the cards in the hand if the user
 		//leaves or refreshes the page. reads from local storage
 		var reEntered =  localStorage.getItem("reentered" + gameCache.id);
-		
+
 		
 		if(reEntered == "true") {
 			render_hand();
