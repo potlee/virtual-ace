@@ -41,7 +41,8 @@ window.User = {
       lastSeen: Date.parse(new Date()),
       level: "1"
     }, function() {
-      this.login(username);
+      currentUser = cache[username];
+      localStorage.username = currentUser.name;
       cb();
     }.bind(this));
   },
