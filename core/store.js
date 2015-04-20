@@ -101,7 +101,8 @@ if(gameId !== '') {
     var indexes = _.shuffle(_.range(1,53));
     cards = gameCache.cards;
     for(var c in cards) {
-      cards[c].position.z = indexes.pop();
+      if(cards[c].position.z == 0 )
+        cards[c].position.z = indexes.pop();
     }
     cardsArray = Object.keys(cards).map(function(key) {
       return cards[key];
@@ -133,12 +134,13 @@ emitter.on('start_new_game', function(usernames, name) {
   ['H', 'D', 'C', 'S'].forEach(function(suit) {
     [2,3,4,5,6,7,8,9, 10,'J','K','Q','A'].forEach(function(value) {
       cards[value + suit] = {
-        position: {x:10,y:10,z:1}, faceup: false, username: 'table', location: 'table'
+        position: {x:10,y:10,z:0}, faceup: false, username: 'table', location: 'table'
       };
     });
   });
   if(name.toLocaleLowerCase() == 'solitaire') {
     var offset = 0;
+    var index = 53;
     var indexes = _.shuffle(_.range(1,53));
     for(var c in cards) {
       cards[c].position.z = indexes.pop();
@@ -146,14 +148,16 @@ emitter.on('start_new_game', function(usernames, name) {
     cardsArray = Object.keys(cards).map(function(key) {
       return cards[key];
     });
-    cardsArray = _.shuffle(cardsArray);
     cardsArray = _.sortBy(cardsArray, function(c) { return c.position.z })
     var count = 0;
     [1,2,3,4,5,6].forEach(function(c) {
       var i = c;
       while(i--) {
+        index = index + 1;
         cardsArray[count++ ].position.y = 8 + (c-i)*3;
-        cardsArray[count - 1].position.x = 12 + c * 8; 
+        cardsArray[count - 1].position.x = 12 + c * 8;
+        cardsArray[count - 1].position.z = index;
+        console.log(index);
       }
       cardsArray[count - 1].faceup = true;
     })
