@@ -12888,10 +12888,10 @@ window.User = {
 
   login: function(username) {
     if(!cache[username])
-      throw new Error("user doesnt exist");
+      throw new Error("This user doesn't exist.");
     console.log(this.onlineUsers());
     if(this.onlineUsers()[username])
-      throw new Error("user is already online");
+      throw new Error("This user is already online.");
     currentUser = cache[username];
     localStorage.username = currentUser.name;
   },
