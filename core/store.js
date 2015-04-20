@@ -150,12 +150,12 @@ emitter.on('start_new_game', function(usernames, name) {
     });
     cardsArray = _.sortBy(cardsArray, function(c) { return c.position.z })
     var count = 0;
-    [1,2,3,4,5,6].forEach(function(c) {
+    [1,2,3,4,5,6,7].forEach(function(c) {
       var i = c;
       while(i--) {
         index = index + 1;
         cardsArray[count++ ].position.y = 8 + (c-i)*3;
-        cardsArray[count - 1].position.x = 12 + c * 8;
+        cardsArray[count - 1].position.x = 8 + c * 8;
         cardsArray[count - 1].position.z = index;
         console.log(index);
       }
