@@ -12875,7 +12875,8 @@ window.User = {
     users.child(username).set({
       name: username,
       favoriteGames: favoriteGames,
-      lastSeen: Date.parse(new Date())
+      lastSeen: Date.parse(new Date()),
+      level: "1"
     }, function() {
       this.login(username);
       cb();
