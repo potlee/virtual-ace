@@ -12,7 +12,8 @@ $(document).ready(function() {
         window.location.href=$(this).attr("action");
       }
       catch (err)  {
-        $(".login-errors").html("This username does not exist");
+      	console.log(err);
+        $(".login-errors").html(err.message);
       }
     }
     else  {
@@ -113,7 +114,7 @@ $(document).ready(function() {
       window.levelNumber = $('input[name=level-name]:checked').val();
     }
     window.location.href='lobby.html';
-    localStorage.setItem("leapLevel", levelNumber);
+    User.setLevel(levelNumber);
 		
   });
 
