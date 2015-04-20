@@ -52,6 +52,9 @@ window.User = {
   login: function(username) {
     if(!cache[username])
       throw new Error("user doesnt exist");
+    console.log(this.onlineUsers());
+    if(this.onlineUsers()[username])
+      throw new Error("user is already online");
     currentUser = cache[username];
     localStorage.username = currentUser.name;
   },
