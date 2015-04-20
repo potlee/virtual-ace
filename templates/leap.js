@@ -107,8 +107,10 @@ $(function() {
 		var current_value = parseInt(input.val(),10);
 		if(direction == "up") {
 			input.val(current_value + 1);
+			input.trigger('change');
 		} else if (direction == "down") {
 			input.val(current_value - 1);
+			input.trigger('change');
 		}
 	}
 	
