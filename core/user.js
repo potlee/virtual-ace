@@ -50,6 +50,7 @@ window.User = {
   },
 
   login: function(username) {
+    localStorage.leapLevel = cache[username].level;
     if(!cache[username])
       throw new Error("This user doesn't exist.");
     console.log(this.onlineUsers());
@@ -61,6 +62,15 @@ window.User = {
 
   logout: function() {
     localStorage.username = null;
+  },
+
+  setLevel: function(level) {
+    localStorage.leapLevel = level;
+    users.child(this.currentUser()).update({ level: level});
+  },
+
+  getLevel: function() {
+    return cache[User.currentUser()].level;
   }
 };
 
