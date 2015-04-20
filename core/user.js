@@ -51,9 +51,9 @@ window.User = {
   },
 
   login: function(username) {
-    localStorage.leapLevel = cache[username].level;
     if(!cache[username])
       throw new Error("This user doesn't exist.");
+    localStorage.leapLevel = cache[username].level;
     console.log(this.onlineUsers());
     if(this.onlineUsers()[username])
       throw new Error("This user is already online.");
