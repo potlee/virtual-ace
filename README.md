@@ -10,4 +10,4 @@ Information on how to set up LeapMotion is available at https://www.leapmotion.c
 
 A live instance is also available at http://www.virtual-ace.com/
 
-Out Github repository can be accessed at https://github.com/potlee/virtual-ace
+Our Github repository can be accessed at https://github.com/potlee/virtual-ace
